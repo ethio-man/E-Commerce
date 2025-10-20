@@ -4,7 +4,7 @@ export default function validate(schema) {
     if (error)
       return res
         .status(400)
-        .json({ message: "Bad request", error: error.details.message[0] });
+        .json({ message: "Bad request", error: error.details[0].message });
     next();
   };
 }

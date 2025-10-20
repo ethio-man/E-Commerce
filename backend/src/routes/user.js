@@ -7,10 +7,6 @@ const route = express.Router();
 route.post("/", validate(userSchema), async (req, res) => {
   const { userName, email, passwords } = req.body;
   try {
-    const checkUser = await prisma.users.findUnique({
-      where: { email },
-    });
-    if (checkUser) res.status(400).json({ message: "User already registered" });
     const user = await prisma.users.create({
       data: { userName, email, passwords },
     });
