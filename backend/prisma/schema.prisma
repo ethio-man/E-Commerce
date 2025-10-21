@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,81 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model address {
+  id          Int      @id @default(autoincrement())
+  user_id     Int?
+  country     String?  @db.VarChar(53)
+  city        String?  @db.VarChar(53)
+  postal_code String?  @db.VarChar(20)
+  users       users?   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  orders      orders[]
+}
+
+model comments {
+  id         Int       @id @default(autoincrement())
+  message    String?
+  comment_at DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
+  rating     Int?
+  user_id    Int?
+  product_id Int?
+  products   products? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model order_items {
+  id         Int       @id @default(autoincrement())
+  order_id   Int?
+  product_id Int?
+  amount     Int?
+  orders     orders?   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products   products? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model orders {
+  id             Int           @id @default(autoincrement())
+  order_date     DateTime?     @default(now()) @db.Timestamp(6)
+  delivery_date  DateTime?     @db.Date
+  total_price    Decimal?      @db.Decimal(10, 2)
+  payment_method String?       @db.VarChar(53)
+  paid_status    Boolean?      @default(false)
+  user_id        Int?
+  address_id     Int?
+  order_items    order_items[]
+  address        address?      @relation(fields: [address_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users          users?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model products {
+  id              Int           @id @default(autoincrement())
+  product_name    String?       @db.VarChar(100)
+  description     String?
+  brand           String?       @db.VarChar(53)
+  category        String?       @db.VarChar(53)
+  number_in_stock Int?
+  price           Decimal?      @db.Decimal(10, 2)
+  shipping        Decimal?      @db.Decimal(10, 2)
+  tax             Decimal?      @db.Decimal(10, 2)
+  rating          Int?
+  created_by      Int?
+  related_product Int?
+  comments        comments[]
+  order_items     order_items[]
+  users           users?        @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products        products?     @relation("productsToproducts", fields: [related_product], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_products  products[]    @relation("productsToproducts")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  id        Int        @id @default(autoincrement())
+  full_name String?    @db.VarChar(100)
+  email     String     @unique @db.VarChar(100)
+  password  String     @db.VarChar(255)
+  role      String?    @default("user") @db.VarChar(20)
+  address   address[]
+  comments  comments[]
+  orders    orders[]
+  products  products[]
 }

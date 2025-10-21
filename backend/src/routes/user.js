@@ -5,24 +5,24 @@ import validate from "../middleware/validate.js";
 const route = express.Router();
 
 route.post("/", validate(userSchema), async (req, res) => {
-  const { userName, email, passwords } = req.body;
+  const { full_name, email, password } = req.body;
   try {
     const user = await prisma.users.create({
-      data: { userName, email, passwords },
+      data: { full_name, email, password },
     });
     res.json(user);
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(400).json({ error: "Error creating user" });
   }
 });
 route.put("/:id", validate(userSchema), async (req, res) => {
   const { id } = req.params;
-  const { userName, email, passwords } = req.body;
+  const { full_name, email, password } = req.body;
   try {
     const user = await prisma.users.update({
       where: { id: parseInt(id) },
-      data: { userName, email, passwords },
+      data: { full_name, email, password },
     });
     res.json(user);
   } catch (err) {
