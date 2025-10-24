@@ -1,11 +1,11 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
-import schema from "../validations/productValidator.js";
+import { productSchema } from "../validations/productValidator.js";
 import validate from "../middleware/validate.js";
 const route = express.Router();
 route.get("/", async (req, res) => {
   try {
-    const product = await prisma.procucts.findMany();
+    const product = await prisma.products.findMany();
     if (!product) return res.status(404).json({ error: "Products not found " });
     res.status(200).json(product);
   } catch (err) {
@@ -16,8 +16,8 @@ route.get("/", async (req, res) => {
 route.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await prisma.procucts.findUnique({
-      where: { id: pareseInt(id) },
+    const product = await prisma.products.findUnique({
+      where: { id: parseInt(id) },
     });
     if (!product) return res.status(404).json({ error: "Product not found " });
     res.status(200).json(product);
@@ -27,7 +27,7 @@ route.get("/:id", async (req, res) => {
   }
 });
 
-route.post("/", validate(schema), async (req, res) => {
+route.post("/", validate(productSchema), async (req, res) => {
   const {
     product_name,
     description,
@@ -59,7 +59,7 @@ route.post("/", validate(schema), async (req, res) => {
     res.status(500).json({ error: "Error to create product" });
   }
 });
-route.put("/:id", validate(schema), async (req, res) => {
+route.put("/:id", validate(productSchema), async (req, res) => {
   const { id } = req.params;
   const {
     product_name,
@@ -97,7 +97,7 @@ route.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const product = await prisma.products.delete({
-      where: { id: pareseInt(id) },
+      where: { id: parseInt(id) },
     });
     res.json(product);
   } catch (err) {
