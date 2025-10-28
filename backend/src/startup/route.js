@@ -4,6 +4,7 @@ import User from "../routes/user.js";
 import Products from "../routes/product.js";
 import Orders from "../routes/order.js";
 import Address from "../routes/address.js";
+import Comments from "../routes/comment.js";
 export default function (app) {
   app.use(express.json());
   app.use(cors());
@@ -11,4 +12,5 @@ export default function (app) {
   app.use("/products", Products);
   app.use("/orders", Orders);
   app.use("/address", Address);
+  app.use("/comments", Comments);
 }
