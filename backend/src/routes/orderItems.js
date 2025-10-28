@@ -29,9 +29,9 @@ route.post("/", validate(itemsValidator), async (req, res) => {
   try {
     const item = await prisma.order_items.create({
       data: {
-        amount,
         orders: { connect: { id: parseInt(orderId) } },
         products: { connect: { id: parseInt(productId) } },
+        amount,
       },
     });
     res.json(item);
