@@ -1,16 +1,26 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
+import bcrypt from "bcrypt";
 import { userSchema } from "../validations/userValidator.js";
 import validate from "../middleware/validate.js";
+import auth from "../middleware/auth.js";
+import generateAuthToken from "../utils/authGenerate.js";
 const route = express.Router();
 
-route.post("/", validate(userSchema), async (req, res) => {
+route.post("/", auth, validate(userSchema), async (req, res) => {
   const { full_name, email, password } = req.body;
   try {
-    const user = await prisma.users.create({
-      data: { full_name, email, password },
+    let user = await prisma.users.findUnique({
+      where: { email },
     });
-    res.json(user);
+    if (user) return res.status(400).json("User already registered.");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user = await prisma.users.create({
+      data: { full_name, email, password: hashedPassword },
+    });
+    const token = generateAuthToken(req.body);
+    res.header("auth-token", token).json(user);
   } catch (err) {
     console.log(err);
     res.status(400).json({ error: "Error creating user" });
