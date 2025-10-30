@@ -7,7 +7,7 @@ import auth from "../middleware/auth.js";
 import generateAuthToken from "../utils/authGenerate.js";
 const route = express.Router();
 
-route.post("/", auth, validate(userSchema), async (req, res) => {
+route.post("/", validate(userSchema), async (req, res) => {
   const { full_name, email, password } = req.body;
   try {
     let user = await prisma.users.findUnique({
@@ -26,7 +26,7 @@ route.post("/", auth, validate(userSchema), async (req, res) => {
     res.status(400).json({ error: "Error creating user" });
   }
 });
-route.put("/:id", validate(userSchema), async (req, res) => {
+route.put("/:id", [auth, validate(userSchema)], async (req, res) => {
   const { id } = req.params;
   const { full_name, email, password } = req.body;
   try {
@@ -40,7 +40,7 @@ route.put("/:id", validate(userSchema), async (req, res) => {
     res.status(400).json({ error: "Error to update user" });
   }
 });
-route.delete("/:id", async (req, res) => {
+route.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
   try {
     const user = await prisma.users.delete({
@@ -52,7 +52,7 @@ route.delete("/:id", async (req, res) => {
     res.status(400).json({ error: "Error to delete user" });
   }
 });
-route.get("/", async (req, res) => {
+route.get("/", auth, async (req, res) => {
   try {
     const Users = await prisma.users.findMany();
     res.status(200).json(Users);
@@ -61,7 +61,7 @@ route.get("/", async (req, res) => {
     res.status(400).json({ error: "Error to find users" });
   }
 });
-route.get("/:id", async (req, res) => {
+route.get("/:id", auth, async (req, res) => {
   const { id } = req.params;
   try {
     const user = await prisma.users.findUnique({
