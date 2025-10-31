@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 export default function (user) {
   try {
-    const { full_name, email } = user;
-    const token = jwt.sign({ full_name, email }, process.env.JWT_SECRET_KEY);
+    const { id, email, role } = user;
+    const token = jwt.sign({ id, email, role }, process.env.JWT_SECRET_KEY);
     return token;
   } catch (err) {
     console.log(err);
