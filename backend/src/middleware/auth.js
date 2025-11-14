@@ -6,7 +6,6 @@ export function authUser(req, res, next) {
   if (!token) return res.status(401).json("No token is provided");
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log(decoded);
     if (decoded.id === parseInt(req.params.id) || decoded.role === "admin") {
       next();
     } else {
@@ -34,7 +33,6 @@ export function authAdmin(req, res, next) {
 export function authSuperAdmin(req, res, next) {
   const { username, password } = req.body;
   const superAdmin = JSON.parse(process.env.SUPER_ADMIN);
-  console.log(username, password, superAdmin);
   if (username === superAdmin.username && password === superAdmin.password) {
     next();
   } else {

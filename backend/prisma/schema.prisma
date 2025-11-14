@@ -65,6 +65,7 @@ model products {
   created_by      Int?
   related_product Int?
   comments        comments[]
+  carts           carts[]
   order_items     order_items[]
   users           users?        @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
   products        products?     @relation("productsToproducts", fields: [related_product], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -82,4 +83,15 @@ model users {
   comments  comments[]
   orders    orders[]
   products  products[]
+  carts     carts[]
+}
+
+model carts {
+id          Int        @id @default(autoincrement())
+user_id     Int
+product_id  Int       
+quantity    Int
+users       users     @relation(fields:[user_id],references:[id])
+products    products   @relation(fields:[product_id],references:[id])
+@@unique([user_id,product_id])
 }

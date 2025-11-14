@@ -1,9 +1,10 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
 import validate from "../middleware/validate.js";
+import { authUser, authAdmin } from "../middleware/auth.js";
 import { commentSchema } from "../validations/commentValidator.js";
 const route = express.Router();
-route.get("/:id", async (req, res) => {
+route.get("/:id", authUser, async (req, res) => {
   const { id } = req.params;
   try {
     const comment = await prisma.comments.findUnique({
@@ -15,7 +16,7 @@ route.get("/:id", async (req, res) => {
     res.status(404).json({ error: "Error to find comment." });
   }
 });
-route.post("/", validate(commentSchema), async (req, res) => {
+route.post("/", authUser, validate(commentSchema), async (req, res) => {
   const { message, rating, userId, productId } = req.body;
   try {
     const comment = await prisma.comments.create({
@@ -32,7 +33,7 @@ route.post("/", validate(commentSchema), async (req, res) => {
     res.status(404).json({ error: "Error to send comment ,please try again." });
   }
 });
-route.put("/:id", validate(commentSchema), async (req, res) => {
+route.put("/:id", authUser, validate(commentSchema), async (req, res) => {
   const { id } = req.params;
   const { message, rating } = req.body;
   try {

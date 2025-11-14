@@ -1,7 +1,8 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
+import { authUser, authAdmin } from "../middleware/auth.js";
 const route = express.Router();
-route.get("/", async (req, res) => {
+route.get("/", authAdmin, async (req, res) => {
   try {
     const address = await prisma.address.findMany();
     res.json(address);
@@ -10,7 +11,7 @@ route.get("/", async (req, res) => {
     res.status(404).json({ error: "Error to find address" });
   }
 });
-route.get("/:id", async (req, res) => {
+route.get("/:id", authAdmin, async (req, res) => {
   const { id } = req.params;
   try {
     const address = await prisma.address.findUnique({
@@ -34,7 +35,7 @@ route.post("/", async (req, res) => {
     res.status(404).json({ error: "Error to create address" });
   }
 });
-route.put("/:id", async (req, res) => {
+route.put("/:id", authUser, async (req, res) => {
   const { id } = req.params;
   const { user_id, country, city, postal_code } = req.body;
   try {
@@ -48,7 +49,7 @@ route.put("/:id", async (req, res) => {
     res.status(404).json({ error: "Error to update address" });
   }
 });
-route.delete("/:id", async (req, res) => {
+route.delete("/:id", authUser, async (req, res) => {
   const { id } = req.params;
   try {
     const address = await prisma.address.delete({
