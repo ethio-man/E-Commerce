@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
+import { authUser, authAdmin } from "../middleware/auth.js";
 const route = express.Router();
 route.get("/", async (req, res) => {
   try {
@@ -44,16 +45,30 @@ route.post("/", async (req, res) => {
 });
 route.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { total_price, payment_method, paid_status, address_id } = req.body;
+  const { total_price, payment_method, address_id } = req.body;
   try {
     const order = await prisma.orders.update({
       where: { id: paresInt(id) },
-      data: { total_price, payment_method, paid_status, address_id },
+      data: { total_price, payment_method, address_id },
     });
     res.json(order);
   } catch (err) {
     console.log(err);
     res.status(404).json({ error: "Error to update order" });
+  }
+});
+route.post("/status/:id", [authAdmin], async (req, res) => {
+  const { id } = req.params;
+  try {
+    const order = await prisma.orders.update({
+      where: { id: parseInt(id) },
+      data: { paid_status: true },
+    });
+    if (!order) return res.status(404).json("Error to find order.");
+    res.json(order);
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error to confirm paid status" });
   }
 });
 route.delete("/:id", async (req, res) => {

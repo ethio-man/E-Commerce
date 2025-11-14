@@ -1,11 +1,18 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import prisma from "../startup/db.js";
 dotenv.config();
-export function authUser(req, res, next) {
+export const authUser = async function (req, res, next) {
   const token = req.header("auth-token");
   if (!token) return res.status(401).json("No token is provided");
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const { userId } = req.body;
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+    });
+    if (!user) return res.status(404).json("User not found.");
+    // so what shall i do ? create separate auth function for each action on separate table ,or one for all, how?
     if (decoded.id === parseInt(req.params.id) || decoded.role === "admin") {
       next();
     } else {
@@ -14,7 +21,7 @@ export function authUser(req, res, next) {
   } catch (err) {
     res.status(400).json("Invalid token.", err);
   }
-}
+};
 
 export function authAdmin(req, res, next) {
   const token = req.header("auth-token");

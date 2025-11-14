@@ -1,0 +1,73 @@
+import express from "express";
+import prisma from "../startup/db.js";
+import validate from "../middleware/validate.js";
+import { cartSchema } from "../validations/cartValidation.js";
+const router = express.Router();
+router.get("/", async (req, res) => {
+  try {
+    const carts = await prisma.carts.findMany();
+    if (!carts) return res.status(404).json("product is not found");
+    res.json(carts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "ERROR TO FIND CART" });
+  }
+});
+router.get("/id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const cart = await prisma.carts.findUnique({
+      where: { id: parseInt(id) },
+    });
+    if (!cart) return res.status(404).json("The cart is not found.");
+    res.json(cart);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "ERROR TO FIND CARTS" });
+  }
+});
+router.post("/", validate(cartSchema), async (req, res) => {
+  const { userId, productId, quantity } = req.params;
+  try {
+    const cart = await prisma.carts.create({
+      data: {
+        users: { connect: { id: userId } },
+        products: { connect: { id: productId } },
+        quantity,
+      },
+    });
+    if (!cart) return res.status(404).json("Error to create cart");
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error to make a cart" });
+  }
+});
+router.put("/id", validate(cartSchema), async (req, res) => {
+  const { id, productId, quantity } = req.params;
+  try {
+    const cart = await prisma.carts.update({
+      where: { id: parseInt(id) },
+      data: { products: { connect: { id: productId } }, quantity },
+    });
+    if (!cart) return res.status(404).json("Cart not found.");
+    res.json(cart);
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error to make change on cart" });
+  }
+});
+router.delete("/id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const cart = await prisma.carts.delete({
+      where: { id: parseInt(id) },
+    });
+    if (!cart) return res.status(404).json("Error to find cart.");
+    res.json(cart);
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error to remove the cart." });
+  }
+});
+
+export default router;
