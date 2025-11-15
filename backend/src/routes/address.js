@@ -1,8 +1,10 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
-import { authUser, authAdmin } from "../middleware/auth.js";
+import { auth, verifyOwnership } from "../middleware/auth.js";
 const route = express.Router();
-route.get("/", authAdmin, async (req, res) => {
+route.get("/", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   try {
     const address = await prisma.address.findMany();
     res.json(address);
@@ -11,7 +13,7 @@ route.get("/", authAdmin, async (req, res) => {
     res.status(404).json({ error: "Error to find address" });
   }
 });
-route.get("/:id", authAdmin, async (req, res) => {
+route.get("/:id", [auth, verifyOwnership("address")], async (req, res) => {
   const { id } = req.params;
   try {
     const address = await prisma.address.findUnique({
@@ -23,7 +25,7 @@ route.get("/:id", authAdmin, async (req, res) => {
     res.status(404).json({ error: "Error to find address" });
   }
 });
-route.post("/", async (req, res) => {
+route.post("/", auth, async (req, res) => {
   const { user_id, country, city, postal_code } = req.body;
   try {
     const address = await prisma.address.create({
@@ -35,7 +37,7 @@ route.post("/", async (req, res) => {
     res.status(404).json({ error: "Error to create address" });
   }
 });
-route.put("/:id", authUser, async (req, res) => {
+route.put("/:id", [auth, verifyOwnership("address")], async (req, res) => {
   const { id } = req.params;
   const { user_id, country, city, postal_code } = req.body;
   try {
@@ -49,7 +51,7 @@ route.put("/:id", authUser, async (req, res) => {
     res.status(404).json({ error: "Error to update address" });
   }
 });
-route.delete("/:id", authUser, async (req, res) => {
+route.delete("/:id", [auth, verifyOwnership("address")], async (req, res) => {
   const { id } = req.params;
   try {
     const address = await prisma.address.delete({

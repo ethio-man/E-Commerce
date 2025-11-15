@@ -3,11 +3,11 @@ import { prisma } from "../startup/db.js";
 import bcrypt from "bcrypt";
 import { userSchema } from "../validations/userValidator.js";
 import validate from "../middleware/validate.js";
-import { authUser, authAdmin, authSuperAdmin } from "../middleware/auth.js";
+import { auth, verifyOwnership, authSuperAdmin } from "../middleware/auth.js";
 import generateAuthToken from "../utils/authGenerate.js";
 const route = express.Router();
 
-route.post("/", validate(userSchema), async (req, res) => {
+route.post("/", [auth, validate(userSchema)], async (req, res) => {
   const { full_name, email, password } = req.body;
   try {
     let user = await prisma.users.findUnique({
@@ -26,21 +26,27 @@ route.post("/", validate(userSchema), async (req, res) => {
     res.status(400).json({ error: "Error creating user" });
   }
 });
-route.put("/:id", [authUser, validate(userSchema)], async (req, res) => {
-  const { id } = req.params;
-  const { full_name, email, password } = req.body;
-  try {
-    const user = await prisma.users.update({
-      where: { id: parseInt(id) },
-      data: { full_name, email, password },
-    });
-    res.json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({ error: "Error to update user" });
+
+route.put(
+  "/:id",
+  [auth, verifyOwnership("users"), validate(userSchema)],
+  async (req, res) => {
+    const { id } = req.params;
+    const { full_name, email, password } = req.body;
+    try {
+      const user = await prisma.users.update({
+        where: { id: parseInt(id) },
+        data: { full_name, email, password },
+      });
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(400).json({ error: "Error to update user" });
+    }
   }
-});
-route.delete("/:id", authUser, async (req, res) => {
+);
+
+route.delete("/:id", [auth, verifyOwnership("users")], async (req, res) => {
   const { id } = req.params;
   try {
     const user = await prisma.users.delete({
@@ -52,7 +58,9 @@ route.delete("/:id", authUser, async (req, res) => {
     res.status(400).json({ error: "Error to delete user" });
   }
 });
-route.get("/", authAdmin, async (req, res) => {
+route.get("/", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   try {
     const Users = await prisma.users.findMany();
     res.status(200).json(Users);
@@ -61,7 +69,7 @@ route.get("/", authAdmin, async (req, res) => {
     res.status(400).json({ error: "Error to find users" });
   }
 });
-route.get("/:id", authUser, async (req, res) => {
+route.get("/:id", [auth, verifyOwnership("users")], async (req, res) => {
   const { id } = req.params;
   try {
     const user = await prisma.users.findUnique({
@@ -73,6 +81,7 @@ route.get("/:id", authUser, async (req, res) => {
     res.status(400).json({ error: "Error to find a user" });
   }
 });
+
 //create admin
 route.put("/", authSuperAdmin, async (req, res) => {
   const { id } = req.body;

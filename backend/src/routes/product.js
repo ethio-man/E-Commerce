@@ -2,8 +2,9 @@ import express from "express";
 import { prisma } from "../startup/db.js";
 import { productSchema } from "../validations/productValidator.js";
 import validate from "../middleware/validate.js";
+import { auth } from "../middleware/auth.js";
 const route = express.Router();
-route.get("/", async (req, res) => {
+route.get("/", auth, async (req, res) => {
   try {
     const product = await prisma.products.findMany();
     if (!product) return res.status(404).json({ error: "Products not found " });
@@ -13,7 +14,7 @@ route.get("/", async (req, res) => {
     res.status(404).json({ error: "Error to find products" });
   }
 });
-route.get("/:id", async (req, res) => {
+route.get("/:id", auth, async (req, res) => {
   const { id } = req.params;
   try {
     const product = await prisma.products.findUnique({
@@ -27,7 +28,9 @@ route.get("/:id", async (req, res) => {
   }
 });
 
-route.post("/", validate(productSchema), async (req, res) => {
+route.post("/", [auth, validate(productSchema)], async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access!");
   const {
     product_name,
     description,
@@ -59,7 +62,10 @@ route.post("/", validate(productSchema), async (req, res) => {
     res.status(500).json({ error: "Error to create product" });
   }
 });
-route.put("/:id", validate(productSchema), async (req, res) => {
+
+route.put("/:id", [auth, validate(productSchema)], async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   const {
     product_name,
@@ -93,7 +99,9 @@ route.put("/:id", validate(productSchema), async (req, res) => {
     res.status(500).json({ error: "Error to update an product" });
   }
 });
-route.delete("/:id", async (req, res) => {
+route.delete("/:id", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   try {
     const product = await prisma.products.delete({

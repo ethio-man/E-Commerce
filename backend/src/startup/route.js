@@ -6,6 +6,7 @@ import Orders from "../routes/order.js";
 import Address from "../routes/address.js";
 import Comments from "../routes/comment.js";
 import Items from "../routes/orderItems.js";
+import Carts from "../routes/carts.js";
 
 export default function (app) {
   app.use(express.json());
@@ -16,4 +17,5 @@ export default function (app) {
   app.use("/address", Address);
   app.use("/comments", Comments);
   app.use("/items", Items);
+  app.use("/carts", Carts);
 }

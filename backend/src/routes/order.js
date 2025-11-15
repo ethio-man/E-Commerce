@@ -1,8 +1,10 @@
 import express from "express";
 import { prisma } from "../startup/db.js";
-import { authUser, authAdmin } from "../middleware/auth.js";
+import { auth, verifyOwnership } from "../middleware/auth.js";
 const route = express.Router();
-route.get("/", async (req, res) => {
+route.get("/", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   try {
     const order = await prisma.orders.findMany();
     if (!order) return res.json("No order found");
@@ -12,7 +14,7 @@ route.get("/", async (req, res) => {
     res.status(404).json({ error: "Error to find orders" });
   }
 });
-route.get("/:id", async (req, res) => {
+route.get("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   const { id } = req.params;
   try {
     const order = await prisma.orders.findUnique({
@@ -24,7 +26,7 @@ route.get("/:id", async (req, res) => {
     res.status(404).json({ error: "Error to get order" });
   }
 });
-route.post("/", async (req, res) => {
+route.post("/", auth, async (req, res) => {
   const { delivery_date, total_price, payment_method, user_id, address_id } =
     req.body;
   try {
@@ -43,7 +45,7 @@ route.post("/", async (req, res) => {
     res.status(404).json({ error: "Error to make order" });
   }
 });
-route.put("/:id", async (req, res) => {
+route.put("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   const { id } = req.params;
   const { total_price, payment_method, address_id } = req.body;
   try {
@@ -57,7 +59,9 @@ route.put("/:id", async (req, res) => {
     res.status(404).json({ error: "Error to update order" });
   }
 });
-route.post("/status/:id", [authAdmin], async (req, res) => {
+route.post("/status/:id", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   try {
     const order = await prisma.orders.update({
@@ -71,7 +75,7 @@ route.post("/status/:id", [authAdmin], async (req, res) => {
     res.status(404).json({ message: "Error to confirm paid status" });
   }
 });
-route.delete("/:id", async (req, res) => {
+route.delete("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   const { id } = req.params;
   try {
     const order = await prisma.orders.delete({
