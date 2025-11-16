@@ -26,7 +26,7 @@ export const verifyOwnership =
         req.resource = resource;
         return next();
       }
-      if (resource[ownerId] != req.params.id)
+      if (resource[ownerId] != req.user.id)
         return res.status(403).json({ message: "Unauthorized access!" });
       req.resource = resource;
       next();
