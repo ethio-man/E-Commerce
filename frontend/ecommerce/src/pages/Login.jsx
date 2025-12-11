@@ -61,12 +61,13 @@ const SingUp = () => {
         <div className="text-xl font-bold text-gray-800">Warka</div>
         <div className="text-sm text-gray-600">
           Already have an account?{" "}
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={() => login()}
             className="text-blue-600 font-semibold hover:text-blue-700 transition duration-150"
           >
             Log In
-          </a>
+          </button>
         </div>
       </header>
       <main className="flex-grow flex items-center justify-center p-4">
