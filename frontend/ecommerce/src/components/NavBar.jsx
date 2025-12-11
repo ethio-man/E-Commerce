@@ -19,7 +19,7 @@ export default function NavBar() {
           <div className="flex items-center space-x-6">
             <div className="hidden md:flex space-x-8">
               <Link
-                to="/"
+                to="/cart"
                 className="text-gray-600 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md hover:bg-blue-400 hover:text-white "
               >
                 <ShoppingCart /> <span>Cart</span>
