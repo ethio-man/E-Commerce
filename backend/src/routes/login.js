@@ -1,12 +1,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import prisma from "../startup/db.js";
+import { prisma } from "../startup/db.js";
 import generateAuthToken from "../utils/authGenerate.js";
 import validate from "../middleware/validate.js";
-import userValidator from "../validations/userValidator.js";
+import { userSchema } from "../validations/userValidator.js";
 const route = express.Router();
 
-route.post("/", validate(userValidator), async (req, res) => {
+route.post("/", validate(userSchema), async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await prisma.users.findUnique({

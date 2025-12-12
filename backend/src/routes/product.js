@@ -4,7 +4,7 @@ import { productSchema } from "../validations/productValidator.js";
 import validate from "../middleware/validate.js";
 import { auth } from "../middleware/auth.js";
 const route = express.Router();
-route.get("/", auth, async (req, res) => {
+route.get("/", async (req, res) => {
   try {
     const product = await prisma.products.findMany();
     if (!product) return res.status(404).json({ error: "Products not found " });
@@ -14,7 +14,7 @@ route.get("/", auth, async (req, res) => {
     res.status(404).json({ error: "Error to find products" });
   }
 });
-route.get("/:id", auth, async (req, res) => {
+route.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const product = await prisma.products.findUnique({

@@ -1,4 +1,6 @@
 import express from "express";
+import { prisma } from "../startup/db.js";
+import { auth } from "../middleware/auth.js";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
@@ -27,7 +29,10 @@ route.get("/:id", async (req, res) => {
   }
 });
 
-route.put("/:id", async (req, res) => {
+route.put("/:id", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access!");
+
   const { id } = req.params;
   const { name } = req.body;
   try {
@@ -42,7 +47,10 @@ route.put("/:id", async (req, res) => {
     res.status(500).json({ message: "Error to update a collection." });
   }
 });
-route.post("/", async (req, res) => {
+route.post("/", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access!");
+
   const { name } = req.body;
   try {
     const collection = await prisma.Collection.create({
@@ -55,7 +63,10 @@ route.post("/", async (req, res) => {
     res.status(500).json({ message: "Error to create a collection" });
   }
 });
-route.delete("/:id", async (req, res) => {
+route.delete("/:id", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access!");
+
   const { id } = req.params;
   try {
     const collection = await prisma.Collection.delete({

@@ -1,9 +1,9 @@
 import express from "express";
-import prisma from "../startup/db.js";
+import { prisma } from "../startup/db.js";
 import validate from "../middleware/validate.js";
 import { cartSchema } from "../validations/cartValidation.js";
 import { auth, verifyOwnership } from "../middleware/auth.js";
-const route = express.Route();
+const route = express.Router();
 route.get("/", auth, async (req, res) => {
   if (req.user.role != "admin")
     return res.status(403).json("Unauthorized access");
