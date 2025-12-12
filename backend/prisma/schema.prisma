@@ -106,7 +106,6 @@ model Category {
   id           Int     @id @default(autoincrement())
   name         String
   url          String
-  label        String
   price        Float
   path         String
   collectionId Int

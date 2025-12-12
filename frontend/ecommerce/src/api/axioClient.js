@@ -4,7 +4,7 @@ const axioClient = axios.create({ baseURL: "http://localhost:4000/" });
 
 axioClient.interceptors.request.use(
   (config) => {
-    const token = localstorage.findItem("token");
+    const token = localStorage.getItem("token");
     if (token) config.headers["x-auth-token"] = token;
     return config;
   },
