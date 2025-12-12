@@ -95,3 +95,20 @@ users       users     @relation(fields:[user_id],references:[id])
 products    products   @relation(fields:[product_id],references:[id])
 @@unique([user_id,product_id])
 }
+
+model Collection {
+  id        Int     @id @default(autoincrement())
+  name      String
+  categories Category[]
+}
+
+model Category {
+  id           Int     @id @default(autoincrement())
+  name         String
+  url          String
+  label        String
+  price        Float
+  path         String
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+}
