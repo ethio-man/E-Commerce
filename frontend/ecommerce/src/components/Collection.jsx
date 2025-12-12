@@ -7,7 +7,7 @@ export default function ({ collection }) {
         {collection.item}
       </h1>
       <div className="flex">
-        {collection.list.map((p, k) => (
+        {collection.categorys.map((p, k) => (
           <FrontProduct key={k} product={p} />
         ))}
       </div>

@@ -1,9 +1,23 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar.jsx";
 import SideBar from "../components/SideBar.jsx";
 import Collection from "../components/Collection.jsx";
 import Footer from "../components/Footer.jsx";
+import Request from "../api/Request.js";
 export default function Landing() {
+  const [collections, setCollections] = useState([]);
+  useEffect(() => {
+    async function getCollections() {
+      try {
+        const res = await Request.getAll("collections");
+        if (res) setCollections(res.data);
+      } catch (err) {
+        console.log("Error:", err);
+      }
+    }
+    getCollections();
+  }, []);
+  /*
   const phones = [
     {
       url: "https://tse4.mm.bing.net/th/id/OIP.f2GaTDW-Uaj41-jlPsUr6wHaJG?rs=1&pid=ImgDetMain&o=7&rm=3",
@@ -136,7 +150,8 @@ export default function Landing() {
       path: "/productList/totes",
     },
   ];
-  const collections = [
+  */
+  /* const collections = [
     {
       item: "Smart Phones",
       list: phones,
@@ -149,7 +164,7 @@ export default function Landing() {
       item: "Accessories",
       list: Accessories,
     },
-  ];
+  ]; */
   return (
     <div>
       <NavBar />
