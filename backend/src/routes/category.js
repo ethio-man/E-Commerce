@@ -26,7 +26,9 @@ route.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Error to find categories" });
   }
 });
-route.post("/", async (req, res) => {
+route.post("/", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access!");
   const { name, url, price, path, collectionId } = req.body;
   try {
     const category = await prisma.category.create({

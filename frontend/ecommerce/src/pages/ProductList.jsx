@@ -1,4 +1,7 @@
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+/*
 const products = [
   // ================= PHONES =================
 
@@ -11,6 +14,7 @@ const products = [
     price: "1200",
     category: "iphone",
   },
+  
   {
     name: "iPhone 14",
     src: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-blue-select-202209",
@@ -500,8 +504,10 @@ const products = [
     category: "luggages",
   },
 ];
+*/
 
 export default function ProductList() {
+  const navigate = useNavigate();
   const { category } = useParams();
   const filterdProduct = products.filter((p) => p.category === category);
   return (
@@ -509,7 +515,13 @@ export default function ProductList() {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {filterdProduct.map((product, k) => (
-            <div key={k} className="group relative">
+            <div
+              key={k}
+              className="group relative"
+              onClick={() =>
+                navigate("/productOverview", { state: { product } })
+              }
+            >
               <img
                 src={product.src}
                 className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
@@ -517,10 +529,8 @@ export default function ProductList() {
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <a href={product.href}>
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
-                    </a>
+                    <span aria-hidden="true" className="absolute inset-0" />
+                    {product.name}
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                 </div>

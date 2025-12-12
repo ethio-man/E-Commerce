@@ -53,15 +53,19 @@ model orders {
 
 model products {
   id              Int           @id @default(autoincrement())
-  product_name    String?       @db.VarChar(100)
+  name            String?       @db.VarChar(100)
+  src             String?       @db.VarChar(250)
   description     String?
   brand           String?       @db.VarChar(53)
   category        String?       @db.VarChar(53)
   number_in_stock Int?
+  colors          String[]
+  sizes           String[]
   price           Decimal?      @db.Decimal(10, 2)
   shipping        Decimal?      @db.Decimal(10, 2)
   tax             Decimal?      @db.Decimal(10, 2)
-  rating          Int?
+  reviewCount     Int?
+  reviewSum       Int?
   created_by      Int?
   related_product Int?
   comments        comments[]
