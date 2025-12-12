@@ -32,28 +32,37 @@ route.post("/", [auth, validate(productSchema)], async (req, res) => {
   if (req.user.role != "admin")
     return res.status(403).json("Unauthorized access!");
   const {
-    product_name,
+    name,
+    src,
     description,
     brand,
     category,
     number_in_stock,
+    colors,
+    sizes,
     price,
     shipping,
     tax,
-    rating,
+    reviewCount,
+    reviewSum,
   } = req.body;
+
   try {
     const product = await prisma.products.create({
       data: {
-        product_name,
+        name,
+        src,
         description,
         brand,
         category,
         number_in_stock,
+        colors,
+        sizes,
         price,
         shipping,
         tax,
-        rating,
+        reviewCount,
+        reviewSum,
       },
     });
     res.status(200).json(product);
@@ -68,29 +77,37 @@ route.put("/:id", [auth, validate(productSchema)], async (req, res) => {
     return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   const {
-    product_name,
+    name,
+    src,
     description,
     brand,
     category,
     number_in_stock,
+    colors,
+    sizes,
     price,
     shipping,
     tax,
-    rating,
+    reviewCount,
+    reviewSum,
   } = req.body;
   try {
     const product = await prisma.products.update({
       where: { id: parseInt(id) },
       data: {
-        product_name,
+        name,
+        src,
         description,
         brand,
         category,
         number_in_stock,
+        colors,
+        sizes,
         price,
         shipping,
         tax,
-        rating,
+        reviewCount,
+        reviewSum,
       },
     });
     res.status(200).json(product);
