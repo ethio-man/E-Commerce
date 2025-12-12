@@ -9,7 +9,7 @@ route.get("/", auth, async (req, res) => {
     return res.status(403).json("Unauthorized access");
   try {
     const carts = await prisma.carts.findMany();
-    if (!carts) return res.status(404).json("product is not found");
+    if (!carts) return res.status(404).json("cart is not found");
     res.json(carts);
   } catch (err) {
     console.log(err);
@@ -50,7 +50,8 @@ route.put(
   [auth, verifyOwnership("carts")],
   validate(cartSchema),
   async (req, res) => {
-    const { id, productId, quantity } = req.params;
+    const { id } = req.params;
+    const { productId, quantity } = req.body;
     try {
       const cart = await prisma.carts.update({
         where: { id: parseInt(id) },

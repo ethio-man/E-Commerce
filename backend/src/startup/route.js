@@ -8,7 +8,7 @@ import Comments from "../routes/comment.js";
 import Items from "../routes/orderItems.js";
 import Carts from "../routes/carts.js";
 import Login from "../routes/login.js";
-
+import Collections from "../routes/collections.js";
 export default function (app) {
   app.use(express.json());
   app.use(cors());
@@ -20,4 +20,5 @@ export default function (app) {
   app.use("/items", Items);
   app.use("/carts", Carts);
   app.use("/login", Login);
+  app.use("/collections", Collections);
 }
