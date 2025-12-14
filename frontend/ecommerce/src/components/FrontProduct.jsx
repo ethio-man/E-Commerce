@@ -7,7 +7,7 @@ export default function ({ product }) {
     >
       <img src={product.url} className="w-full h-full" />
 
-      <p className="text-gray-600 ">{product.label}</p>
+      <p className="text-gray-600 ">{product.name}</p>
       <h2>${product.price}</h2>
     </Link>
   );

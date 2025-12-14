@@ -10,6 +10,7 @@ import Carts from "../routes/carts.js";
 import Login from "../routes/login.js";
 import Collections from "../routes/collections.js";
 import Category from "../routes/category.js";
+import GeminiService from "../routes/geminiService.js";
 export default function (app) {
   app.use(express.json());
   app.use(cors());
@@ -23,4 +24,5 @@ export default function (app) {
   app.use("/login", Login);
   app.use("/collections", Collections);
   app.use("/categories", Category);
+  app.use("/gemini", GeminiService);
 }

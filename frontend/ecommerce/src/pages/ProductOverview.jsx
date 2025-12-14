@@ -2,6 +2,17 @@ import { Star } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
 export default function Example() {
+  const colorClassMap = {
+    Red: "bg-red-400 checked:outline-red-400",
+    Blue: "bg-blue-400 checked:outline-blue-400",
+    Green: "bg-green-400 checked:outline-green-400",
+    Black: "bg-black checked:outline-black",
+    white: "bg-white checked:outline-gray-400",
+    Yellow: "bg-yellow-400 checked:outline-yellow-400",
+    Gray: "bg-gray-400 checked:outline-gray-400",
+    Silver: "bg-zinc-300 checked:outline-zinc-300",
+  };
+
   const { state } = useLocation();
   const product = state?.product;
   return (
@@ -31,8 +42,8 @@ export default function Example() {
                     aria-hidden="true"
                     className={`h-5 w-5
                      ${
-                       product?.reviewSum / product?.reviewTotalCount > rating
-                         ? "text-gray-900"
+                       product?.reviewSum / product?.reviewCount > rating
+                         ? "text-amber-400"
                          : "text-gray-200"
                      }
                        `}
@@ -58,7 +69,12 @@ export default function Example() {
                       type="radio"
                       name="color"
                       defaultChecked={color === product.colors[0]}
-                      className={`bg-${color}-400 checked:outline-${color}-400`}
+                      className={`
+        h-6 w-6 cursor-pointer appearance-none rounded-full
+        outline outline-2 outline-transparent
+        checked:outline-2
+        ${colorClassMap[color] || ""}
+      `}
                     />
                   ))}
                 </div>
@@ -70,7 +86,7 @@ export default function Example() {
                   {product.sizes.map((size, index) => (
                     <label
                       key={index}
-                      className="flex items-center justify-center rounded-md border border-gray-300 p-2 text-sm font-medium text-gray-900"
+                      className="flex items-center justify-center rounded-md border border-gray-300 p-2 text-sm font-medium text-gray-900 cursor-pointer hover:text-blue-400 "
                     >
                       <input type="radio" name="size" className="sr-only" />
                       {size}

@@ -64,8 +64,8 @@ model products {
   price           Decimal?      @db.Decimal(10, 2)
   shipping        Decimal?      @db.Decimal(10, 2)
   tax             Decimal?      @db.Decimal(10, 2)
-  reviewCount     Int?
-  reviewSum       Int?
+  reviewCount     Int           @default(0)
+  reviewSum       Int           @default(0)
   created_by      Int?
   related_product Int?
   comments        comments[]

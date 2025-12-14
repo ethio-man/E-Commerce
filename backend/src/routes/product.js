@@ -27,10 +27,10 @@ route.get("/:id", async (req, res) => {
     res.status(404).json({ error: "Error to find product" });
   }
 });
-
-route.post("/", [auth, validate(productSchema)], async (req, res) => {
-  if (req.user.role != "admin")
-    return res.status(403).json("Unauthorized access!");
+//auth
+route.post("/", [validate(productSchema)], async (req, res) => {
+  //if (req.user.role != "admin")
+  // return res.status(403).json("Unauthorized access!");
   const {
     name,
     src,
@@ -71,10 +71,10 @@ route.post("/", [auth, validate(productSchema)], async (req, res) => {
     res.status(500).json({ error: "Error to create product" });
   }
 });
-
-route.put("/:id", [auth, validate(productSchema)], async (req, res) => {
-  if (req.user.role != "admin")
-    return res.status(403).json("Unauthorized access");
+//auth
+route.put("/:id", [validate(productSchema)], async (req, res) => {
+  //if (req.user.role != "admin")
+  // return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   const {
     name,

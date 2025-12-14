@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Request from "../api/Request.js";
+import { useEffect, useState } from "react";
 
 /*
 const products = [
@@ -509,6 +511,20 @@ const products = [
 export default function ProductList() {
   const navigate = useNavigate();
   const { category } = useParams();
+
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const res = await Request("products").getAll();
+        if (res) setProducts(res.data);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchProduct();
+  }, []);
   const filterdProduct = products.filter((p) => p.category === category);
   return (
     <div className="bg-white">
