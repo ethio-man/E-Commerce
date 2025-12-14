@@ -4,7 +4,6 @@ const route = express.Router();
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 
 route.post("/", async (req, res) => {
-  console.log("apiKey:", process.env.GOOGLE_API_KEY);
   const { name, brand, category } = req.body;
   try {
     const prompt = `Write a compelling, professional, and short e-commerce product description (max 2 sentences) for a product named "${name}" by the brand "${brand}" in the "${category}" category. Focus on benefits and appeal.`;

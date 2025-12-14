@@ -7,8 +7,8 @@ export const ProductPreview = ({ data }) => {
     Number(data.price) * (Number(data.tax) / 100)
   ).toFixed(2);
 
-  // Star rating visualization
-  const renderStars = (rating) => {
+  const renderStars = (reviewSum, reviewCount) => {
+    const rating = reviewSum / reviewCount;
     return Array.from({ length: 5 }).map((_, i) => (
       <svg
         key={i}
@@ -30,8 +30,8 @@ export const ProductPreview = ({ data }) => {
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 transition-all duration-300 hover:shadow-2xl group">
         <div className="relative aspect-square overflow-hidden bg-slate-100">
           <img
-            src={data.image_url || "https://picsum.photos/400/400"}
-            alt={data.product_name}
+            src={data.src || "https://picsum.photos/400/400"}
+            alt={data.name}
             className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
               e.target.src = "https://picsum.photos/400/400";
@@ -61,15 +61,15 @@ export const ProductPreview = ({ data }) => {
                 {data.brand || "Brand Name"}
               </p>
               <h3 className="text-xl font-bold text-slate-900 leading-tight line-clamp-2">
-                {data.product_name || "Product Name"}
+                {data.name || "Product Name"}
               </h3>
             </div>
           </div>
 
           <div className="flex items-center mb-4 space-x-1">
-            {renderStars(data.rating)}
+            {renderStars(data.reviewSum, data.reviewCount)}
             <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded ml-2">
-              {data.rating}
+              {data.reviewSum / data.reviewCount}
             </span>
           </div>
 

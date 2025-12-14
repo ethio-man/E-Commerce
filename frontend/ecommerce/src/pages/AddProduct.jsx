@@ -1,33 +1,74 @@
 import React, { useState } from "react";
-
+import Request from "../api/Request.js";
 import { InputGroup } from "../components/InputGroup.jsx";
 import { ProductPreview } from "../components/ProductPreview.jsx";
-// import { generateProductDescription } from "../Services/geminiService.js";    to be fixed on the backend
-function generateProductDescription() {
-  console.log("fix this on the backend to use gemini");
-}
 export default function App() {
   const Category = {
-    ELECTRONICS: "Electronics",
-    FASHION: "Fashion",
-    HOME_GARDEN: "Home & Garden",
-    BEAUTY: "Beauty & Health",
-    SPORTS: "Sports & Outdoors",
-    TOYS: "Toys & Games",
-    OTHER: "Other",
+    ELECTRONICS: {
+      IPHONE: "iPhone",
+      GALAXY: "Galaxy",
+      REALME: "Realme",
+      TECNO: "Tecno",
+      VIVO: "Vivo",
+    },
+    ACCESSORIES: {
+      LUGGAGE: "Luggage",
+      TOTES: "Totes",
+      SUNGLASSES: "Sunglasses",
+      BELTS: "Belts",
+      WATCHES: "Watches",
+      WALLETS: "Wallets",
+      BACKPACKS: "Backpacks",
+    },
+    FASHION: {
+      CARGOS: "Cargos",
+      DRESSES: "Dresses",
+      SKIRTS: "Skirts",
+      JACKETS: "Jackets",
+      SWEATERS: "Sweaters",
+      JEANS: "Jeans",
+      SHIRTS: "Shirts",
+    },
+    HOME_GARDEN: {
+      FURNITURE: "Furniture",
+      KITCHEN: "Kitchen",
+      DECOR: "Decor",
+    },
+    BEAUTY: {
+      SKINCARE: "Skincare",
+      MAKEUP: "Makeup",
+      HAIRCARE: "Haircare",
+    },
+    SPORTS: {
+      OUTDOOR: "Outdoor",
+      FITNESS: "Fitness",
+      TEAM_SPORTS: "Team Sports",
+    },
+    TOYS: {
+      PUZZLES: "Puzzles",
+      BOARD_GAMES: "Board Games",
+      DOLLS: "Dolls",
+    },
+    OTHER: {
+      MISC: "Miscellaneous",
+    },
   };
   const INITIAL_PRODUCT_STATE = {
-    product_name: "",
+    name: "",
     description: "",
     brand: "",
-    category: Category.ELECTRONICS,
+    category: "",
     number_in_stock: 1,
+    colors: ["Black", "white", "Blue", "Green"],
+    sizes: [],
     price: 0.0,
     shipping: 0.0,
     tax: 0.0,
-    rating: 0,
-    image_url: "https://picsum.photos/400/400",
+    src: "https://picsum.photos/400/400",
+    reviewCount: 1,
+    reviewSum: 0,
   };
+
   const [formData, setFormData] = useState(INITIAL_PRODUCT_STATE);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,25 +76,33 @@ export default function App() {
   const handleChange = (e) => {
     const { name, value, type } = e.target;
 
+    let parsedValue = value;
+
+    if (type === "number" || type === "range") {
+      parsedValue = parseFloat(value) || 0;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "number" ? parseFloat(value) || 0 : value,
+      [name]: parsedValue,
     }));
   };
 
   const handleGenerateAI = async () => {
-    if (!formData.product_name || !formData.brand) {
+    if (!formData.name || !formData.brand) {
       alert("Please enter a Product Name and Brand first.");
       return;
     }
 
     setIsGenerating(true);
+    const { name, brand, category } = formData;
     try {
-      const description = await generateProductDescription(
-        formData.product_name,
-        formData.brand,
-        formData.category
-      );
+      const res = await Request("gemini").create({
+        name,
+        brand,
+        category,
+      });
+      const description = res.data;
       setFormData((prev) => ({ ...prev, description }));
     } catch (error) {
       alert("Failed to generate description. Please try again.");
@@ -62,15 +111,12 @@ export default function App() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      alert("Product successfully added!");
-      setIsSubmitting(false);
-      setFormData(INITIAL_PRODUCT_STATE);
-    }, 1500);
+    const res = await Request("products").create(formData);
+    if (!res) return console.log("Product not created please try again.");
+    setIsSubmitting(false);
   };
 
   return (
@@ -88,14 +134,12 @@ export default function App() {
         </div>
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-start">
-          {/* Left Column: Form */}
           <div className="lg:col-span-7 xl:col-span-8">
             <form
               onSubmit={handleSubmit}
               className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
             >
               <div className="p-8 space-y-8">
-                {/* Basic Info Section */}
                 <section>
                   <h2 className="text-xl font-bold text-slate-900 mb-5 flex items-center border-b border-slate-100 pb-3">
                     <svg
@@ -117,9 +161,9 @@ export default function App() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputGroup
                       label="Product Name"
-                      name="product_name"
+                      name="name"
                       placeholder="e.g. Wireless Noise-Canceling Headphones"
-                      value={formData.product_name}
+                      value={formData.name}
                       onChange={handleChange}
                       required
                     />
@@ -138,24 +182,37 @@ export default function App() {
                       value={formData.category}
                       onChange={handleChange}
                     >
-                      {Object.values(Category).map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
+                      <option value="">Select a category</option>
+
+                      {Object.entries(Category).map(
+                        ([mainKey, subCategories]) => (
+                          <optgroup
+                            key={mainKey}
+                            label={mainKey.replace("_", " ")}
+                          >
+                            {Object.entries(subCategories).map(
+                              ([subKey, subValue]) => (
+                                <option key={subKey} value={subKey}>
+                                  {subValue}
+                                </option>
+                              )
+                            )}
+                          </optgroup>
+                        )
+                      )}
                     </InputGroup>
+
                     <InputGroup
                       label="Image URL"
-                      name="image_url"
+                      name="src"
                       placeholder="https://..."
-                      value={formData.image_url}
+                      value={formData.src}
                       onChange={handleChange}
                       type="url"
                     />
                   </div>
                 </section>
 
-                {/* Description Section with AI */}
                 <section>
                   <div className="flex justify-between items-end mb-2">
                     <label className="block text-sm font-semibold leading-6 text-slate-900">
@@ -228,7 +285,6 @@ export default function App() {
                   />
                 </section>
 
-                {/* Inventory & Pricing */}
                 <section>
                   <h2 className="text-xl font-bold text-slate-900 mb-5 flex items-center border-b border-slate-100 pb-3">
                     <svg
@@ -280,7 +336,6 @@ export default function App() {
                   </div>
                 </section>
 
-                {/* Shipping & Rating */}
                 <section>
                   <h2 className="text-xl font-bold text-slate-900 mb-5 flex items-center border-b border-slate-100 pb-3">
                     <svg
@@ -316,16 +371,16 @@ export default function App() {
                       <div className="flex items-center gap-4">
                         <input
                           type="range"
-                          name="rating"
+                          name="reviewSum"
                           min="0"
                           max="5"
                           step="0.5"
-                          value={formData.rating}
+                          value={formData.reviewSum}
                           onChange={handleChange}
                           className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                         />
                         <span className="text-sm font-bold text-slate-700 w-8">
-                          {formData.rating}
+                          {formData.reviewSum}
                         </span>
                       </div>
                     </div>
@@ -353,7 +408,6 @@ export default function App() {
             </form>
           </div>
 
-          {/* Right Column: Live Preview */}
           <div className="hidden lg:block lg:col-span-5 xl:col-span-4 mt-8 lg:mt-0">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-lg font-semibold text-slate-500">
@@ -366,7 +420,6 @@ export default function App() {
             <ProductPreview data={formData} />
           </div>
 
-          {/* Mobile Preview (Visible only on small screens below form) */}
           <div className="lg:hidden mt-12">
             <h3 className="text-lg font-semibold text-slate-500 mb-4">
               Preview
