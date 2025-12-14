@@ -5,54 +5,62 @@ import { ProductPreview } from "../components/ProductPreview.jsx";
 export default function App() {
   const Category = {
     ELECTRONICS: {
-      IPHONE: "iPhone",
-      GALAXY: "Galaxy",
-      REALME: "Realme",
-      TECNO: "Tecno",
-      VIVO: "Vivo",
+      iphone: "iphone",
+      galaxy: "galaxy",
+      realme: "realme",
+      tecno: "tecno",
+      vivo: "vivo",
     },
+
     ACCESSORIES: {
-      LUGGAGE: "Luggage",
-      TOTES: "Totes",
-      SUNGLASSES: "Sunglasses",
-      BELTS: "Belts",
-      WATCHES: "Watches",
-      WALLETS: "Wallets",
-      BACKPACKS: "Backpacks",
+      luggage: "luggage",
+      totes: "totes",
+      sunglasses: "sunglasses",
+      belts: "belts",
+      watches: "watches",
+      wallets: "wallets",
+      backpacks: "backpacks",
     },
+
     FASHION: {
-      CARGOS: "Cargos",
-      DRESSES: "Dresses",
-      SKIRTS: "Skirts",
-      JACKETS: "Jackets",
-      SWEATERS: "Sweaters",
-      JEANS: "Jeans",
-      SHIRTS: "Shirts",
+      cargos: "cargos",
+      dresses: "dresses",
+      skirts: "skirts",
+      jackets: "jackets",
+      sweaters: "sweaters",
+      jeans: "jeans",
+      shirts: "shirt",
     },
+
     HOME_GARDEN: {
-      FURNITURE: "Furniture",
-      KITCHEN: "Kitchen",
-      DECOR: "Decor",
+      furniture: "furniture",
+      kitchen: "kitchen",
+      decor: "decor",
     },
+
     BEAUTY: {
-      SKINCARE: "Skincare",
-      MAKEUP: "Makeup",
-      HAIRCARE: "Haircare",
+      skincare: "skincare",
+      makeup: "makeup",
+      haircare: "haircare",
     },
+
     SPORTS: {
-      OUTDOOR: "Outdoor",
-      FITNESS: "Fitness",
-      TEAM_SPORTS: "Team Sports",
+      outdoor: "outdoor",
+      fitness: "fitness",
+      team_sports: "team_sports",
     },
+
     TOYS: {
-      PUZZLES: "Puzzles",
-      BOARD_GAMES: "Board Games",
-      DOLLS: "Dolls",
+      puzzles: "puzzles",
+      board_games: "board_games",
+      dolls: "dolls",
     },
+
     OTHER: {
-      MISC: "Miscellaneous",
+      miscellaneous: "miscellaneous",
     },
   };
+
   const INITIAL_PRODUCT_STATE = {
     name: "",
     description: "",
