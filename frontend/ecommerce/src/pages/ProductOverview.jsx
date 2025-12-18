@@ -1,7 +1,8 @@
 import { Star } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
-export default function Example() {
+import Request from "../api/Request.js";
+export default function ProductOverview() {
   const colorClassMap = {
     Red: "bg-red-400 checked:outline-red-400",
     Blue: "bg-blue-400 checked:outline-blue-400",
@@ -15,6 +16,16 @@ export default function Example() {
 
   const { state } = useLocation();
   const product = state?.product;
+
+  async function AddToCart(product_id) {
+    try {
+      const quantity = 1;
+      const user_id = 2; //should be replaced by current user id
+      const res = await Request("carts").create(user_id, product_id, quantity);
+    } catch (err) {
+      console.log("Item not added to cart!please try again.");
+    }
+  }
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -97,6 +108,7 @@ export default function Example() {
               <button
                 type="submit"
                 className="mt-8 w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700"
+                onClick={() => AddToCart(product._id)}
               >
                 Add to cart
               </button>
