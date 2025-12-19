@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
+import Request from "../api/Request.js";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const SingUp = () => {
+  const [full_name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
