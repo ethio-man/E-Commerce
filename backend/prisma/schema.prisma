@@ -78,16 +78,18 @@ model products {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model users {
-  id        Int        @id @default(autoincrement())
-  full_name String?    @db.VarChar(100)
-  email     String     @unique @db.VarChar(100)
-  password  String     @db.VarChar(255)
-  role      String?    @default("user") @db.VarChar(20)
-  address   address[]
-  comments  comments[]
-  orders    orders[]
-  products  products[]
-  carts     carts[]
+  id              Int        @id @default(autoincrement())
+  full_name       String?    @db.VarChar(100)
+  email           String     @unique @db.VarChar(100)
+  password        String?    @db.VarChar(255)
+  google_id       String?    @unique
+  authProvider    String     @default("local")
+  role            String?    @default("user") @db.VarChar(20)
+  address         address[]
+  comments        comments[]
+  orders          orders[]
+  products        products[]
+  carts           carts[]
 }
 
 model carts {
