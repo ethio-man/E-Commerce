@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext } from "react";
+import Request from "../api/Request.js";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -12,4 +13,13 @@ export const AuthProvider = ({ children }) => {
       setUser(Json.parse(storedUser));
     }
   }, []);
+  const login = async ({ email, password }) => {
+    const res = await Request("login").post({ email, password });
+    const { user, token } = res;
+    if (!user) throw new Error("Invalid credentials.");
+    setUser(user);
+    setToken(token);
+    localStorage.setItem("user", user);
+    localStorage.setItem("token", token);
+  };
 };
