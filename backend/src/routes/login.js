@@ -18,7 +18,7 @@ route.post("/", validate(userSchema), async (req, res) => {
       return res.status(400).json("Invalid email or password.");
 
     const token = generateAuthToken(user);
-    res.json(token);
+    res.json({ user, token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error." });
