@@ -2,11 +2,35 @@ import { useState } from "react";
 
 export default function Checkout() {
   const [sameAsShipping, setSameAsShipping] = useState(true);
-
-  //
-  //
-  //
-  //
+  const products = [
+    {
+      id: 1,
+      name: "Micro Backpack",
+      color: "Moss",
+      size: "5L",
+      price: 70,
+      image:
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&w=200&q=60",
+    },
+    {
+      id: 2,
+      name: "Small Stuff Satchel",
+      color: "Sand",
+      size: "18L",
+      price: 180,
+      image:
+        "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&w=200&q=60",
+    },
+    {
+      id: 3,
+      name: "Carry Clutch",
+      color: "White and Black",
+      size: "Small",
+      price: 70,
+      image:
+        "https://tse1.mm.bing.net/th/id/OIP.AJwpGA5hTSDySwMhqJEcTQHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
+    },
+  ];
 
   const subtotal = products.reduce((sum, p) => sum + p.price, 0);
   const shipping = 15;
