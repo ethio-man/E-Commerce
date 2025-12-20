@@ -30,7 +30,8 @@ const SingUp = () => {
         });
         const user = res.data;
         const token = res.headers["auth-token"];
-        login(user, token);
+        await login(user, token);
+        navigate("/");
       } catch (err) {
         console.error("Error:", err);
       }
@@ -41,11 +42,24 @@ const SingUp = () => {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleSubmit = (e) => {
+  const [full_name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Sign Up clicked!");
-    // Handle form submission
+    try {
+      const res = await Request("users/register").create({
+        full_name,
+        email,
+        password,
+      });
+      const user = res.data;
+      const token = res.headers["auth-token"];
+      await login(user, token);
+      navigate("/");
+    } catch (err) {
+      console.error("Error:", err);
+    }
   };
 
   return (
@@ -110,6 +124,7 @@ const SingUp = () => {
                 type="text"
                 placeholder="Enter your full name"
                 required
+                onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900"
               />
             </div>
@@ -127,6 +142,7 @@ const SingUp = () => {
                 type="email"
                 autoComplete="email"
                 placeholder="you@example.com"
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900"
               />
@@ -146,6 +162,7 @@ const SingUp = () => {
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="Enter your password"
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900 pr-10" // pr-10 for icon space
                 />
@@ -159,12 +176,9 @@ const SingUp = () => {
               </div>
             </div>
 
-            <Link
-              to="/admin/products"
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 mt-6"
-            >
+            <button className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 mt-6">
               Sign Up
-            </Link>
+            </button>
           </form>
 
           <p className="mt-6 text-center text-xs text-gray-500">
