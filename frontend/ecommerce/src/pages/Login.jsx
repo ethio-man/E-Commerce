@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Request from "../api/Request.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import SignInModal from "../components/SignInModal.jsx";
 const SingUp = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const SingUp = () => {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [open, setOpen] = useState(false);
   const [full_name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,11 +72,12 @@ const SingUp = () => {
           Already have an account?{" "}
           <button
             type="button"
-            onClick={() => (navigate = "/")} // should be redirected to sing in page!!!!
+            onClick={() => setOpen(true)}
             className="text-blue-600 font-semibold hover:text-blue-700 transition duration-150"
           >
             Log In
           </button>
+          {open && <SignInModal onClose={() => setOpen(false)} />}
         </div>
       </header>
       <main className="flex-grow flex items-center justify-center p-4">
