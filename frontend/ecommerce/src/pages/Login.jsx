@@ -19,7 +19,9 @@ const SingUp = () => {
 
         const userData = await googleRes.json();
 
+        console.log("Google response :", googleRes);
         console.log("User Info:", userData);
+        console.log(userData.name, userData.email);
 
         // 2. Send user info + token to your backend
         const backendRes = await fetch(

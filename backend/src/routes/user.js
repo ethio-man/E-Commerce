@@ -7,7 +7,8 @@ import { auth, verifyOwnership, authSuperAdmin } from "../middleware/auth.js";
 import generateAuthToken from "../utils/authGenerate.js";
 const route = express.Router();
 
-route.post("/", [auth, validate(userSchema)], async (req, res) => {
+//Sign up with form
+route.post("/register", validate(userSchema), async (req, res) => {
   const { full_name, email, password } = req.body;
   try {
     let user = await prisma.users.findUnique({
@@ -23,7 +24,29 @@ route.post("/", [auth, validate(userSchema)], async (req, res) => {
     res.header("auth-token", token).json(user);
   } catch (err) {
     console.log(err);
-    res.status(400).json({ error: "Error creating user" });
+    res.status(500).json({ error: "Error creating user" });
+  }
+});
+
+//Sign up with google
+route.post("/google", validate(userSchema), async (req, res) => {
+  const { name, email, google_id } = req.body;
+  try {
+    let user = await prisma.users.findUnique({ where: { email } });
+    if (user) return res.status(400).json("User already registered.");
+
+    user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        google_id,
+      },
+    });
+    const token = generateAuthToken(user);
+    res.header("auth-token", token).json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json("Error creating user");
   }
 });
 
