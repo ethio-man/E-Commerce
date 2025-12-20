@@ -1,4 +1,5 @@
 import express from "express";
+import _ from "lodash";
 import { prisma } from "../startup/db.js";
 import bcrypt from "bcrypt";
 import { userSchema } from "../validations/userValidator.js";
@@ -21,7 +22,9 @@ route.post("/register", validate(userSchema), async (req, res) => {
       data: { full_name, email, password: hashedPassword },
     });
     const token = generateAuthToken(user);
-    res.header("auth-token", token).json(user);
+    res
+      .header("auth-token", token)
+      .json(_.pick(user, ["_id", "full_name", "email", "role", "google_id"]));
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error creating user" });
@@ -30,20 +33,22 @@ route.post("/register", validate(userSchema), async (req, res) => {
 
 //Sign up with google
 route.post("/google", validate(userSchema), async (req, res) => {
-  const { name, email, google_id } = req.body;
+  const { full_name, email, google_id } = req.body;
   try {
     let user = await prisma.users.findUnique({ where: { email } });
     if (user) return res.status(400).json("User already registered.");
 
     user = await prisma.users.create({
       data: {
-        name,
+        full_name,
         email,
         google_id,
       },
     });
     const token = generateAuthToken(user);
-    res.header("auth-token", token).json(user);
+    res
+      .header("auth-token", token)
+      .json(_.pick(user, ["_id", "full_name", "email", "role", "google_id"]));
   } catch (err) {
     console.log(err);
     res.status(500).json("Error creating user");

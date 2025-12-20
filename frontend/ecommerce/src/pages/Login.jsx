@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import Request from "../api/Request.js";
+import { useAuth } from "../context/AuthContext.jsx";
 const SingUp = () => {
-  const login = useGoogleLogin({
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const signup = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         // 1. Get user info from Google
@@ -18,28 +22,15 @@ const SingUp = () => {
         );
 
         const userData = await googleRes.json();
-
-        console.log("Google response :", googleRes);
-        console.log("User Info:", userData);
-        console.log(userData.name, userData.email);
-
-        // 2. Send user info + token to your backend
-        const backendRes = await fetch(
-          "http://localhost:5000/api/auth/google",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              token: tokenResponse.access_token,
-              user: userData,
-            }),
-          }
-        );
-
-        const backendData = await backendRes.json();
-        console.log("Backend Response:", backendData);
+        const { name, email, sub } = userData;
+        const res = await Request("users/google").create({
+          full_name: name,
+          email,
+          google_id: sub,
+        });
+        const user = res.data;
+        const token = res.headers["auth-token"];
+        login(user, token);
       } catch (err) {
         console.error("Error:", err);
       }
@@ -65,7 +56,7 @@ const SingUp = () => {
           Already have an account?{" "}
           <button
             type="button"
-            onClick={() => login()}
+            onClick={() => (navigate = "/")} // should be redirected to sing in page!!!!
             className="text-blue-600 font-semibold hover:text-blue-700 transition duration-150"
           >
             Log In
@@ -82,7 +73,7 @@ const SingUp = () => {
           </div>
           <button
             type="button"
-            onClick={() => login()}
+            onClick={() => signup()}
             className="w-full flex items-center justify-center px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
           >
             <img

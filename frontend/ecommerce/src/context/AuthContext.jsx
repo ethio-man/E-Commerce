@@ -15,10 +15,8 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async ({ email, password }) => {
-    const res = await Request("login").post({ email, password });
-    const { user, token } = res;
-    if (!user) throw new Error("Invalid credentials.");
+  const login = async ({ user, token }) => {
+    console.log("userrr:", user, "token:", token);
     setUser(user);
     setToken(token);
     localStorage.setItem("user", user);
