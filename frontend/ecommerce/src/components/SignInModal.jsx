@@ -12,6 +12,7 @@ const SignInModal = ({ onClose }) => {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
+      console.log(credentialResponse);
       const res = await axioClient.post("/auth/google", {
         idToken: credentialResponse.credential,
       });
@@ -60,16 +61,23 @@ const SignInModal = ({ onClose }) => {
           <span className="text-sm text-gray-400">OR</span>
           <hr className="flex-1" />
         </div>
-
-        {/* Email Sign In */}
         <form onSubmit={handleEmailSubmit} className="space-y-3">
           <input
             type="email"
-            required
-            placeholder="Enter your email"
+            placeholder="Email"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           <button
@@ -77,7 +85,7 @@ const SignInModal = ({ onClose }) => {
             disabled={loading}
             className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
           >
-            {loading ? "Signing in..." : "Continue with Email"}
+            {loading ? "Signing in..." : "Sign in with Email"}
           </button>
         </form>
 
