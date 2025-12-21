@@ -1,19 +1,18 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
-import axioClient from "../api/axioClient.js"; // axios instance
+import Request from "../api/Request.js";
 
 const SignInModal = ({ onClose }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ Google login success
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
-      console.log(credentialResponse);
-      const res = await axioClient.post("/auth/google", {
+      const res = await Request("login").create({
         idToken: credentialResponse.credential,
       });
 
@@ -27,12 +26,11 @@ const SignInModal = ({ onClose }) => {
     }
   };
 
-  // ✅ Email submit (magic link / passwordless / or next step)
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axioClient.post("/auth/login", { email });
+      const res = await Request("login").create({ email, password });
 
       login(res.data.user, res.data.token);
       onClose();
@@ -49,7 +47,6 @@ const SignInModal = ({ onClose }) => {
       <div className="bg-white w-[360px] rounded-xl p-6 space-y-4">
         <h2 className="text-xl font-semibold text-center">Sign in</h2>
 
-        {/* Google Sign In */}
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={() => alert("Google login failed")}

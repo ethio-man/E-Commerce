@@ -1,5 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import { OAuth2Client } from "google-auth-library";
 import { prisma } from "../startup/db.js";
 import generateAuthToken from "../utils/authGenerate.js";
 import validate from "../middleware/validate.js";
@@ -7,10 +8,11 @@ import { userSchema } from "../validations/userValidator.js";
 const route = express.Router();
 
 route.post("/", validate(userSchema), async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, idToken } = req.body;
+  // if (idToken)   // to be complated
   try {
     const user = await prisma.users.findUnique({
-      where: { email },
+      where: { email, password },
     });
     if (!user) res.status(400).json("Invalid email or password.");
     const checkedPassword = bcrypt.compare(password, user.password);
