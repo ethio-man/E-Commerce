@@ -11,13 +11,20 @@ route.post("/", validate(userSchema), async (req, res) => {
   const { email, password, idToken } = req.body;
   // if (idToken)   // to be complated
   try {
-    const user = await prisma.users.findUnique({
-      where: { email, password },
-    });
-    if (!user) res.status(400).json("Invalid email or password.");
-    const checkedPassword = bcrypt.compare(password, user.password);
-    if (!checkedPassword)
-      return res.status(400).json("Invalid email or password.");
+    if (idToken) {
+      const user = await prisma.users.findUnique({
+        where: { email, idToken },
+      });
+      if (!user) return res.status(400).json("Invalid credential.");
+    } else {
+      const user = await prisma.users.findUnique({
+        where: { email, password },
+      });
+      if (!user) return res.status(400).json("Invalid credential.");
+      const checkedPassword = bcrypt.compare(password, user.password);
+      if (!checkedPassword)
+        return res.status(400).json("Invalid email or password.");
+    }
 
     const token = generateAuthToken(user);
     res.json({ user, token });
