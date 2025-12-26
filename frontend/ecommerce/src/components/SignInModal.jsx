@@ -1,4 +1,5 @@
 import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
@@ -9,11 +10,43 @@ const SignInModal = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleGoogleSuccess = async (credentialResponse) => {
+  const signIn = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        // 1. Get user info from Google
+        const googleRes = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
+
+        const userData = await googleRes.json();
+        const { sub } = userData;
+        const res = await Request("login").create({
+          google_id: sub,
+        });
+
+        await login(res.data.user, res.data.token);
+        navigate("/");
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    },
+
+    onError: () => {
+      console.log("Login Failed");
+    },
+  });
+
+  /* const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
+      console.log("Google response", credentialResponse);
       const res = await Request("login").create({
-        idToken: credentialResponse.credential,
+        google_id: credentialResponse.clientId,
       });
 
       login(res.data.user, res.data.token);
@@ -25,12 +58,16 @@ const SignInModal = ({ onClose }) => {
       setLoading(false);
     }
   };
-
+*/
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await Request("login").create({ email, password });
+      const res = await Request("login").create({
+        email,
+        password,
+        idToken: null,
+      });
 
       login(res.data.user, res.data.token);
       onClose();
@@ -48,7 +85,7 @@ const SignInModal = ({ onClose }) => {
         <h2 className="text-xl font-semibold text-center">Sign in</h2>
 
         <GoogleLogin
-          onSuccess={handleGoogleSuccess}
+          onSuccess={signIn}
           onError={() => alert("Google login failed")}
           width="100%"
         />

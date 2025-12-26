@@ -14,9 +14,12 @@ axioClient.interceptors.request.use(
 axioClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response)
+    if (error.response) {
       console.log("Api Error:", error.response.status, error.response.data);
-    else console.error("Network Error:", error.message);
+      error.response.data.error
+        ? alert(error.response.data.error)
+        : alert(error.response.data);
+    } else console.error("Network Error:", error.message);
     return Promise.reject(error);
   }
 );

@@ -60,7 +60,7 @@ const SingUp = () => {
       await login(user, token);
       navigate("/");
     } catch (err) {
-      console.error("Error:", err);
+      //console.error("Error:", err);
     }
   };
 

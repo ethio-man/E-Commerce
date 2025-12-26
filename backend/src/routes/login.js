@@ -8,12 +8,11 @@ import { userSchema } from "../validations/userValidator.js";
 const route = express.Router();
 
 route.post("/", validate(userSchema), async (req, res) => {
-  const { email, password, idToken } = req.body;
-  // if (idToken)   // to be complated
+  const { email, password, google_id } = req.body;
   try {
-    if (idToken) {
+    if (google_id) {
       const user = await prisma.users.findUnique({
-        where: { email, idToken },
+        where: { google_id },
       });
       if (!user) return res.status(400).json("Invalid credential.");
     } else {
