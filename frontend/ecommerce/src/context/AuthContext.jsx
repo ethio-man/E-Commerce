@@ -11,15 +11,19 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     if (storedToken && storedUser && storedUser !== "undefined") {
       setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        setUser(storedUser);
+      }
     }
   }, []);
 
-  const login = async ({ user, token }) => {
+  const login = async (user, token) => {
     if (user && token) {
       setUser(user);
       setToken(token);
-      localStorage.setItem("user", user);
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
     }
   };

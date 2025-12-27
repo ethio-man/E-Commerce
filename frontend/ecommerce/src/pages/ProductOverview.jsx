@@ -1,8 +1,10 @@
 import { Star } from "lucide-react";
 import { useLocation } from "react-router-dom";
-
+import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
 export default function ProductOverview() {
+  const { user } = useAuth();
+  console.log("user", user);
   const colorClassMap = {
     Red: "bg-red-400 checked:outline-red-400",
     Blue: "bg-blue-400 checked:outline-blue-400",
@@ -20,10 +22,13 @@ export default function ProductOverview() {
   async function AddToCart(product_id) {
     try {
       const quantity = 1;
-      const user_id = 2; //should be replaced by current user id
+      const user_id = user._id;
+      console.log((user_id, product_id, quantity));
       const res = await Request("carts").create(user_id, product_id, quantity);
+      if (res) alert("Added Successfully!");
     } catch (err) {
-      console.log("Item not added to cart!please try again.");
+      console.log("Error to creare cart", err);
+      alert("Item not added to cart!please try again.");
     }
   }
   return (
@@ -106,7 +111,7 @@ export default function ProductOverview() {
                 </div>
               </div>
               <button
-                type="submit"
+                type="button"
                 className="mt-8 w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700"
                 onClick={() => AddToCart(product._id)}
               >

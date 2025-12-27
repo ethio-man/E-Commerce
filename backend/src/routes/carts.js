@@ -31,6 +31,7 @@ route.get("/id", [auth, verifyOwnership("carts")], async (req, res) => {
 });
 route.post("/", auth, validate(cartSchema), async (req, res) => {
   const { userId, productId, quantity } = req.params;
+  console.log(userId, productId, quantity);
   try {
     const cart = await prisma.carts.create({
       data: {

@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { CircleUserRound, ShoppingCart } from "lucide-react";
-
 import Logo from "../assets/logo.png";
+import { useAuth } from "../context/AuthContext.jsx";
 export default function NavBar() {
+  const { user } = useAuth();
+  console.log("user", user);
   return (
     <header className="bg-white shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,12 +27,18 @@ export default function NavBar() {
                 <ShoppingCart /> <span>Cart</span>
               </Link>
             </div>
-            <Link
-              to="/login"
-              className="text-gray-600 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md hover:bg-blue-400 hover:text-white  "
-            >
-              <CircleUserRound /> Login
-            </Link>
+            {user ? (
+              <>
+                <span>Welcome, {user.full_name}</span>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="text-gray-600 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md hover:bg-blue-400 hover:text-white  "
+              >
+                <CircleUserRound /> Login
+              </Link>
+            )}
           </div>
         </div>
       </nav>

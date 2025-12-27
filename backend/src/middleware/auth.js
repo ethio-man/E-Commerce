@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { prisma } from "../startup/db.js";
 dotenv.config();
 export const auth = async function (req, res, next) {
-  const token = req.header("auth-token");
+  const token = req.header("x-auth-token");
   if (!token) return res.status(401).json("No token is provided");
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
