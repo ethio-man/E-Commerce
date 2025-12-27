@@ -66,7 +66,6 @@ const SignInModal = ({ onClose }) => {
       const res = await Request("login").create({
         email,
         password,
-        idToken: null,
       });
 
       login(res.data.user, res.data.token);

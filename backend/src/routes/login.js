@@ -8,28 +8,35 @@ import { userSchema } from "../validations/userValidator.js";
 const route = express.Router();
 
 route.post("/", validate(userSchema), async (req, res) => {
-  const { email, password, google_id } = req.body;
+  const { email, password } = req.body;
   try {
-    if (google_id) {
-      const user = await prisma.users.findUnique({
-        where: { google_id },
-      });
-      if (!user) return res.status(400).json("Invalid credential.");
-    } else {
-      const user = await prisma.users.findUnique({
-        where: { email, password },
-      });
-      if (!user) return res.status(400).json("Invalid credential.");
-      const checkedPassword = bcrypt.compare(password, user.password);
-      if (!checkedPassword)
-        return res.status(400).json("Invalid email or password.");
-    }
-
+    const user = await prisma.users.findUnique({
+      where: { email, password },
+    });
+    if (!user) return res.status(400).json("Invalid credential.");
+    const checkedPassword = bcrypt.compare(password, user.password);
+    if (!checkedPassword)
+      return res.status(400).json("Invalid email or password.");
     const token = generateAuthToken(user);
     res.json({ user, token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error." });
+  }
+});
+
+route.post("/google", async (req, res) => {
+  const { google_id } = req.body;
+  try {
+    const user = await prisma.users.findUnique({
+      where: { google_id },
+    });
+    if (!user) return res.status(400).json("Invalid credential.");
+    const token = generateAuthToken(user);
+    res.json({ user, token });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ message: "Server Error!" });
   }
 });
 export default route;
