@@ -11,7 +11,7 @@ route.post("/", validate(userSchema), async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await prisma.users.findUnique({
-      where: { email, password },
+      where: { email },
     });
     if (!user) return res.status(400).json("Invalid credential.");
     const checkedPassword = bcrypt.compare(password, user.password);

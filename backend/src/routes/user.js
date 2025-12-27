@@ -87,8 +87,8 @@ route.delete("/:id", [auth, verifyOwnership("users")], async (req, res) => {
   }
 });
 route.get("/", auth, async (req, res) => {
-  if (req.user.role != "admin")
-    return res.status(403).json("Unauthorized access");
+  // if (req.user.role != "admin")
+  //  return res.status(403).json("Unauthorized access");
   try {
     const Users = await prisma.users.findMany();
     res.status(200).json(Users);

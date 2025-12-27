@@ -1,15 +1,12 @@
-import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
 
-const SignInModal = ({ onClose }) => {
+const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const signIn = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -25,10 +22,10 @@ const SignInModal = ({ onClose }) => {
 
         const userData = await googleRes.json();
         const { sub } = userData;
-        const res = await Request("login").create({
+
+        const res = await Request("login/google").create({
           google_id: sub,
         });
-
         await login(res.data.user, res.data.token);
         navigate("/");
       } catch (err) {
@@ -41,24 +38,6 @@ const SignInModal = ({ onClose }) => {
     },
   });
 
-  /* const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      setLoading(true);
-      console.log("Google response", credentialResponse);
-      const res = await Request("login").create({
-        google_id: credentialResponse.clientId,
-      });
-
-      login(res.data.user, res.data.token);
-      onClose();
-    } catch (err) {
-      console.error(err);
-      alert("Google sign-in failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-*/
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -70,6 +49,7 @@ const SignInModal = ({ onClose }) => {
 
       login(res.data.user, res.data.token);
       onClose();
+      navigate("/");
     } catch (err) {
       console.error(err);
       alert("Email sign-in failed");
@@ -83,11 +63,13 @@ const SignInModal = ({ onClose }) => {
       <div className="bg-white w-[360px] rounded-xl p-6 space-y-4">
         <h2 className="text-xl font-semibold text-center">Sign in</h2>
 
-        <GoogleLogin
-          onSuccess={signIn}
-          onError={() => alert("Google login failed")}
-          width="100%"
-        />
+        <button
+          type="button"
+          onClick={() => signIn()}
+          className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition flex items-center justify-center"
+        >
+          Sign in with Google
+        </button>
 
         <div className="flex items-center gap-2">
           <hr className="flex-1" />

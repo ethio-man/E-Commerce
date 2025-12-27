@@ -47,6 +47,7 @@ const SingUp = () => {
   const [full_name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -60,7 +61,7 @@ const SingUp = () => {
       await login(user, token);
       navigate("/");
     } catch (err) {
-      //console.error("Error:", err);
+      console.error("Error:", err);
     }
   };
 
@@ -77,7 +78,13 @@ const SingUp = () => {
           >
             Log In
           </button>
-          {open && <SignInModal onClose={() => setOpen(false)} />}
+          {open && (
+            <SignInModal
+              onClose={() => setOpen(false)}
+              navigate={navigate}
+              useGoogleLogin={useGoogleLogin}
+            />
+          )}
         </div>
       </header>
       <main className="flex-grow flex items-center justify-center p-4">
