@@ -18,13 +18,19 @@ export default function ProductOverview() {
 
   const { state } = useLocation();
   const product = state?.product;
-
+  console.log("product", product);
   async function AddToCart(product_id) {
     try {
       const quantity = 1;
-      const user_id = user._id;
-      console.log((user_id, product_id, quantity));
-      const res = await Request("carts").create(user_id, product_id, quantity);
+      const user_id = user.id;
+      console.log(
+        `user: ${user_id},product: ${product_id},quantity: ${quantity}`,
+      );
+      const res = await Request("carts").create({
+        user_id,
+        product_id,
+        quantity,
+      });
       if (res) alert("Added Successfully!");
     } catch (err) {
       console.log("Error to creare cart", err);
@@ -113,7 +119,7 @@ export default function ProductOverview() {
               <button
                 type="button"
                 className="mt-8 w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700"
-                onClick={() => AddToCart(product._id)}
+                onClick={() => AddToCart(product.id)}
               >
                 Add to cart
               </button>

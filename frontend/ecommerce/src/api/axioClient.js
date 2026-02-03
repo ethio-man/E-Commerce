@@ -8,7 +8,7 @@ axioClient.interceptors.request.use(
     if (token) config.headers["x-auth-token"] = token;
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axioClient.interceptors.response.use(
@@ -21,7 +21,7 @@ axioClient.interceptors.response.use(
         : alert(error.response.data);
     } else console.error("Network Error:", error.message);
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axioClient;
