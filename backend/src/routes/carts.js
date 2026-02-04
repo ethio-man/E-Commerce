@@ -31,7 +31,7 @@ route.get("/:id", [auth, verifyOwnership("carts")], async (req, res) => {
 });
 route.post("/", auth, validate(cartSchema), async (req, res) => {
   const { user_id, product_id, quantity } = req.body;
-  const uid = user_id ? parseInt(user_id) : req.user && req.user.id;
+  const uid = user_id ? parseInt(user_id) : req.user && req.user.id; //req.user: users data from authentication middleware
   const pid = parseInt(product_id);
   const qty = quantity ? parseInt(quantity) : 1;
 

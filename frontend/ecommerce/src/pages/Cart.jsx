@@ -1,47 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 export default function ShoppingCart() {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Basic Tee",
-      color: "Sienna",
-      size: "Large",
-      price: 32,
-      image:
-        "https://th.bing.com/th/id/OIP.AFO_EPW9jqS7ZIBPJo-UDAHaHa?o=7&cb=ucfimg2&rm=3&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
-      inStock: true,
-      qty: 7,
-    },
-    {
-      id: 2,
-      name: "Basic Tee",
-      color: "Black",
-      size: "Large",
-      price: 32,
-      image:
-        "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&w=500&q=60",
-      inStock: false,
-      qty: 9,
-    },
-    {
-      id: 3,
-      name: "Nomad Tumbler",
-      color: "White",
-      size: "",
-      price: 35,
-      image:
-        "https://usefulcompany.co.za/cdn/shop/products/1_7.jpg?v=1694028949&width=1946",
-      inStock: true,
-      qty: 9,
-    },
-  ]);
+  const [items, setItems] = useState([]);
 
   const updateQty = (id, qty) => {
     setItems(
       items.map((item) =>
-        item.id === id ? { ...item, qty: Number(qty) } : item
-      )
+        item.id === id ? { ...item, qty: Number(qty) } : item,
+      ),
     );
   };
 
