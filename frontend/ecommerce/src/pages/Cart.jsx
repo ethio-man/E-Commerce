@@ -1,18 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
-export default async function ShoppingCart() {
+export default function ShoppingCart() {
   const { user } = useAuth();
-  console.log("user", user);
-  const carts = await Request("carts/userCart").getOne(user.id);
-  console.log("carts", carts.json());
-  let products;
-  carts.map((c) => {
-    const product = Request("products").get(c.product_id);
-    products.push(product);
-  });
-  const [items, setItems] = useState([products]);
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (!user || !user.id) return;
+
+    const loadCart = async () => {
+      try {
+        const cartsRes = await Request("carts/userCart").getOne(user.id);
+        const carts = cartsRes.data || [];
+
+        const products = await Promise.all(
+          carts.map(async (c) => {
+            const pRes = await Request("products").get(c.product_id);
+            const p = pRes.data || {};
+            return { ...p, qty: c.qty ?? 1 };
+          }),
+        );
+
+        setItems(products);
+      } catch (err) {
+        console.error("Failed to load cart/products", err);
+        setItems([]);
+      }
+    };
+
+    loadCart();
+  }, [user]);
 
   const updateQty = (id, qty) => {
     setItems(
