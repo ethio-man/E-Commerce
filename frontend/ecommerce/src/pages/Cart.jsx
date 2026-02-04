@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
+import Request from "../api/Request.js";
 export default function ShoppingCart() {
+  const { user } = useAuth();
+  console.log("user", user);
+  const carts = Request("carts").getOne(user.id);
+  console.log("carts", carts);
   const [items, setItems] = useState([]);
 
   const updateQty = (id, qty) => {
