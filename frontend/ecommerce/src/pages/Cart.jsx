@@ -5,9 +5,14 @@ import Request from "../api/Request.js";
 export default function ShoppingCart() {
   const { user } = useAuth();
   console.log("user", user);
-  const carts = Request("carts").getOne(user.id);
+  const carts = Request("carts/userCart").getOne(user.id);
   console.log("carts", carts);
-  const [items, setItems] = useState([]);
+  let products;
+  carts.map((c) => {
+    const product = Request("products").get(c.product_id);
+    products.push(product);
+  });
+  const [items, setItems] = useState([products]);
 
   const updateQty = (id, qty) => {
     setItems(

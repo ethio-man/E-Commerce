@@ -30,14 +30,17 @@ route.get("/:id", [auth, verifyOwnership("carts")], async (req, res) => {
   }
 });
 // get carts based on user id
-route.get("/:userId", async (req, res) => {
+route.get("/userCart/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const carts = await prisma.carts.findMany({
       where: { user_id: parseInt(userId) },
     });
+    if (!carts) return res.status(404).json("Carts not found.");
+    console.log(carts);
+    res.json(carts);
   } catch (err) {
-    console.error("Error to find user carts.");
+    console.error("Error to find user carts.", err);
     res.status(500).json({ message: "Error to find user's carts" });
   }
 });
