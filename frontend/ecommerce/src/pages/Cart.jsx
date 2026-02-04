@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
-export default function ShoppingCart() {
+export default async function ShoppingCart() {
   const { user } = useAuth();
   console.log("user", user);
-  const carts = Request("carts/userCart").getOne(user.id);
-  console.log("carts", carts);
+  const carts = await Request("carts/userCart").getOne(user.id);
+  console.log("carts", carts.json());
   let products;
   carts.map((c) => {
     const product = Request("products").get(c.product_id);

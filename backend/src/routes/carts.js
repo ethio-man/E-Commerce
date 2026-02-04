@@ -38,7 +38,7 @@ route.get("/userCart/:userId", async (req, res) => {
     });
     if (!carts) return res.status(404).json("Carts not found.");
     console.log(carts);
-    res.json(carts);
+    res.send(carts);
   } catch (err) {
     console.error("Error to find user carts.", err);
     res.status(500).json({ message: "Error to find user's carts" });
