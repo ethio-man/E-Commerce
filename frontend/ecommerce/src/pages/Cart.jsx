@@ -14,15 +14,15 @@ export default function ShoppingCart() {
       try {
         const cartsRes = await Request("carts/userCart").getOne(user.id);
         const carts = cartsRes.data || [];
-
         const products = await Promise.all(
           carts.map(async (c) => {
-            const pRes = await Request("products").get(c.product_id);
+            const pRes = await Request("products").getOne(c.product_id);
             const p = pRes.data || {};
             return { ...p, qty: c.qty ?? 1 };
           }),
         );
 
+        console.log("products", products);
         setItems(products);
       } catch (err) {
         console.error("Failed to load cart/products", err);
