@@ -1,6 +1,5 @@
 import Joi from "joi";
 export const orderSchema = Joi.object({
-  delivery_date,
   total_price: Joi.number().required(),
   payment_method: Joi.string().max(200).required(),
   user_id: Joi.number().required(),

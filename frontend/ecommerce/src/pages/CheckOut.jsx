@@ -9,14 +9,16 @@ export default function Checkout() {
   const shipping = subtotal > 0 ? 5 : 0;
   const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
-  function ApplyOrder() {
+  function ApplyOrder(order) {
+    const { total_price, payment_method, user_id, address_id } = order;
     const order = {
-      delivery_date,
       total_price,
       payment_method,
       user_id,
       address_id,
     };
+    try {
+    } catch (err) {}
   }
   return (
     <div className="min-h-screen bg-white">
