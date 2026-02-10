@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
 export default function ShoppingCart() {
-  const { user } = useAuth();
-
-  const [items, setItems] = useState([]);
+  const { user, carts, setCarts } = useAuth();
 
   useEffect(() => {
     if (!user || !user.id) return;
@@ -23,10 +21,10 @@ export default function ShoppingCart() {
         );
 
         console.log("products", products);
-        setItems(products);
+        setCarts(products);
       } catch (err) {
         console.error("Failed to load cart/products", err);
-        setItems([]);
+        setCarts([]);
       }
     };
 
@@ -34,18 +32,18 @@ export default function ShoppingCart() {
   }, [user]);
 
   const updateQty = (id, qty) => {
-    setItems(
-      items.map((item) =>
+    setCarts(
+      carts.map((item) =>
         item.id === id ? { ...item, qty: Number(qty) } : item,
       ),
     );
   };
 
   const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
+    setCarts(carts.filter((item) => item.id !== id));
   };
 
-  const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const subtotal = carts.reduce((acc, item) => acc + item.price * item.qty, 0);
   const shipping = subtotal > 0 ? 5 : 0;
   const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
@@ -57,14 +55,14 @@ export default function ShoppingCart() {
 
         <div className="grid md:grid-cols-3 gap-10">
           <div className="lg:col-span-2 divide-y divide-gray-200">
-            {items.map((item) => (
+            {carts.map((item) => (
               <div
                 key={item.id}
                 className="flex gap-6 items-start border-b pb-6"
               >
                 <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                   <img
-                    src={item.image}
+                    src={item.src}
                     alt={item.name}
                     className="w-full h-full object-cover object-center"
                   />
@@ -73,7 +71,7 @@ export default function ShoppingCart() {
                 <div className="flex-1">
                   <h2 className="font-semibold">{item.name}</h2>
                   <p className="text-sm text-gray-500">
-                    {item.color} {item.size && `• ${item.size}`}
+                    {item.colors} {item.sizes && `• ${item.sizes}`}
                   </p>
                   <p className="text-sm font-medium mt-1">${item.price}</p>
 
@@ -154,7 +152,7 @@ export default function ShoppingCart() {
               </div>
             ))}
 
-            {items.length === 0 && (
+            {carts.length === 0 && (
               <div className="text-center text-gray-500 py-10">
                 Your cart is empty.
               </div>

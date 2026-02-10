@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
 export default function ProductOverview() {
   const { user } = useAuth();
-  console.log("user", user);
   const colorClassMap = {
     Red: "bg-red-400 checked:outline-red-400",
     Blue: "bg-blue-400 checked:outline-blue-400",
