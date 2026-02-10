@@ -1,11 +1,13 @@
 import { useState } from "react";
-import {carts} from useAuth();
+import { useAuth } from "../context/AuthContext.jsx";
+
 export default function Checkout() {
+  const { carts } = useAuth();
   const [sameAsShipping, setSameAsShipping] = useState(true);
 
-  const subtotal = carts.reduce((sum, p) => sum + p.price, 0);
-  const shipping = 15;
-  const tax = subtotal * 0.084;
+  const subtotal = carts.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const shipping = subtotal > 0 ? 5 : 0;
+  const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
 
   return (
@@ -132,18 +134,18 @@ export default function Checkout() {
               <div key={p.id} className="flex justify-between items-center">
                 <div className="flex gap-4 items-center">
                   <img
-                    src={p.image}
+                    src={p.src}
                     alt={p.name}
                     className="w-14 h-14 rounded object-cover"
                   />
                   <div>
                     <p className="font-medium">{p.name}</p>
                     <p className="text-xs text-gray-500">
-                      {p.color} • {p.size}
+                      {p.colors} • {p.sizes}
                     </p>
                   </div>
                 </div>
-                <p className="font-medium">${p.price.toFixed(2)}</p>
+                <p className="font-medium">${p.price}</p>
               </div>
             ))}
           </div>
