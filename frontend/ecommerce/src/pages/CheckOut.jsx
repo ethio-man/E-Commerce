@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
-
+import Request from "../api/Request.js";
 export default function Checkout() {
   const { carts } = useAuth();
   const [sameAsShipping, setSameAsShipping] = useState(true);
@@ -9,7 +9,15 @@ export default function Checkout() {
   const shipping = subtotal > 0 ? 5 : 0;
   const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
-
+  function ApplyOrder() {
+    const order = {
+      delivery_date,
+      total_price,
+      payment_method,
+      user_id,
+      address_id,
+    };
+  }
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
@@ -119,7 +127,10 @@ export default function Checkout() {
               You won’t be charged until the next step.
             </p>
 
-            <button className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+            <button
+              className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
+              onClick={() => ApplyOrder()}
+            >
               Continue
             </button>
           </div>
