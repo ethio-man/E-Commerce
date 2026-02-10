@@ -9,16 +9,23 @@ export default function Checkout() {
   const shipping = subtotal > 0 ? 5 : 0;
   const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
-  function ApplyOrder(order) {
-    const { total_price, payment_method, user_id, address_id } = order;
-    const order = {
-      total_price,
-      payment_method,
-      user_id,
-      address_id,
-    };
+  const [total_price, setPrice] = useState(0);
+  const [payment_method, setPaymentMethod] = useState("");
+  const [user_id, setUser] = useState(null);
+  const [address_id, setAddress] = useState(null);
+
+  async function ApplyOrder(order) {
     try {
-    } catch (err) {}
+      const order = await Request("orders").create({
+        total_price,
+        payment_method,
+        user_id,
+        address_id,
+      });
+      if (order) console.log("Order submitted!");
+    } catch (err) {
+      console.error("Order is not submittd please try again.", err);
+    }
   }
   return (
     <div className="min-h-screen bg-white">
