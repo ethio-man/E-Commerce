@@ -13,12 +13,21 @@ export default function Checkout() {
   const [bank, setBank] = useState("");
   const [name, setName] = useState("");
   const [accountNo, setAccountNo] = useState();
+
+  const [Country, setCountry] = useState("");
+  const [appartment, setAppartment] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [postal_code, setPostalCode] = useState();
   const [address_id, setAddress] = useState(null);
 
   async function ApplyOrder() {
     const total_price = total;
     const payment_method = [bank, name, accountNo];
     const user_id = user.id;
+    const country = [Country, state, appartment];
+
+    //submitting order
     try {
       const res = await Request("orders").create({
         total_price,
