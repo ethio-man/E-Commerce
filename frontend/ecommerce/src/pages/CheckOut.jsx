@@ -46,33 +46,28 @@ export default function Checkout() {
 
           {/* Payment */}
           <div className="mb-10">
-            <h2 className="text-lg font-semibold mb-4">Payment details</h2>
+            <h2 className="text-lg font-semibold mb-4">Payment Method</h2>
 
             <div className="space-y-4">
+              <select
+                type="text"
+                className="w-full border rounded-md px-3 py-2 bg-slate-400"
+              >
+                <option> Commercial bank of Ethiopia (CBE)</option>
+                <option> Bank of Abissinia </option>
+                <option> Dashin Bank </option>
+              </select>
               <input
                 type="text"
-                placeholder="Name on card"
+                placeholder="Name on the bank account"
                 className="w-full border rounded-md px-3 py-2"
               />
 
               <input
                 type="text"
-                placeholder="Card number"
+                placeholder="Account number"
                 className="w-full border rounded-md px-3 py-2"
               />
-
-              <div className="grid grid-cols-3 gap-4">
-                <input
-                  type="text"
-                  placeholder="MM / YY"
-                  className="col-span-2 border rounded-md px-3 py-2"
-                />
-                <input
-                  type="text"
-                  placeholder="CVC"
-                  className="border rounded-md px-3 py-2"
-                />
-              </div>
             </div>
           </div>
 
@@ -83,12 +78,7 @@ export default function Checkout() {
             <div className="space-y-4">
               <input
                 type="text"
-                placeholder="Company"
-                className="w-full border rounded-md px-3 py-2"
-              />
-              <input
-                type="text"
-                placeholder="Address"
+                placeholder="Country"
                 className="w-full border rounded-md px-3 py-2"
               />
               <input
