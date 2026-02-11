@@ -2,27 +2,31 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
 export default function Checkout() {
-  const { carts } = useAuth();
+  const { user, carts } = useAuth();
   const [sameAsShipping, setSameAsShipping] = useState(true);
 
   const subtotal = carts.reduce((acc, item) => acc + item.price * item.qty, 0);
   const shipping = subtotal > 0 ? 5 : 0;
   const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
-  const [total_price, setPrice] = useState(0);
-  const [payment_method, setPaymentMethod] = useState("");
-  const [user_id, setUser] = useState(null);
+
+  const [bank, setBank] = useState("");
+  const [name, setName] = useState("");
+  const [accountNo, setAccountNo] = useState();
   const [address_id, setAddress] = useState(null);
 
-  async function ApplyOrder(order) {
+  async function ApplyOrder() {
+    const total_price = total;
+    const payment_method = [bank, name, accountNo];
+    const user_id = user.id;
     try {
-      const order = await Request("orders").create({
+      const res = await Request("orders").create({
         total_price,
         payment_method,
         user_id,
         address_id,
       });
-      if (order) console.log("Order submitted!");
+      if (res) console.log("Order submitted!");
     } catch (err) {
       console.error("Order is not submittd please try again.", err);
     }
@@ -31,7 +35,7 @@ export default function Checkout() {
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
         {/* LEFT: FORM */}
-        <div>
+        <form onSubmit={() => ApplyOrder()}>
           <h1 className="text-2xl font-bold mb-8">Checkout</h1>
 
           {/* Contact */}
@@ -52,6 +56,7 @@ export default function Checkout() {
               <select
                 type="text"
                 className="w-full border rounded-md px-3 py-2 bg-slate-400"
+                onChange={(e) => setBank(e.target.value)}
               >
                 <option> Commercial bank of Ethiopia (CBE)</option>
                 <option> Bank of Abissinia </option>
@@ -61,12 +66,14 @@ export default function Checkout() {
                 type="text"
                 placeholder="Name on the bank account"
                 className="w-full border rounded-md px-3 py-2"
+                onChange={(e) => setName(e.target.value)}
               />
 
               <input
                 type="text"
                 placeholder="Account number"
                 className="w-full border rounded-md px-3 py-2"
+                onChange={(e) => setAccountNo(e.target.value)}
               />
             </div>
           </div>
@@ -128,12 +135,12 @@ export default function Checkout() {
 
             <button
               className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
-              onClick={() => ApplyOrder()}
+              type="submit"
             >
               Continue
             </button>
           </div>
-        </div>
+        </form>
 
         {/* RIGHT: ORDER SUMMARY */}
         <div className="bg-gray-50 p-6 rounded-lg h-fit">
