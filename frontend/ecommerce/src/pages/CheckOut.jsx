@@ -77,7 +77,7 @@ export default function Checkout() {
                 className="w-full border rounded-md px-3 py-2 bg-slate-400"
                 onChange={(e) => setBank(e.target.value)}
               >
-                <option> Commercial bank of Ethiopia (CBE)</option>
+                <option> Commercial bank of Ethiopia (CBE) </option>
                 <option> Bank of Abissinia </option>
                 <option> Dashin Bank </option>
               </select>
@@ -106,11 +106,13 @@ export default function Checkout() {
                 type="text"
                 placeholder="Country"
                 className="w-full border rounded-md px-3 py-2"
+                onChange={(e) => setCountry(e.target.value)}
               />
               <input
                 type="text"
                 placeholder="Apartment, suite, etc."
                 className="w-full border rounded-md px-3 py-2"
+                onChange={(e) => setAppartment(e.target.value)}
               />
 
               <div className="grid grid-cols-3 gap-4">
@@ -118,16 +120,19 @@ export default function Checkout() {
                   type="text"
                   placeholder="City"
                   className="border rounded-md px-3 py-2"
+                  onChange={(e) => setCity(e.target.value)}
                 />
                 <input
                   type="text"
                   placeholder="State / Province"
                   className="border rounded-md px-3 py-2"
+                  onChange={(e) => setState(e.target.value)}
                 />
                 <input
                   type="text"
                   placeholder="Postal code"
                   className="border rounded-md px-3 py-2"
+                  onChange={(e) => setPostalCode(e.target.value)}
                 />
               </div>
             </div>
