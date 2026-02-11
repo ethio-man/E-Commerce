@@ -78,6 +78,7 @@ export default function Checkout() {
                 type="text"
                 className="w-full border rounded-md px-3 py-2 bg-slate-400"
                 onChange={(e) => setBank(e.target.value)}
+                required
               >
                 <option> Commercial bank of Ethiopia (CBE) </option>
                 <option> Bank of Abissinia </option>
@@ -88,6 +89,7 @@ export default function Checkout() {
                 placeholder="Name on the bank account"
                 className="w-full border rounded-md px-3 py-2"
                 onChange={(e) => setName(e.target.value)}
+                required
               />
 
               <input
@@ -95,6 +97,7 @@ export default function Checkout() {
                 placeholder="Account number"
                 className="w-full border rounded-md px-3 py-2"
                 onChange={(e) => setAccountNo(e.target.value)}
+                required
               />
             </div>
           </div>
@@ -109,12 +112,14 @@ export default function Checkout() {
                 placeholder="Country"
                 className="w-full border rounded-md px-3 py-2"
                 onChange={(e) => setCountry(e.target.value)}
+                required
               />
               <input
                 type="text"
                 placeholder="Apartment, suite, etc."
                 className="w-full border rounded-md px-3 py-2"
                 onChange={(e) => setAppartment(e.target.value)}
+                required
               />
 
               <div className="grid grid-cols-3 gap-4">
@@ -123,18 +128,21 @@ export default function Checkout() {
                   placeholder="City"
                   className="border rounded-md px-3 py-2"
                   onChange={(e) => setCity(e.target.value)}
+                  required
                 />
                 <input
                   type="text"
                   placeholder="State / Province"
                   className="border rounded-md px-3 py-2"
                   onChange={(e) => setState(e.target.value)}
+                  required
                 />
                 <input
                   type="text"
                   placeholder="Postal code"
                   className="border rounded-md px-3 py-2"
                   onChange={(e) => setPostalCode(e.target.value)}
+                  required
                 />
               </div>
             </div>
