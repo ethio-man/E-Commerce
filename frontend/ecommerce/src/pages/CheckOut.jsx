@@ -36,7 +36,9 @@ export default function Checkout() {
       });
       if (!address) return console.error("Error to create shipping address.");
       setAddress(address.id);
-    } catch (err) {}
+    } catch (err) {
+      console.log("Server Error to create address", err);
+    }
     //submitting order
     try {
       const res = await Request("orders").create({
