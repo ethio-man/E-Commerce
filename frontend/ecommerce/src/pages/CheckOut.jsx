@@ -26,7 +26,17 @@ export default function Checkout() {
     const payment_method = [bank, name, accountNo];
     const user_id = user.id;
     const country = [Country, state, appartment];
-
+    //creating  address
+    try {
+      const address = await Request("address").create({
+        user_id,
+        country,
+        city,
+        postal_code,
+      });
+      if (!address) return console.error("Error to create shipping address.");
+      setAddress(address.id);
+    } catch (err) {}
     //submitting order
     try {
       const res = await Request("orders").create({
