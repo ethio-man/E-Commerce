@@ -1,2 +1,2 @@
 # Warka Ecommerce platform 
-It is a Business to customer platform
+It is a Business to customer platform.
