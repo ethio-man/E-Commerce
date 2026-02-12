@@ -10,7 +10,7 @@ datasource db {
 model address {
   id          Int      @id @default(autoincrement())
   user_id     Int?
-  country     String?  @db.VarChar(53)
+  country     String[]  @db.VarChar(53)
   city        String?  @db.VarChar(53)
   postal_code String?  @db.VarChar(20)
   users       users?   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -42,7 +42,7 @@ model orders {
   order_date     DateTime?     @default(now()) @db.Timestamp(6)
   delivery_date  DateTime?     @db.Date
   total_price    Decimal?      @db.Decimal(10, 2)
-  payment_method String?       @db.VarChar(53)
+  payment_method String[]       @db.VarChar(53)
   paid_status    Boolean?      @default(false)
   user_id        Int?
   address_id     Int?
