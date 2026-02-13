@@ -6,6 +6,7 @@ import Cart from "./pages/Cart.jsx";
 import CheckOut from "./pages/CheckOut.jsx";
 import Login from "./pages/Login.jsx";
 import AddProduct from "./pages/AddProduct.jsx";
+import OrderSummary from "./pages/OrderSummary.jsx";
 import "./App.css";
 export default function App() {
   return (
@@ -18,10 +19,8 @@ export default function App() {
         <Route path="/orders" element={<CheckOut />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin/products" element={<AddProduct />} />
+        <Route path="/orderSummary" element={<OrderSummary />} />
       </Routes>
     </Router>
   );
 }
-//will be updated to productOverview/:id
-// will be updated to /cart/:id
-//will be updated to /orders/:id
