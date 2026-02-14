@@ -31,9 +31,13 @@ const OrderSummary = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen font-sans text-slate-700">
-      {/* Top Section: Product & Status */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden mb-6">
+    <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen font-sans text-slate-700 ">
+      <div className="m-4">
+        <p className="text-indigo-600">Thank you!</p>
+        <h1 className="text-2xl font-bold">It's on the way!</h1>
+      </div>
+
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden mb-6 transition duration-300 transform hover:scale-102">
         <div className="p-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Product Info */}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
+import { Link } from "react-router-dom";
 export default function Checkout() {
   const { user, carts } = useAuth();
   const [sameAsShipping, setSameAsShipping] = useState(true);
@@ -35,12 +36,14 @@ export default function Checkout() {
         postal_code,
       });
       if (!address) return console.error("Error to create shipping address.");
-      setAddress(address.id);
+
+      setAddress(address.data.id);
     } catch (err) {
       console.log("Server Error to create address", err);
     }
     //submitting order
     try {
+      console.log("Address sent to backend is ", address_id);
       const res = await Request("orders").create({
         total_price,
         payment_method,
@@ -56,7 +59,7 @@ export default function Checkout() {
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
         {/* LEFT: FORM */}
-        <form onSubmit={() => ApplyOrder()}>
+        <div>
           <h1 className="text-2xl font-bold mb-8">Checkout</h1>
 
           {/* Contact */}
@@ -80,9 +83,12 @@ export default function Checkout() {
                 onChange={(e) => setBank(e.target.value)}
                 required
               >
-                <option> Commercial bank of Ethiopia (CBE) </option>
-                <option> Bank of Abissinia </option>
-                <option> Dashin Bank </option>
+                <option value="Commercial bank of Ethiopia (CBE)">
+                  {" "}
+                  Commercial bank of Ethiopia (CBE){" "}
+                </option>
+                <option value="Bank of Abissinia"> Bank of Abissinia </option>
+                <option value="Dashin Bank"> Dashin Bank </option>
               </select>
               <input
                 type="text"
@@ -169,12 +175,12 @@ export default function Checkout() {
 
             <button
               className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
-              type="submit"
+              onClick={() => ApplyOrder()}
             >
               Continue
             </button>
           </div>
-        </form>
+        </div>
 
         {/* RIGHT: ORDER SUMMARY */}
         <div className="bg-gray-50 p-6 rounded-lg h-fit">

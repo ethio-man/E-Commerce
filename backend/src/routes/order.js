@@ -2,9 +2,7 @@ import express from "express";
 import { prisma } from "../startup/db.js";
 import { auth, verifyOwnership } from "../middleware/auth.js";
 const route = express.Router();
-route.get("/", auth, async (req, res) => {
-  if (req.user.role != "admin")
-    return res.status(403).json("Unauthorized access");
+route.get("/", async (req, res) => {
   try {
     const order = await prisma.orders.findMany();
     if (!order) return res.json("No order found");
@@ -27,8 +25,9 @@ route.get("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   }
 });
 route.post("/", auth, async (req, res) => {
-  const { delivery_date, total_price, payment_method, user_id, address_id } =
-    req.body;
+  const { total_price, payment_method, user_id, address_id } = req.body;
+  const delivery_date = new Date();
+  delivery_date.setDate(delivery_date.getDate() + 7);
   try {
     const order = await prisma.orders.create({
       data: {
