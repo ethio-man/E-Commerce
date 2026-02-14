@@ -21,13 +21,10 @@ export default function Checkout() {
   const [state, setState] = useState("");
   const [postal_code, setPostalCode] = useState();
   const [address_id, setAddress] = useState(null);
-
-  async function ApplyOrder() {
-    const total_price = total;
-    const payment_method = [bank, name, accountNo];
-    const user_id = user.id;
+  const user_id = user.id;
+  async function CreateAddress() {
     const country = [Country, state, appartment];
-    //creating  address
+
     try {
       const address = await Request("address").create({
         user_id,
@@ -35,15 +32,20 @@ export default function Checkout() {
         city,
         postal_code,
       });
-      if (!address) return console.error("Error to create shipping address.");
-
       setAddress(address.data.id);
+      ApplyOrder();
     } catch (err) {
       console.log("Server Error to create address", err);
     }
-    //submitting order
+  }
+
+  async function ApplyOrder() {
+    const total_price = total;
+    const payment_method = [bank, name, accountNo];
     try {
-      console.log("Address sent to backend is ", address_id);
+      //submitting order
+      if (address_id == null)
+        return console.log("Adress not created please try again.");
       const res = await Request("orders").create({
         total_price,
         payment_method,
@@ -175,7 +177,7 @@ export default function Checkout() {
 
             <button
               className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
-              onClick={() => ApplyOrder()}
+              onClick={() => CreateAddress()}
             >
               Continue
             </button>

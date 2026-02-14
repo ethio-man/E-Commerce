@@ -1,6 +1,11 @@
-import React from "react";
-
+import { useEffect } from "react";
+import Request from "../api/Request.js";
 const OrderSummary = () => {
+  useEffect(async () => {
+    const order = await Request("order").getAll();
+    console.log(order);
+  }, []);
+
   const orderData = {
     product: {
       name: "Minimalist Wristwatch",
