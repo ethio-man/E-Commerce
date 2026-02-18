@@ -13,7 +13,7 @@ const Sidebar = () => {
     { icon: Home, label: "", path: "/", active: false },
     { icon: ShoppingBag, label: "", path: "/orders", active: false },
     { icon: Heart, label: "", path: "/", active: false },
-    { icon: Settings, label: "", path: "/setting", active: false },
+    { icon: Settings, label: "", path: "/adminDashboard", active: false },
   ];
 
   return (
