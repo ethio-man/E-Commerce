@@ -5,7 +5,7 @@ import ProductOverview from "./pages/ProductOverview.jsx";
 import Cart from "./pages/Cart.jsx";
 import CheckOut from "./pages/CheckOut.jsx";
 import Login from "./pages/Login.jsx";
-import AddProduct from "./pages/AddProduct.jsx";
+import AddProduct from "./pages/admin/AddProduct.jsx";
 import OrderSummary from "./pages/OrderSummary.jsx";
 import "./App.css";
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<CheckOut />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin/products" element={<AddProduct />} />
+        <Route path="/admin/addProducts" element={<AddProduct />} />
         <Route path="/orderSummary" element={<OrderSummary />} />
       </Routes>
     </Router>
