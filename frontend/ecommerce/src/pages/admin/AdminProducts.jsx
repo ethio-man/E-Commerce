@@ -22,7 +22,7 @@ const categories = [
 ];
 
 export default function AdminProducts() {
-  const [products, setProducts] = useState(mockProducts);
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [editModal, setEditModal] = useState(null);
@@ -30,18 +30,24 @@ export default function AdminProducts() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const Products = await Request("products").getAll();
-      console.log("products are", Products);
+      try {
+        const Products = await Request("products").getAll();
+        if (Products) setProducts(Products.data);
+      } catch (err) {
+        console.log("Error to get products", err);
+      }
     }
     fetchProducts();
   }, []);
-
-  const filtered = products.filter((p) => {
+  console.log("products:", products);
+  const filtered = products?.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory =
       categoryFilter === "All" || p.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
+  console.log("hey");
+  console.log("filtered", filtered);
 
   const handleEdit = (product) => {
     setEditModal({ ...product });
@@ -134,7 +140,7 @@ export default function AdminProducts() {
                   <td className="px-6 py-3.5">
                     <div className="flex items-center gap-3">
                       <img
-                        src={product.image}
+                        src={product.src}
                         alt={product.name}
                         className="w-10 h-10 rounded-lg object-cover"
                       />
@@ -152,18 +158,18 @@ export default function AdminProducts() {
                     {product.category.replace("_", " ")}
                   </td>
                   <td className="px-6 py-3.5 text-sm font-semibold text-slate-800">
-                    ${product.price.toFixed(2)}
+                    ${parseFloat(product.price).toFixed(2)}
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-600">
-                    {product.stock}
+                    {product.number_in_stock}
                   </td>
                   <td className="px-6 py-3.5">
                     <span
                       className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${
-                        statusColors[product.status]
+                        statusColors[product.status || "active"]
                       }`}
                     >
-                      {product.status.replace("_", " ")}
+                      {product.status || "active"}
                     </span>
                   </td>
                   <td className="px-6 py-3.5">
