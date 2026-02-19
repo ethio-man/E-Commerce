@@ -21,7 +21,7 @@ export default function Checkout() {
   const [state, setState] = useState("");
   const [postal_code, setPostalCode] = useState();
   const [address_id, setAddress] = useState(null);
-  const user_id = user.id;
+  const user_id = user?.id;
   async function CreateAddress() {
     const country = [Country, state, appartment];
 

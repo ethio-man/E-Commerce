@@ -3,7 +3,6 @@ import {
   Home,
   ShoppingBag,
   ShoppingCart,
-  Heart,
   Settings,
   UserPlus,
   LogOut,
@@ -14,7 +13,6 @@ const Sidebar = () => {
     { icon: Home, label: "", path: "/", active: false },
     { icon: ShoppingCart, label: "", path: "/cart" },
     { icon: ShoppingBag, label: "", path: "/orders", active: false },
-    { icon: Heart, label: "", path: "/", active: false },
     { icon: Settings, label: "", path: "/adminDashboard", active: false },
   ];
 
@@ -24,6 +22,7 @@ const Sidebar = () => {
         <nav className="space-y-1">
           {navItems.map((item) => (
             <Link
+              key={item.path}
               to={`${item.path}`}
               className={`flex items-center p-3 rounded-lg transition-colors duration-200 ${
                 item.active

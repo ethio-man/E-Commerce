@@ -55,29 +55,6 @@ export default function NavBar() {
               </Link>
             )}
           </div>
-
-          {/* <div className="flex items-center space-x-6">
-            <div className="hidden md:flex space-x-8">
-              <Link
-                to="/cart"
-                className="text-gray-600 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md hover:bg-blue-400 hover:text-white "
-              >
-                <ShoppingCart /> <span>Cart</span>
-              </Link>
-            </div>
-            {user ? (
-              <>
-                <span>Welcome, {user.full_name}</span>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="text-gray-600 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md hover:bg-blue-400 hover:text-white  "
-              >
-                <CircleUserRound /> Login
-              </Link>
-            )}
-          </div>*/}
         </div>
       </nav>
     </header>
