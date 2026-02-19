@@ -33,6 +33,7 @@ route.post("/", [validate(productSchema)], async (req, res) => {
   // return res.status(403).json("Unauthorized access!");
   const {
     name,
+    status,
     src,
     description,
     brand,
@@ -51,6 +52,7 @@ route.post("/", [validate(productSchema)], async (req, res) => {
     const product = await prisma.products.create({
       data: {
         name,
+        status,
         src,
         description,
         brand,
@@ -78,6 +80,7 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
   const { id } = req.params;
   const {
     name,
+    status,
     src,
     description,
     brand,
@@ -96,6 +99,7 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
       where: { id: parseInt(id) },
       data: {
         name,
+        status,
         src,
         description,
         brand,
