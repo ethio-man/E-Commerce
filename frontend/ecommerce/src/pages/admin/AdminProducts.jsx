@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, Edit2, Trash2, X } from "lucide-react";
 import { mockProducts } from "../../data/adminMockData.js";
+import Request from "../../api/Request.js";
 
 const statusColors = {
   active: "bg-emerald-100 text-emerald-700",
@@ -26,6 +27,14 @@ export default function AdminProducts() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [editModal, setEditModal] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const Products = await Request("products").getAll();
+      console.log("products are", Products);
+    }
+    fetchProducts();
+  }, []);
 
   const filtered = products.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
