@@ -54,13 +54,54 @@ export default function AdminProducts() {
   };
 
   const handleSaveEdit = async () => {
-    console.log("edit modal", editModal);
+    let {
+      name,
+      status,
+      src,
+      description,
+      brand,
+      colors,
+      sizes,
+      category,
+      number_in_stock,
+      price,
+      shipping,
+      tax,
+      reviewSum,
+      reviewCount,
+      created_by,
+      related_product,
+    } = editModal;
+    if (status === null) status = "active";
+    if (category === null) category = "";
+    if (created_by === null) created_by = 1;
+    if (related_product === null) related_product = 1;
     setProducts((prev) =>
       prev.map((p) => (p.id === editModal.id ? editModal : p)),
     );
     try {
       if (editModal) {
-        await Request("products").update(editModal);
+        await Request("products").update(
+          {
+            name,
+            status,
+            src,
+            description,
+            brand,
+            colors,
+            sizes,
+            category,
+            number_in_stock,
+            price,
+            shipping,
+            tax,
+            reviewSum,
+            reviewCount,
+            created_by,
+            related_product,
+          },
+          editModal.id,
+        );
       }
     } catch (err) {
       console.log("Error to update a product.", err);
