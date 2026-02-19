@@ -84,15 +84,17 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
     src,
     description,
     brand,
-    category,
-    number_in_stock,
     colors,
     sizes,
+    category,
+    number_in_stock,
     price,
     shipping,
     tax,
-    reviewCount,
     reviewSum,
+    reviewCount,
+    created_by,
+    related_product,
   } = req.body;
   try {
     const product = await prisma.products.update({
@@ -112,6 +114,8 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
         tax,
         reviewCount,
         reviewSum,
+        created_by,
+        related_product,
       },
     });
     res.status(200).json(product);

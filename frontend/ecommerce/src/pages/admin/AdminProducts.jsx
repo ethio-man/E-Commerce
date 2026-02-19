@@ -53,10 +53,18 @@ export default function AdminProducts() {
     setEditModal({ ...product });
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
+    console.log("edit modal", editModal);
     setProducts((prev) =>
       prev.map((p) => (p.id === editModal.id ? editModal : p)),
     );
+    try {
+      if (editModal) {
+        await Request("products").update(editModal);
+      }
+    } catch (err) {
+      console.log("Error to update a product.", err);
+    }
     setEditModal(null);
   };
 
@@ -251,32 +259,54 @@ export default function AdminProducts() {
                   </label>
                   <input
                     type="number"
-                    value={editModal.stock}
+                    value={editModal.number_in_stock}
                     onChange={(e) =>
                       setEditModal({
                         ...editModal,
-                        stock: parseInt(e.target.value) || 0,
+                        number_in_stock: parseInt(e.target.value) || 0,
                       })
                     }
                     className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Status
-                </label>
-                <select
-                  value={editModal.status}
-                  onChange={(e) =>
-                    setEditModal({ ...editModal, status: e.target.value })
-                  }
-                  className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                >
-                  <option value="active">Active</option>
-                  <option value="out_of_stock">Out of Stock</option>
-                  <option value="draft">Draft</option>
-                </select>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    value={editModal.status}
+                    onChange={(e) =>
+                      setEditModal({ ...editModal, status: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  >
+                    <option value="active">Active</option>
+                    <option value="out_of_stock">Out of Stock</option>
+                    <option value="draft">Draft</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">
+                    Category
+                  </label>
+                  <select
+                    value={editModal.category}
+                    onChange={(e) =>
+                      setEditModal({ ...editModal, category: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  >
+                    <option value="ELECTRONICS">ELECTRONICS</option>
+                    <option value="ACCESSORIES">ACCESSORIES</option>
+                    <option value="FASHION">FASHION</option>
+                    <option value="HOME_GARDEN">HOME_GARDEN</option>
+                    <option value="BEAUTY">BEAUTY</option>
+                    <option value="SPORTS">SPORTS</option>
+                    <option value="TOYS">TOYS</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div className="flex justify-end gap-3 mt-6">

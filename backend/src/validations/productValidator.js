@@ -14,4 +14,6 @@ export const productSchema = Joi.object({
   tax: Joi.number().min(0).max(100),
   reviewSum: Joi.number().min(0),
   reviewCount: Joi.number().min(0),
+  created_by: Joi.string().max(100),
+  related_product: Joi.array().items(Joi.number()), //number because i assummed ids passed
 });
