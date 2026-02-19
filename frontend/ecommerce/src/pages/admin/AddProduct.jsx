@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Request from "../api/Request.js";
-import { InputGroup } from "../components/InputGroup.jsx";
-import { ProductPreview } from "../components/ProductPreview.jsx";
+import Request from "../../api/Request.js";
+import { InputGroup } from "../../components/InputGroup.jsx";
+import { ProductPreview } from "../../components/ProductPreview.jsx";
 export default function App() {
   const Category = {
     ELECTRONICS: {
@@ -203,10 +203,10 @@ export default function App() {
                                 <option key={subKey} value={subKey}>
                                   {subValue}
                                 </option>
-                              )
+                              ),
                             )}
                           </optgroup>
-                        )
+                        ),
                       )}
                     </InputGroup>
 

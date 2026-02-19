@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {
   Home,
   ShoppingBag,
+  ShoppingCart,
   Heart,
   Settings,
   UserPlus,
@@ -11,6 +12,7 @@ import {
 const Sidebar = () => {
   const navItems = [
     { icon: Home, label: "", path: "/", active: false },
+    { icon: ShoppingCart, label: "", path: "/cart" },
     { icon: ShoppingBag, label: "", path: "/orders", active: false },
     { icon: Heart, label: "", path: "/", active: false },
     { icon: Settings, label: "", path: "/adminDashboard", active: false },
