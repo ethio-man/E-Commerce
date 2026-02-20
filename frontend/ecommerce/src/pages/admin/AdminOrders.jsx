@@ -16,7 +16,7 @@ export default function AdminOrders() {
     const [activeTab, setActiveTab] = useState("All");
     const [search, setSearch] = useState("");
     const [detailModal, setDetailModal] = useState(null);
-
+//filter the orders by their status
     const filtered = orders.filter((o) => {
         const matchesTab =
             activeTab === "All" || o.status === activeTab.toLowerCase();
