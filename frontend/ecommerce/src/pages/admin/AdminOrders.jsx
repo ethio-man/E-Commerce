@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Eye, X, ChevronDown } from "lucide-react";
 import { mockOrders } from "../../data/adminMockData.js";
-
+//list of colors for different statuses
 const statusColors = {
     delivered: "bg-emerald-100 text-emerald-700",
     shipped: "bg-blue-100 text-blue-700",
