@@ -25,7 +25,7 @@ export default function AdminOrders() {
             o.customer.toLowerCase().includes(search.toLowerCase());
         return matchesTab && matchesSearch;
     });
-
+    //handling status change
     const handleStatusChange = (orderId, newStatus) => {
         setOrders((prev) =>
             prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
