@@ -142,9 +142,10 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
     res.status(500).json({ error: "Error to update a product" });
   }
 });
-route.delete("/:id", auth, async (req, res) => {
-  if (req.user.role != "admin")
-    return res.status(403).json("Unauthorized access");
+//auth
+route.delete("/:id", async (req, res) => {
+  //if (req.user.role != "admin")
+  //return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   try {
     const product = await prisma.products.delete({

@@ -5,6 +5,7 @@ function Request(table) {
     getOne: async (id) => await axioClient.get(`/${table}/${id}`),
     create: async (data) => await axioClient.post(`/${table}`, data),
     update: async (data, id) => await axioClient.put(`/${table}/${id}`, data),
+    delete: async (id) => await axioClient.delete(`/${table}/${id}`),
   };
   return route;
 }

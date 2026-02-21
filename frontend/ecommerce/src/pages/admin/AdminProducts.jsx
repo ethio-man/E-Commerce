@@ -104,7 +104,7 @@ export default function AdminProducts() {
             reviewCount,
             created_by,
           },
-          editModal.id,
+          id,
         );
       }
     } catch (err) {
@@ -113,9 +113,14 @@ export default function AdminProducts() {
     setEditModal(null);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
-    setDeleteConfirm(null);
+    try {
+      await Request("products").delete(id);
+      setDeleteConfirm(null);
+    } catch (err) {
+      console.log("Error to remove product.", err);
+    }
   };
 
   return (
