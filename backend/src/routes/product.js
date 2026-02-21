@@ -96,6 +96,25 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
     created_by,
     related_product,
   } = req.body;
+  console.log("Update product id is ", id, typeof id);
+  console.log("products properties are", {
+    name,
+    status,
+    src,
+    description,
+    brand,
+    colors,
+    sizes,
+    category,
+    number_in_stock,
+    price,
+    shipping,
+    tax,
+    reviewSum,
+    reviewCount,
+    created_by,
+    related_product,
+  });
   try {
     const product = await prisma.products.update({
       where: { id: parseInt(id) },
@@ -115,13 +134,12 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
         reviewCount,
         reviewSum,
         created_by,
-        related_product,
       },
     });
     res.status(200).json(product);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Error to update an product" });
+    res.status(500).json({ error: "Error to update a product" });
   }
 });
 route.delete("/:id", auth, async (req, res) => {

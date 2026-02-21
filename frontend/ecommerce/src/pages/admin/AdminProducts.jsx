@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, Edit2, Trash2, X } from "lucide-react";
 import { mockProducts } from "../../data/adminMockData.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 import Request from "../../api/Request.js";
 
 const statusColors = {
@@ -22,6 +23,7 @@ const categories = [
 ];
 
 export default function AdminProducts() {
+  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -55,6 +57,7 @@ export default function AdminProducts() {
 
   const handleSaveEdit = async () => {
     let {
+      id,
       name,
       status,
       src,
@@ -74,13 +77,13 @@ export default function AdminProducts() {
     } = editModal;
     if (status === null) status = "active";
     if (category === null) category = "";
-    if (created_by === null) created_by = 1;
-    if (related_product === null) related_product = 1;
+    created_by = user.id;
     setProducts((prev) =>
       prev.map((p) => (p.id === editModal.id ? editModal : p)),
     );
     try {
       if (editModal) {
+        console.log("The product's id is ", editModal.id, typeof editModal.id);
         await Request("products").update(
           {
             name,
@@ -98,7 +101,6 @@ export default function AdminProducts() {
             reviewSum,
             reviewCount,
             created_by,
-            related_product,
           },
           editModal.id,
         );
