@@ -48,14 +48,16 @@ export default function AdminProducts() {
       categoryFilter === "All" || p.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
-  console.log("hey");
-  console.log("filtered", filtered);
 
   const handleEdit = (product) => {
-    setEditModal({ ...product });
+    setEditModal({
+      ...product,
+      category: product.category || "ELECTRONICS",
+    });
   };
 
   const handleSaveEdit = async () => {
+    console.log("check at start category is", editModal.category);
     let {
       id,
       name,
@@ -75,15 +77,15 @@ export default function AdminProducts() {
       created_by,
       related_product,
     } = editModal;
+    console.log("check at middle, category is", category);
     if (status === null) status = "active";
-    if (category === null) category = "";
     created_by = user.id;
     setProducts((prev) =>
       prev.map((p) => (p.id === editModal.id ? editModal : p)),
     );
     try {
       if (editModal) {
-        console.log("The product's id is ", editModal.id, typeof editModal.id);
+        console.log(" category at the end is", category);
         await Request("products").update(
           {
             name,
