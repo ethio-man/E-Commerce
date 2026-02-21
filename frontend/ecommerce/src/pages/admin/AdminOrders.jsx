@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Eye, X, ChevronDown } from "lucide-react";
 import { mockOrders } from "../../data/adminMockData.js";
-
+//list of colors for different statuses
 const statusColors = {
     delivered: "bg-emerald-100 text-emerald-700",
     shipped: "bg-blue-100 text-blue-700",
@@ -16,7 +16,7 @@ export default function AdminOrders() {
     const [activeTab, setActiveTab] = useState("All");
     const [search, setSearch] = useState("");
     const [detailModal, setDetailModal] = useState(null);
-
+//filter the orders by their status
     const filtered = orders.filter((o) => {
         const matchesTab =
             activeTab === "All" || o.status === activeTab.toLowerCase();
@@ -25,7 +25,7 @@ export default function AdminOrders() {
             o.customer.toLowerCase().includes(search.toLowerCase());
         return matchesTab && matchesSearch;
     });
-
+    //handling status change
     const handleStatusChange = (orderId, newStatus) => {
         setOrders((prev) =>
             prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
