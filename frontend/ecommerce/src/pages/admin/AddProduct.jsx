@@ -4,61 +4,13 @@ import { InputGroup } from "../../components/InputGroup.jsx";
 import { ProductPreview } from "../../components/ProductPreview.jsx";
 export default function App() {
   const Category = {
-    ELECTRONICS: {
-      iphone: "iphone",
-      galaxy: "galaxy",
-      realme: "realme",
-      tecno: "tecno",
-      vivo: "vivo",
-    },
-
-    ACCESSORIES: {
-      luggage: "luggage",
-      totes: "totes",
-      sunglasses: "sunglasses",
-      belts: "belts",
-      watches: "watches",
-      wallets: "wallets",
-      backpacks: "backpacks",
-    },
-
-    FASHION: {
-      cargos: "cargos",
-      dresses: "dresses",
-      skirts: "skirts",
-      jackets: "jackets",
-      sweaters: "sweaters",
-      jeans: "jeans",
-      shirts: "shirt",
-    },
-
-    HOME_GARDEN: {
-      furniture: "furniture",
-      kitchen: "kitchen",
-      decor: "decor",
-    },
-
-    BEAUTY: {
-      skincare: "skincare",
-      makeup: "makeup",
-      haircare: "haircare",
-    },
-
-    SPORTS: {
-      outdoor: "outdoor",
-      fitness: "fitness",
-      team_sports: "team_sports",
-    },
-
-    TOYS: {
-      puzzles: "puzzles",
-      board_games: "board_games",
-      dolls: "dolls",
-    },
-
-    OTHER: {
-      miscellaneous: "miscellaneous",
-    },
+    ELECTRONICS: "ELECTRONICS",
+    ACCESSORIES: "ACCESSORIES",
+    FASHION: "FASHION",
+    HOME_GARDEN: "HOME_GARDEN",
+    BEAUTY: "BEAUTY",
+    SPORTS: "SPORTS",
+    TOYS: "TOYS",
   };
 
   const INITIAL_PRODUCT_STATE = {
@@ -191,23 +143,13 @@ export default function App() {
                       onChange={handleChange}
                     >
                       <option value="">Select a category</option>
-
-                      {Object.entries(Category).map(
-                        ([mainKey, subCategories]) => (
-                          <optgroup
-                            key={mainKey}
-                            label={mainKey.replace("_", " ")}
-                          >
-                            {Object.entries(subCategories).map(
-                              ([subKey, subValue]) => (
-                                <option key={subKey} value={subKey}>
-                                  {subValue}
-                                </option>
-                              ),
-                            )}
-                          </optgroup>
-                        ),
-                      )}
+                      <option value="ELECTRONICS">ELECTRONICS</option>
+                      <option value="ACCESSORIES">ACCESSORIES</option>
+                      <option value="FASHION">FASHION</option>
+                      <option value="HOME_GARDEN">HOME_GARDEN</option>
+                      <option value="BEAUTY">BEAUTY</option>
+                      <option value="SPORTS">SPORTS</option>
+                      <option value="TOYS">TOYS</option>
                     </InputGroup>
 
                     <InputGroup
@@ -400,6 +342,7 @@ export default function App() {
                 <button
                   type="button"
                   className="text-sm font-semibold leading-6 text-slate-900 hover:text-indigo-600 transition-colors"
+                  onClick={() => setIsSubmitting(false)}
                 >
                   Cancel
                 </button>
