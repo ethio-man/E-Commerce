@@ -40,10 +40,12 @@ export default function AdminOrders() {
 
   const handleStatusChange = (orderId, newStatus) => {
     setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
+      prev.map((o) =>
+        o.id === orderId ? { ...o, paid_status: newStatus } : o,
+      ),
     );
     if (detailModal?.id === orderId) {
-      setDetailModal((prev) => ({ ...prev, status: newStatus }));
+      setDetailModal((prev) => ({ ...prev, paid_status: newStatus }));
     }
   };
 
@@ -126,12 +128,12 @@ export default function AdminOrders() {
                     {order.items} items
                   </td>
                   <td className="px-6 py-3.5 text-sm font-semibold text-slate-800">
-                    ${order.total.toFixed(2)}
+                    ${parseFloat(order.total_price).toFixed(2)}
                   </td>
                   <td className="px-6 py-3.5">
                     <div className="relative inline-block">
                       <select
-                        value={order.status}
+                        value={order.paid_status}
                         onChange={(e) =>
                           handleStatusChange(order.id, e.target.value)
                         }
@@ -151,7 +153,7 @@ export default function AdminOrders() {
                     </div>
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-500">
-                    {order.date}
+                    {order.order_date.split("T")[0]}
                   </td>
                   <td className="px-6 py-3.5 text-right">
                     <button
@@ -198,7 +200,7 @@ export default function AdminOrders() {
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Customer</span>
                 <span className="text-sm font-medium text-slate-700">
-                  {detailModal.customer}
+                  {detailModal.payment_method[1]}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -216,13 +218,13 @@ export default function AdminOrders() {
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Total</span>
                 <span className="text-sm font-bold text-slate-800">
-                  ${detailModal.total.toFixed(2)}
+                  ${parseFloat(detailModal.total_price).toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Payment Method</span>
                 <span className="text-sm text-slate-700">
-                  {detailModal.paymentMethod}
+                  {detailModal.payment_method[0]}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -232,13 +234,15 @@ export default function AdminOrders() {
                     statusColors[detailModal.status]
                   }`}
                 >
-                  {detailModal.status}
+                  {detailModal.paid_status
+                    ? detailModal.paid_status
+                    : "Pending"}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Date</span>
                 <span className="text-sm text-slate-700">
-                  {detailModal.date}
+                  {detailModal.order_date.split("T")[0]}
                 </span>
               </div>
             </div>
