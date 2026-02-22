@@ -44,13 +44,14 @@ route.post("/", auth, async (req, res) => {
     res.status(404).json({ error: "Error to make order" });
   }
 });
+//
 route.put("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   const { id } = req.params;
-  const { total_price, payment_method, address_id } = req.body;
+  const { total_price, payment_method, address_id, paid_status } = req.body;
   try {
     const order = await prisma.orders.update({
-      where: { id: paresInt(id) },
-      data: { total_price, payment_method, address_id },
+      where: { id: parseInt(id) },
+      data: { total_price, payment_method, address_id, paid_status },
     });
     res.json(order);
   } catch (err) {

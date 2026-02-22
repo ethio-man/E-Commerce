@@ -38,7 +38,8 @@ export default function AdminOrders() {
     return matchesTab && matchesSearch;
   });
 
-  const handleStatusChange = (orderId, newStatus) => {
+  const handleStatusChange = async (orderId, newStatus) => {
+    console.log(orderId);
     setOrders((prev) =>
       prev.map((o) =>
         o.id === orderId ? { ...o, paid_status: newStatus } : o,
@@ -46,6 +47,15 @@ export default function AdminOrders() {
     );
     if (detailModal?.id === orderId) {
       setDetailModal((prev) => ({ ...prev, paid_status: newStatus }));
+    }
+    try {
+      const order = orders.find((o) => o.id === orderId);
+      await Request("orders").update(
+        { ...order, paid_status: newStatus },
+        orderId,
+      );
+    } catch (err) {
+      console.log("Error to change status", err);
     }
   };
 

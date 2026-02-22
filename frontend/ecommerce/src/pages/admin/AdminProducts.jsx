@@ -57,7 +57,6 @@ export default function AdminProducts() {
   };
 
   const handleSaveEdit = async () => {
-    console.log("check at start category is", editModal.category);
     let {
       id,
       name,
@@ -77,7 +76,6 @@ export default function AdminProducts() {
       created_by,
       related_product,
     } = editModal;
-    console.log("check at middle, category is", category);
     if (status === null) status = "active";
     created_by = user.id;
     setProducts((prev) =>
@@ -85,7 +83,6 @@ export default function AdminProducts() {
     );
     try {
       if (editModal) {
-        console.log(" category at the end is", category);
         await Request("products").update(
           {
             name,

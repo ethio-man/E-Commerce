@@ -4,4 +4,5 @@ export const orderSchema = Joi.object({
   payment_method: Joi.string().max(200).required(),
   user_id: Joi.number().required(),
   address_id: Joi.number().required(),
+  paid_status: Joi.string().max(53),
 });
