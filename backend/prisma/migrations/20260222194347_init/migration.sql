@@ -3,6 +3,8 @@ CREATE TABLE "address" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER,
     "country" VARCHAR(53),
+    "state" VARCHAR(53),
+    "appartment" VARCHAR(53),
     "city" VARCHAR(53),
     "postal_code" VARCHAR(20),
 
@@ -38,7 +40,9 @@ CREATE TABLE "orders" (
     "delivery_date" DATE,
     "total_price" DECIMAL(10,2),
     "payment_method" VARCHAR(53),
-    "paid_status" BOOLEAN DEFAULT false,
+    "name_on_bank" VARCHAR(53),
+    "accountNo" VARCHAR(53),
+    "paid_status" TEXT DEFAULT 'Pending',
     "user_id" INTEGER,
     "address_id" INTEGER,
 
@@ -48,15 +52,20 @@ CREATE TABLE "orders" (
 -- CreateTable
 CREATE TABLE "products" (
     "id" SERIAL NOT NULL,
-    "product_name" VARCHAR(100),
+    "name" VARCHAR(100),
+    "status" VARCHAR(50),
+    "src" VARCHAR(250),
     "description" TEXT,
     "brand" VARCHAR(53),
     "category" VARCHAR(53),
     "number_in_stock" INTEGER,
+    "colors" TEXT[],
+    "sizes" TEXT[],
     "price" DECIMAL(10,2),
     "shipping" DECIMAL(10,2),
     "tax" DECIMAL(10,2),
-    "rating" INTEGER,
+    "reviewCount" INTEGER NOT NULL DEFAULT 0,
+    "reviewSum" INTEGER NOT NULL DEFAULT 0,
     "created_by" INTEGER,
     "related_product" INTEGER,
 
@@ -68,7 +77,9 @@ CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "full_name" VARCHAR(100),
     "email" VARCHAR(100) NOT NULL,
-    "password" VARCHAR(255) NOT NULL,
+    "password" VARCHAR(255),
+    "google_id" TEXT,
+    "authProvider" TEXT NOT NULL DEFAULT 'local',
     "role" VARCHAR(20) DEFAULT 'user',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -97,7 +108,6 @@ CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "url" TEXT NOT NULL,
-    "label" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "path" TEXT NOT NULL,
     "collectionId" INTEGER NOT NULL,
@@ -107,6 +117,9 @@ CREATE TABLE "Category" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_google_id_key" ON "users"("google_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "carts_user_id_product_id_key" ON "carts"("user_id", "product_id");
@@ -136,7 +149,7 @@ ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id"
 ALTER TABLE "products" ADD CONSTRAINT "products_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "products" ADD CONSTRAINT "products_related_product_fkey" FOREIGN KEY ("related_product") REFERENCES "products"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "products" ADD CONSTRAINT "products_related_product_fkey" FOREIGN KEY ("related_product") REFERENCES "products"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "carts" ADD CONSTRAINT "carts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
