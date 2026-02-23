@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-export default function ({ product }) {
+export default function ({ category }) {
   return (
     <Link
-      to={product.path}
+      to={category.path}
       className="flex flex-col w-32 mx-4 text-center hover:translate-y-[-8px] "
     >
-      <img src={product.url} className="w-full h-full" />
+      <img src={category.url} className="w-full h-full" />
 
-      <p className="text-gray-600 ">{product.name}</p>
-      <h2>${product.price}</h2>
+      <p className="text-gray-600 ">{category.name}</p>
     </Link>
   );
 }

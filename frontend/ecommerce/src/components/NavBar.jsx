@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext.jsx";
 export default function NavBar() {
   const { user } = useAuth();
   const initials = user?.full_name.slice(0, 2).toUpperCase();
-  console.log("user", user);
   return (
     <header className="bg-white shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
