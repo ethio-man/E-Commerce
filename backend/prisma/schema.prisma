@@ -59,7 +59,7 @@ model products {
   id              Int           @id @default(autoincrement())
   name            String?       @db.VarChar(100)
   status          String?       @db.VarChar(50)
-  src             String?       @db.VarChar(250)
+  src             String?       @db.VarChar(450)
   description     String?
   brand           String?       @db.VarChar(53)
   category        String?       @db.VarChar(53)

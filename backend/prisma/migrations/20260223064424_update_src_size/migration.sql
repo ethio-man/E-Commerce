@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "products" ALTER COLUMN "src" SET DATA TYPE VARCHAR(450);
