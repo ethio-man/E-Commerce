@@ -78,62 +78,14 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
   //if (req.user.role != "admin")
   // return res.status(403).json("Unauthorized access");
   const { id } = req.params;
-  const {
-    name,
-    status,
-    src,
-    description,
-    brand,
-    colors,
-    sizes,
-    category,
-    number_in_stock,
-    price,
-    shipping,
-    tax,
-    reviewSum,
-    reviewCount,
-    created_by,
-    related_product,
-  } = req.body;
+
   console.log("Update product id is ", id, typeof id);
-  console.log("products properties are", {
-    name,
-    status,
-    src,
-    description,
-    brand,
-    colors,
-    sizes,
-    category,
-    number_in_stock,
-    price,
-    shipping,
-    tax,
-    reviewSum,
-    reviewCount,
-    created_by,
-    related_product,
-  });
+
   try {
     const product = await prisma.products.update({
       where: { id: parseInt(id) },
       data: {
-        name,
-        status,
-        src,
-        description,
-        brand,
-        category,
-        number_in_stock,
-        colors,
-        sizes,
-        price,
-        shipping,
-        tax,
-        reviewCount,
-        reviewSum,
-        created_by,
+        ...req.body,
       },
     });
     res.status(200).json(product);

@@ -42,15 +42,16 @@ route.post("/", auth, async (req, res) => {
     res.status(500).json({ message: "Error to create a category" });
   }
 });
-route.put("/:id", auth, async (req, res) => {
-  if (req.user.role != "admin")
-    return res.status(403).json("Unauthorized access!");
+//auth
+route.put("/:id", async (req, res) => {
+  // if (req.user.role != "admin")
+  //   return res.status(403).json("Unauthorized access!");
   const { id } = req.params;
-  const { name, url, path, collectionId } = req.body;
+  // const { name, url, path, collectionId } = req.body;
   try {
     const category = await prisma.category.update({
       where: { id: parseInt(id) },
-      data: { name, url, path, collectionId },
+      data: { ...req.body },
     });
     if (!category) res.status(404).json("Error to update a category.");
     res.json(category);
