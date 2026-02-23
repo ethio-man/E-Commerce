@@ -1,10 +1,10 @@
 // seed.js
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const productsData = [
+  const products = [
     // phones
     {
       name: "Samsung Galaxy S26 Ultra",
@@ -2157,20 +2157,19 @@ async function main() {
     },
   ];
 
-  for (const p of productsData) {
-    await prisma.products.upsert({
-      where: { name: p.name },
-      update: p,
-      create: p,
+  for (const product of products) {
+    await prisma.products.create({
+      data: product,
     });
   }
 
-  console.log(`Successfully seeded ${productsData.length} products!`);
+  console.log("✅ Mock data seeded successfully.");
 }
 
 main()
   .catch((e) => {
     console.error(e);
-    process.exit(1);
   })
-  .finally(async () => await prisma.$disconnect());
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
