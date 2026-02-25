@@ -26,12 +26,21 @@ route.get("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
 });
 
 route.post("/", auth, async (req, res) => {
-  const { total_price, payment_method, user_id, address_id } = req.body;
+  const {
+    name_on_bank,
+    accountNo,
+    total_price,
+    payment_method,
+    user_id,
+    address_id,
+  } = req.body;
   const delivery_date = new Date();
   delivery_date.setDate(delivery_date.getDate() + 7);
   try {
     const order = await prisma.orders.create({
       data: {
+        name_on_bank,
+        accountNo,
         delivery_date,
         total_price,
         payment_method,
