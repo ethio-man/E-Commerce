@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Bell, Search } from "lucide-react";
 import AdminSidebar from "./AdminSidebar.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const pageTitles = {
   "/admin/dashboard": "Dashboard",
@@ -14,6 +15,7 @@ const pageTitles = {
 };
 
 export default function AdminLayout() {
+  const { user } = useAuth();
   const location = useLocation();
   const pageTitle = pageTitles[location.pathname] || "Admin";
 
@@ -48,10 +50,10 @@ export default function AdminLayout() {
             {/* Admin Avatar */}
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                DA
+                {user?.full_name.slice(0, 2).toUpperCase()}
               </div>
               <span className="text-sm font-medium text-slate-700 hidden sm:inline">
-                Admin
+                {user?.full_name}
               </span>
             </div>
           </div>
