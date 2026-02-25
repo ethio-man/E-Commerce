@@ -11,8 +11,8 @@ export default function Checkout() {
   const tax = subtotal * 0.085;
   const total = subtotal + shipping + tax;
 
-  const [bank, setBank] = useState("");
-  const [name, setName] = useState("");
+  const [payment_method, setBank] = useState("");
+  const [name_on_bank, setName] = useState("");
   const [accountNo, setAccountNo] = useState();
 
   const [country, setCountry] = useState("");
@@ -41,12 +41,13 @@ export default function Checkout() {
 
   async function ApplyOrder() {
     const total_price = total;
-    const payment_method = [bank, name, accountNo];
     try {
       //submitting order
       if (address_id == null)
         return console.log("Adress not created please try again.");
       const res = await Request("orders").create({
+        name_on_bank,
+        accountNo,
         total_price,
         payment_method,
         user_id,
