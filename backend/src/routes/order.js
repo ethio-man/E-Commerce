@@ -4,7 +4,12 @@ import { auth, verifyOwnership } from "../middleware/auth.js";
 const route = express.Router();
 route.get("/", async (req, res) => {
   try {
-    const order = await prisma.orders.findMany();
+    const order = await prisma.orders.findMany({
+      include: {
+        users: true,
+        address: true,
+      },
+    });
     if (!order) return res.json("No order found");
     res.json(order);
   } catch (err) {
@@ -47,8 +52,13 @@ route.post("/", auth, async (req, res) => {
         users: { connect: { id: user_id } },
         address: { connect: { id: address_id } },
       },
+      include: {
+        users: true,
+        address: true,
+      },
     });
-    res.status(201).json(order);
+    const userAddress = await prisma.user;
+    order.email = res.status(201).json(order);
   } catch (err) {
     console.log(err);
     res.status(404).json({ error: "Error to make order" });

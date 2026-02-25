@@ -210,19 +210,25 @@ export default function AdminOrders() {
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Customer</span>
                 <span className="text-sm font-medium text-slate-700">
-                  {detailModal.payment_method[1]}
+                  {detailModal.name_on_bank}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Email</span>
                 <span className="text-sm text-slate-700">
-                  {detailModal.email}
+                  {detailModal.users.email}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-slate-500">Items</span>
+                <span className="text-sm text-slate-500">Address</span>
                 <span className="text-sm text-slate-700">
-                  {detailModal.items} items
+                  {`${detailModal.address.country}: ${detailModal.address.city}: ${detailModal.address.appartment}`}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-500">Bank account</span>
+                <span className="text-sm text-slate-700">
+                  {detailModal.accountNo}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -234,7 +240,7 @@ export default function AdminOrders() {
               <div className="flex justify-between">
                 <span className="text-sm text-slate-500">Payment Method</span>
                 <span className="text-sm text-slate-700">
-                  {detailModal.payment_method[0]}
+                  {detailModal.payment_method}
                 </span>
               </div>
               <div className="flex justify-between items-center">
