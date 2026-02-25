@@ -52,13 +52,15 @@ route.put(
   [auth, validate(addressSchema), verifyOwnership("address")],
   async (req, res) => {
     const { id } = req.params;
-    const { user_id, country, city, postal_code } = req.body;
+    const { user_id, country, state, appartment, city, postal_code } = req.body;
     try {
       const address = await prisma.address.update({
         where: { id: parseInt(id) },
         data: {
           users: { connect: { id: user_id } },
           country,
+          state,
+          appartment,
           city,
           postal_code,
         },
