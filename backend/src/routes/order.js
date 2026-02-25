@@ -24,6 +24,7 @@ route.get("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
     res.status(404).json({ error: "Error to get order" });
   }
 });
+
 route.post("/", auth, async (req, res) => {
   const { total_price, payment_method, user_id, address_id } = req.body;
   const delivery_date = new Date();

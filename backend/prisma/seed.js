@@ -4,7 +4,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const products = [
+  /* 
+ const products = [
     // phones
     {
       name: "Samsung Galaxy S26 Ultra",
@@ -606,7 +607,7 @@ async function main() {
       reviewSum: 1800,
     },
 
-    /* MAKEUP */
+    /// MAKEUP 
     {
       name: "Fenty Pro Filt'r",
       status: "active",
@@ -656,7 +657,7 @@ async function main() {
       reviewSum: 5760,
     },
 
-    /* HAIRCARE */
+    // HAIRCARE 
     {
       name: "Olaplex No. 3",
       status: "active",
@@ -706,7 +707,7 @@ async function main() {
       reviewSum: 4704,
     },
 
-    /* FRAGRANCE */
+    //FRAGRANCE 
     {
       name: "Chanel No. 5",
       status: "active",
@@ -756,7 +757,7 @@ async function main() {
       reviewSum: 3072,
     },
 
-    /* GYM */
+    // GYM 
     {
       name: "Rogue Ohio Bar",
       status: "active",
@@ -806,7 +807,7 @@ async function main() {
       reviewSum: 4405,
     },
 
-    /* BANDS */
+    // BANDS 
     {
       name: "Fitbit Charge 6",
       status: "active",
@@ -856,7 +857,7 @@ async function main() {
       reviewSum: 2160,
     },
 
-    /* SOCCER */
+    // SOCCER 
     {
       name: "Adidas Al Rihla",
       status: "active",
@@ -906,7 +907,7 @@ async function main() {
       reviewSum: 456,
     },
 
-    /* SPORTWEAR */
+    // SPORTWEAR 
     {
       name: "Lululemon Align Pant",
       status: "active",
@@ -956,7 +957,7 @@ async function main() {
       reviewSum: 1974,
     },
 
-    /* EDUCATION TOYS */
+    // EDUCATION TOYS 
     {
       name: "Osmo Genius Starter Kit",
       status: "active",
@@ -1006,7 +1007,7 @@ async function main() {
       reviewSum: 11520,
     },
 
-    /* MUSICAL TOYS */
+    // MUSICAL TOYS 
     {
       name: "Fisher-Price Piano",
       status: "active",
@@ -1056,7 +1057,7 @@ async function main() {
       reviewSum: 987,
     },
 
-    /* BIKES */
+    // BIKES 
     {
       name: "Schwinn Kempton",
       status: "active",
@@ -1106,7 +1107,7 @@ async function main() {
       reviewSum: 10780,
     },
 
-    /* PRETEND PLAY */
+    // PRETEND PLAY 
     {
       name: "Melissa & Doug Kitchen",
       status: "active",
@@ -1156,7 +1157,7 @@ async function main() {
       reviewSum: 4080,
     },
 
-    /* DOLLS */
+    // DOLLS 
     {
       name: "Barbie Dreamhouse Doll",
       status: "active",
@@ -1206,7 +1207,7 @@ async function main() {
       reviewSum: 16800,
     },
 
-    /* BUILDING SETS */
+    // BUILDING SETS 
     {
       name: "LEGO Hogwarts Express",
       status: "active",
@@ -1256,7 +1257,7 @@ async function main() {
       reviewSum: 2880,
     },
 
-    /* REMOTE TOYS */
+    // REMOTE TOYS 
     {
       name: "DJI Mini 3 Pro",
       status: "active",
@@ -1306,7 +1307,7 @@ async function main() {
       reviewSum: 4620,
     },
 
-    /* SWIMMING */
+    // SWIMMING 
     {
       name: "Speedo Vanquisher 2.0",
       status: "active",
@@ -1356,7 +1357,7 @@ async function main() {
       reviewSum: 2430,
     },
 
-    /* SKATTING */
+    // SKATTING 
     {
       name: "Rollerblade Zetrablade",
       status: "active",
@@ -1406,7 +1407,7 @@ async function main() {
       reviewSum: 1886,
     },
 
-    /* TABLE TENNIS */
+    // TABLE TENNIS 
     {
       name: "STIGA Advantage Pro",
       status: "active",
@@ -1456,7 +1457,7 @@ async function main() {
       reviewSum: 5280,
     },
 
-    /* BATH */
+    // BATH 
     {
       name: "Lush Intergalactic",
       status: "active",
@@ -1506,7 +1507,7 @@ async function main() {
       reviewSum: 3864,
     },
 
-    /* GROOMING */
+    // GROOMING 
     {
       name: "Manscaped Lawn Mower 4.0",
       status: "active",
@@ -1556,7 +1557,7 @@ async function main() {
       reviewSum: 1536,
     },
 
-    /* COSMOTICS BAGS */
+    // COSMOTICS BAGS 
     {
       name: "Away The Cosmetics Case",
       status: "active",
@@ -1606,7 +1607,7 @@ async function main() {
       reviewSum: 864,
     },
 
-    /* BINS */
+    // BINS 
     {
       name: "Simplehuman 45L Step Bin",
       status: "active",
@@ -1656,7 +1657,7 @@ async function main() {
       reviewSum: 15360,
     },
 
-    /* BATHROOM */
+    // BATHROOM 
     {
       name: "Kohler Moxie Showerhead",
       status: "active",
@@ -1706,7 +1707,7 @@ async function main() {
       reviewSum: 44650,
     },
 
-    /* SLEEPWEAR */
+    // SLEEPWEAR 
     {
       name: "Eberjey Gisele PJ",
       status: "active",
@@ -1756,7 +1757,7 @@ async function main() {
       reviewSum: 1764,
     },
 
-    /* TRADITIONAL */
+    // TRADITIONAL 
     {
       name: "Fabindia Silk Kurta",
       status: "active",
@@ -1806,7 +1807,7 @@ async function main() {
       reviewSum: 318,
     },
 
-    /* KIDS CLOTHING */
+    // KIDS CLOTHING 
     {
       name: "Carter's 5-Pack Bodysuits",
       status: "active",
@@ -1856,7 +1857,7 @@ async function main() {
       reviewSum: 4032,
     },
 
-    /* HAIR (Accessories) */
+    // HAIR (Accessories) 
     {
       name: "Slip Silk Scrunchies",
       status: "active",
@@ -1906,7 +1907,7 @@ async function main() {
       reviewSum: 39100,
     },
 
-    /* SUNGLASSES */
+    // SUNGLASSES 
     {
       name: "Ray-Ban Aviator",
       status: "active",
@@ -1956,7 +1957,7 @@ async function main() {
       reviewSum: 3864,
     },
 
-    /* BELTS */
+    // BELTS 
     {
       name: "Gucci Double G Belt",
       status: "active",
@@ -2006,7 +2007,7 @@ async function main() {
       reviewSum: 2880,
     },
 
-    /* EARBUDS */
+    // EARBUDS 
     {
       name: "AirPods Pro 2",
       status: "active",
@@ -2056,7 +2057,7 @@ async function main() {
       reviewSum: 13950,
     },
 
-    /* VR */
+    // VR 
     {
       name: "Meta Quest 3",
       status: "active",
@@ -2106,7 +2107,7 @@ async function main() {
       reviewSum: 3072,
     },
 
-    /* SECURITY CAMERAS */
+    // SECURITY CAMERAS 
     {
       name: "Ring Video Doorbell",
       status: "active",
@@ -2156,10 +2157,37 @@ async function main() {
       reviewSum: 9450,
     },
   ];
-
-  for (const product of products) {
-    await prisma.products.create({
-      data: product,
+*/
+  const orders = [
+    // ---------------- SAMPLE ORDER ----------------
+    {
+      order_date: new Date("2026-02-24T10:30:00Z"),
+      delivery_date: new Date("2026-03-01"),
+      total_price: 165.0,
+      payment_method: "Credit Card",
+      name_on_bank: "John Doe",
+      accountNo: "1234567890",
+      paid_status: "Pending",
+      user_id: 1,
+      address_id: 1,
+      order_items: [
+        {
+          product_id: 1, // assuming product with id 1 exists
+          quantity: 1,
+          price: 50.0,
+        },
+        {
+          product_id: 2, // assuming product with id 2 exists
+          quantity: 2,
+          price: 57.5,
+        },
+      ],
+    },
+  ];
+  for (const order of orders) {
+    h;
+    await prisma.orders.create({
+      data: order,
     });
   }
 

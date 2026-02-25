@@ -15,7 +15,7 @@ export default function Checkout() {
   const [name, setName] = useState("");
   const [accountNo, setAccountNo] = useState();
 
-  const [Country, setCountry] = useState("");
+  const [country, setCountry] = useState("");
   const [appartment, setAppartment] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -23,12 +23,12 @@ export default function Checkout() {
   const [address_id, setAddress] = useState(null);
   const user_id = user?.id;
   async function CreateAddress() {
-    const country = [Country, state, appartment];
-
     try {
       const address = await Request("address").create({
         user_id,
         country,
+        state,
+        appartment,
         city,
         postal_code,
       });

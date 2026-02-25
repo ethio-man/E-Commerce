@@ -28,10 +28,18 @@ route.get("/:id", [auth, verifyOwnership("address")], async (req, res) => {
   }
 });
 route.post("/", [auth, validate(addressSchema)], async (req, res) => {
-  const { user_id, country, city, postal_code } = req.body;
+  const { user_id, country, state, appartment, city, postal_code } = req.body;
+
   try {
     const address = await prisma.address.create({
-      data: { users: { connect: { id: user_id } }, country, city, postal_code },
+      data: {
+        users: { connect: { id: user_id } },
+        country,
+        state,
+        appartment,
+        city,
+        postal_code,
+      },
     });
     res.json(address);
   } catch (err) {
