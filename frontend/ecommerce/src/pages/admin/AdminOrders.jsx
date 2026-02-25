@@ -32,9 +32,9 @@ export default function AdminOrders() {
   const filtered = orders?.filter((o) => {
     const matchesTab =
       activeTab === "All" || o.status === activeTab.toLowerCase();
-    const matchesSearch =
-      o.payment_method[1].includes(search.toLowerCase()) ||
-      o.payment_method[2].toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = o.name_on_bank
+      .toLowerCase()
+      .includes(search.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
@@ -103,7 +103,7 @@ export default function AdminOrders() {
                   Customer
                 </th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3">
-                  Items
+                  Bank Account
                 </th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3">
                   Total
@@ -130,12 +130,12 @@ export default function AdminOrders() {
                   </td>
                   <td className="px-6 py-3.5">
                     <p className="text-sm font-medium text-slate-700">
-                      {order.payment_method[1]}
+                      {order.name_on_bank}
                     </p>
                     <p className="text-xs text-slate-400">{order.email}</p>
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-600">
-                    {order.items} items
+                    {order.accountNo}
                   </td>
                   <td className="px-6 py-3.5 text-sm font-semibold text-slate-800">
                     ${parseFloat(order.total_price).toFixed(2)}
