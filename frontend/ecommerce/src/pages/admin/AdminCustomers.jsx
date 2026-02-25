@@ -31,6 +31,10 @@ export default function AdminCustomers() {
       c.email.toLowerCase().includes(search.toLowerCase()),
   );
 
+  function getTotalSpent(orders) {
+    return orders.reduce((acc, o) => acc + parseFloat(o.total_price || 0), 0);
+  }
+
   return (
     <div className="space-y-6">
       {/* Search */}
@@ -119,21 +123,21 @@ export default function AdminCustomers() {
                     {customer.email}
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-700 font-medium">
-                    {customer.totalOrders}
+                    {customer.orders.length}
                   </td>
                   <td className="px-6 py-3.5 text-sm font-semibold text-slate-800">
-                    ${customer.totalSpent?.toLocaleString()}
+                    ${getTotalSpent(customer.orders)}
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-500">
-                    {customer.joinDate}
+                    {customer?.orders[0]?.order_date.split("T")[0]}
                   </td>
                   <td className="px-6 py-3.5">
                     <span
                       className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${
-                        statusColors[customer.status]
+                        statusColors[customer.status || "active"]
                       }`}
                     >
-                      {customer.status}
+                      {customer.status || "active"}
                     </span>
                   </td>
                   <td className="px-6 py-3.5 text-right">
