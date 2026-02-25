@@ -71,7 +71,7 @@ route.put(
       console.error(err);
       res.status(400).json({ error: "Error to update user" });
     }
-  }
+  },
 );
 
 route.delete("/:id", [auth, verifyOwnership("users")], async (req, res) => {
@@ -90,7 +90,7 @@ route.get("/", auth, async (req, res) => {
   // if (req.user.role != "admin")
   //  return res.status(403).json("Unauthorized access");
   try {
-    const Users = await prisma.users.findMany();
+    const Users = await prisma.users.findMany({ include: { orders: true } });
     res.status(200).json(Users);
   } catch (err) {
     console.error(err);
