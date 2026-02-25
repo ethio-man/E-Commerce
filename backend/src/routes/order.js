@@ -57,11 +57,25 @@ route.post("/", auth, async (req, res) => {
 //
 route.put("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   const { id } = req.params;
-  const { total_price, payment_method, address_id, paid_status } = req.body;
+  const {
+    name_on_bank,
+    accountNo,
+    total_price,
+    payment_method,
+    address_id,
+    paid_status,
+  } = req.body;
   try {
     const order = await prisma.orders.update({
       where: { id: parseInt(id) },
-      data: { total_price, payment_method, address_id, paid_status },
+      data: {
+        name_on_bank,
+        accountNo,
+        total_price,
+        payment_method,
+        address_id,
+        paid_status,
+      },
     });
     res.json(order);
   } catch (err) {
