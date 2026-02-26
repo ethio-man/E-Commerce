@@ -4,4 +4,5 @@ export const userSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).max(100),
   google_id: Joi.string().max(100),
+  status: Joi.string().max(53),
 });

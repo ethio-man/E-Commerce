@@ -90,6 +90,7 @@ model users {
   google_id       String?    @unique
   authProvider    String     @default("local")
   role            String?    @default("user") @db.VarChar(20)
+  status          String?    @default("active")
   address         address[]
   comments        comments[]
   orders          orders[]

@@ -34,6 +34,18 @@ export default function AdminCustomers() {
   function getTotalSpent(orders) {
     return orders.reduce((acc, o) => acc + parseFloat(o.total_price || 0), 0);
   }
+  function getTotalRevenue() {
+    const total = customers.reduce((customerAcc, customer) => {
+      return (
+        customerAcc +
+        customer.orders.reduce(
+          (orderAcc, order) => orderAcc + parseFloat(order.total_price || 0),
+          0,
+        )
+      );
+    }, 0);
+    return total;
+  }
 
   return (
     <div className="space-y-6">
@@ -65,10 +77,7 @@ export default function AdminCustomers() {
         </div>
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
           <p className="text-2xl font-bold text-slate-800">
-            $
-            {customers
-              .reduce((sum, c) => sum + c.totalSpent, 0)
-              .toLocaleString()}
+            ${getTotalRevenue()}
           </p>
           <p className="text-sm text-slate-500 mt-1">Total Revenue</p>
         </div>
@@ -134,10 +143,10 @@ export default function AdminCustomers() {
                   <td className="px-6 py-3.5">
                     <span
                       className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${
-                        statusColors[customer.status || "active"]
+                        statusColors[customer.status]
                       }`}
                     >
-                      {customer.status || "active"}
+                      {customer.status}
                     </span>
                   </td>
                   <td className="px-6 py-3.5 text-right">
@@ -206,10 +215,10 @@ export default function AdminCustomers() {
               <div className="text-center">
                 <span
                   className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${
-                    statusColors[detailModal.status || "active"]
+                    statusColors[detailModal.status]
                   }`}
                 >
-                  {detailModal.status || "active"}
+                  {detailModal.status}
                 </span>
                 <p className="text-xs text-slate-500 mt-1">Status</p>
               </div>
