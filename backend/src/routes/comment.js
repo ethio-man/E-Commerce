@@ -49,7 +49,7 @@ route.put(
       console.log(err);
       res.status(404).json({ error: "Error to update message" });
     }
-  }
+  },
 );
 route.delete("/:id", [auth, verifyOwnership("comments")], async (req, res) => {
   const { id } = req.params;
