@@ -44,14 +44,14 @@ export default function AdminPayments() {
   });
 
   const totalCompleted = orders
-    .filter((t) => t.status === "completed")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t) => t.paid_status.toLowerCase() === "completed")
+    .reduce((sum, t) => sum + parseFloat(t.total_price), 0);
   const totalPending = orders
-    .filter((t) => t.status === "pending")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t) => t.paid_status.toLowerCase() === "pending")
+    .reduce((sum, t) => sum + parseFloat(t.total_price), 0);
   const totalRefunded = orders
-    .filter((t) => t.status === "refunded")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t) => t.paid_status.toLowerCase() === "refunded")
+    .reduce((sum, t) => sum + parseFloat(t.total_price), 0);
 
   return (
     <div className="space-y-6">
