@@ -121,26 +121,28 @@ export default function AdminReviews() {
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                  {review.customer
+                  {review.users.full_name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
-                    {review.customer}
+                    {review.users.full_name}
                   </p>
-                  <p className="text-xs text-slate-400">{review.date}</p>
+                  <p className="text-xs text-slate-400">
+                    {review.comment_at.split("T")[0]}
+                  </p>
                 </div>
               </div>
               <StarRating rating={review.rating} />
             </div>
             <div className="ml-13">
               <p className="text-xs font-medium text-indigo-600 mb-1.5">
-                {review.product}
+                {review.products.name}
               </p>
               <p className="text-sm text-slate-600 leading-relaxed">
-                {review.comment}
+                {review.message}
               </p>
             </div>
           </div>

@@ -19,7 +19,12 @@ route.get("/:id", [auth, verifyOwnership("comments")], async (req, res) => {
 
 route.get("/", auth, async (req, res) => {
   try {
-    const comments = await prisma.comments.findMany();
+    const comments = await prisma.comments.findMany({
+      include: {
+        users: true,
+        products: true,
+      },
+    });
     res.json(comments);
   } catch (err) {
     console.log(err);
