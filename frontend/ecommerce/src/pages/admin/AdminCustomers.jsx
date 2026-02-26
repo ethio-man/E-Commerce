@@ -93,7 +93,7 @@ export default function AdminCustomers() {
                   Total Spent
                 </th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3">
-                  Joined
+                  First Order
                 </th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3">
                   Status
@@ -177,39 +177,39 @@ export default function AdminCustomers() {
             </div>
             <div className="text-center mb-6">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-xl font-bold mx-auto mb-3">
-                {detailModal.avatar}
+                {detailModal.full_name.slice(0, 2).toUpperCase()}
               </div>
               <h4 className="text-lg font-bold text-slate-800">
-                {detailModal.name}
+                {detailModal.full_name}
               </h4>
               <p className="text-sm text-slate-500">{detailModal.email}</p>
             </div>
             <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-xl">
               <div className="text-center">
                 <p className="text-xl font-bold text-slate-800">
-                  {detailModal.totalOrders}
+                  {detailModal.orders.length}
                 </p>
                 <p className="text-xs text-slate-500">Orders</p>
               </div>
               <div className="text-center">
                 <p className="text-xl font-bold text-slate-800">
-                  ${detailModal.totalSpent.toLocaleString()}
+                  ${getTotalSpent(detailModal.orders)}
                 </p>
                 <p className="text-xs text-slate-500">Total Spent</p>
               </div>
               <div className="text-center">
                 <p className="text-sm font-medium text-slate-700">
-                  {detailModal.joinDate}
+                  {detailModal?.orders[0]?.order_date.split("T")[0]}
                 </p>
-                <p className="text-xs text-slate-500">Join Date</p>
+                <p className="text-xs text-slate-500">First Order</p>
               </div>
               <div className="text-center">
                 <span
                   className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${
-                    statusColors[detailModal.status]
+                    statusColors[detailModal.status || "active"]
                   }`}
                 >
-                  {detailModal.status}
+                  {detailModal.status || "active"}
                 </span>
                 <p className="text-xs text-slate-500 mt-1">Status</p>
               </div>
