@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import Request from "../../api/Request.js";
 import {
   DollarSign,
   ShoppingCart,
@@ -7,51 +9,6 @@ import {
   TrendingDown,
   ArrowUpRight,
 } from "lucide-react";
-import {
-  dashboardStats,
-  monthlyRevenue,
-  mockOrders,
-  mockProducts,
-} from "../../data/adminMockData.js";
-
-const statCards = [
-  {
-    title: "Total Revenue",
-    value: `$${dashboardStats.totalRevenue.toLocaleString()}`,
-    growth: dashboardStats.revenueGrowth,
-    icon: DollarSign,
-    color: "from-indigo-500 to-indigo-600",
-    bg: "bg-indigo-50",
-    text: "text-indigo-600",
-  },
-  {
-    title: "Total Orders",
-    value: dashboardStats.totalOrders.toLocaleString(),
-    growth: dashboardStats.ordersGrowth,
-    icon: ShoppingCart,
-    color: "from-emerald-500 to-emerald-600",
-    bg: "bg-emerald-50",
-    text: "text-emerald-600",
-  },
-  {
-    title: "Total Customers",
-    value: dashboardStats.totalCustomers.toLocaleString(),
-    growth: dashboardStats.customersGrowth,
-    icon: Users,
-    color: "from-amber-500 to-amber-600",
-    bg: "bg-amber-50",
-    text: "text-amber-600",
-  },
-  {
-    title: "Total Products",
-    value: dashboardStats.totalProducts.toLocaleString(),
-    growth: dashboardStats.productsGrowth,
-    icon: Package,
-    color: "from-rose-500 to-rose-600",
-    bg: "bg-rose-50",
-    text: "text-rose-600",
-  },
-];
 
 const statusColors = {
   delivered: "bg-emerald-100 text-emerald-700",
@@ -61,6 +18,75 @@ const statusColors = {
 };
 
 export default function AdminDashboard() {
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const resUser = await Request("users").getAll();
+        const resProduct = await Request("products").getAll();
+        if (resUser.data) setUsers(resUser.data);
+        if (resProduct.data) setProducts(resProduct.data);
+        console.log("users are ", resUser.data);
+        console.log("Products are", resProduct.data);
+      } catch (err) {
+        console.log("Error to fetch data", err);
+      }
+    }
+    fetchData();
+  }, []);
+  const totalRevenue = users?.reduce((userAcc, u) => {
+    return (
+      userAcc +
+      u?.orders.reduce(
+        (orderAcc, order) => orderAcc + parseFloat(order.total_price || 0),
+        0,
+      )
+    );
+  }, 0);
+  const totalOrders = users?.reduce(
+    (userAcc, u) => userAcc + u?.orders.length,
+    0,
+  );
+  const statCards = [
+    {
+      title: "Total Revenue",
+      value: `$${totalRevenue}`,
+      growth: 12.5,
+      icon: DollarSign,
+      color: "from-indigo-500 to-indigo-600",
+      bg: "bg-indigo-50",
+      text: "text-indigo-600",
+    },
+    {
+      title: "Total Orders",
+      value: totalOrders.toLocaleString(),
+      growth: 8.3,
+      icon: ShoppingCart,
+      color: "from-emerald-500 to-emerald-600",
+      bg: "bg-emerald-50",
+      text: "text-emerald-600",
+    },
+    {
+      title: "Total Customers",
+      value: users?.length.toLocaleString(),
+      growth: 15.2,
+      icon: Users,
+      color: "from-amber-500 to-amber-600",
+      bg: "bg-amber-50",
+      text: "text-amber-600",
+    },
+    {
+      title: "Total Products",
+      value: products?.length.toLocaleString(),
+      growth: 3.1,
+      icon: Package,
+      color: "from-rose-500 to-rose-600",
+      bg: "bg-rose-50",
+      text: "text-rose-600",
+    },
+  ];
+
   const recentOrders = mockOrders.slice(0, 5);
   const topProducts = mockProducts
     .filter((p) => p.status === "active")
