@@ -13,7 +13,17 @@ route.get("/:id", [auth, verifyOwnership("comments")], async (req, res) => {
     res.json(comment);
   } catch (err) {
     console.log(err);
-    res.status(404).json({ error: "Error to find comment." });
+    res.status(500).json({ error: "Error to find comment." });
+  }
+});
+
+route.get("/", auth, async (req, res) => {
+  try {
+    const comments = await prisma.comments.findMany();
+    res.json(comments);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error to load comments" });
   }
 });
 route.post("/", [auth, validate(commentSchema)], async (req, res) => {
