@@ -35,11 +35,11 @@ export default function AdminPayments() {
   }, []);
   const filtered = orders.filter((t) => {
     const matchesTab =
-      activeTab === "All" || t.status === activeTab.toLowerCase();
+      activeTab === "All" ||
+      t.paid_status.toLowerCase() === activeTab.toLowerCase();
     const matchesSearch =
       t.id.toString().includes(search.toLowerCase()) ||
-      t.orderId.toLowerCase().includes(search.toLowerCase()) ||
-      t.customer.toLowerCase().includes(search.toLowerCase());
+      t.users.full_name.toLowerCase().includes(search.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
