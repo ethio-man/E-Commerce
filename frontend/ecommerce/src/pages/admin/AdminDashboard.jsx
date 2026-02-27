@@ -238,7 +238,7 @@ export default function AdminDashboard() {
                     {order.id}
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-700">
-                    {order.customer}
+                    {order.name_on_bank}
                   </td>
                   <td className="px-6 py-3.5 text-sm font-medium text-slate-800">
                     ${parseFloat(order.total_price).toFixed(2)}
@@ -246,14 +246,14 @@ export default function AdminDashboard() {
                   <td className="px-6 py-3.5">
                     <span
                       className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${
-                        statusColors[order.status]
+                        statusColors[order.paid_status]
                       }`}
                     >
-                      {order.status}
+                      {order.paid_status}
                     </span>
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-500">
-                    {order.date}
+                    {order.order_date.split("T")[0]}
                   </td>
                 </tr>
               ))}
