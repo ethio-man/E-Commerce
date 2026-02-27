@@ -16,7 +16,20 @@ const statusColors = {
   pending: "bg-amber-100 text-amber-700",
   cancelled: "bg-red-100 text-red-700",
 };
-
+export const monthlyRevenue = [
+  { month: "Jan", revenue: 8200 },
+  { month: "Feb", revenue: 9400 },
+  { month: "Mar", revenue: 11200 },
+  { month: "Apr", revenue: 10800 },
+  { month: "May", revenue: 12500 },
+  { month: "Jun", revenue: 13100 },
+  { month: "Jul", revenue: 11800 },
+  { month: "Aug", revenue: 14200 },
+  { month: "Sep", revenue: 13600 },
+  { month: "Oct", revenue: 15400 },
+  { month: "Nov", revenue: 16800 },
+  { month: "Dec", revenue: 18200 },
+];
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -87,10 +100,9 @@ export default function AdminDashboard() {
     },
   ];
 
-  const recentOrders = mockOrders.slice(0, 5);
-  const topProducts = mockProducts
-    .filter((p) => p.status === "active")
-    .slice(0, 5);
+  const recentOrders = users.map((u) => [...u.orders]);
+  console.log("The recent orders are ", recentOrders);
+  const topProducts = products.filter((p) => p.status === "active").slice(0, 5);
   const maxRevenue = Math.max(...monthlyRevenue.map((m) => m.revenue));
 
   return (
@@ -221,7 +233,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {recentOrders.map((order) => (
+              {recentOrders?.map((order) => (
                 <tr
                   key={order.id}
                   className="hover:bg-slate-50 transition-colors"
