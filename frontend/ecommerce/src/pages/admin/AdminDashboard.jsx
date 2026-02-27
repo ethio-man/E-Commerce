@@ -33,34 +33,30 @@ export const monthlyRevenue = [
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
         const resUser = await Request("users").getAll();
         const resProduct = await Request("products").getAll();
+        const resOrder = await Request("orders").getAll();
         if (resUser.data) setUsers(resUser.data);
         if (resProduct.data) setProducts(resProduct.data);
+        if (resOrder.data) setOrders(resOrder.data);
         console.log("users are ", resUser.data);
         console.log("Products are", resProduct.data);
+        console.log("Orders are", resOrder.data);
       } catch (err) {
         console.log("Error to fetch data", err);
       }
     }
     fetchData();
   }, []);
-  const totalRevenue = users?.reduce((userAcc, u) => {
-    return (
-      userAcc +
-      u?.orders.reduce(
-        (orderAcc, order) => orderAcc + parseFloat(order.total_price || 0),
-        0,
-      )
-    );
-  }, 0);
-  const totalOrders = users?.reduce(
-    (userAcc, u) => userAcc + u?.orders.length,
+  const totalRevenue = orders.reduce(
+    (orderAcc, order) => orderAcc + parseFloat(order.total_price || 0),
     0,
   );
+
   const statCards = [
     {
       title: "Total Revenue",
@@ -73,7 +69,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Total Orders",
-      value: totalOrders.toLocaleString(),
+      value: orders?.length.toLocaleString(),
       growth: 8.3,
       icon: ShoppingCart,
       color: "from-emerald-500 to-emerald-600",
@@ -100,7 +96,7 @@ export default function AdminDashboard() {
     },
   ];
 
-  const recentOrders = users.map((u) => [...u.orders]);
+  const recentOrders = orders.slice(0, 5);
   console.log("The recent orders are ", recentOrders);
   const topProducts = products.filter((p) => p.status === "active").slice(0, 5);
   const maxRevenue = Math.max(...monthlyRevenue.map((m) => m.revenue));
@@ -245,7 +241,7 @@ export default function AdminDashboard() {
                     {order.customer}
                   </td>
                   <td className="px-6 py-3.5 text-sm font-medium text-slate-800">
-                    ${order.total.toFixed(2)}
+                    ${parseFloat(order.total_price).toFixed(2)}
                   </td>
                   <td className="px-6 py-3.5">
                     <span
