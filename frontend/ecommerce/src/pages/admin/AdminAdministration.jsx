@@ -108,8 +108,7 @@ export default function AdminAdministration() {
   const [editModal, setEditModal] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [newAdmin, setNewAdmin] = useState({
-    username: "",
-    fullName: "",
+    full_name: "",
     email: "",
     role: "admin",
     password: "",
@@ -119,22 +118,21 @@ export default function AdminAdministration() {
     return <LoginGate onLogin={adminLogin} error={error} />;
   }
 
-  const handleAddAdmin = () => {
-    const admin = {
-      id: admins.length + 1,
-      ...newAdmin,
-      lastLogin: "Never",
-      status: "active",
-    };
-    setAdmins((prev) => [...prev, admin]);
-    setNewAdmin({
-      username: "",
-      fullName: "",
-      email: "",
-      role: "admin",
-      password: "",
-    });
-    setAddModal(false);
+  const handleAddAdmin = async () => {
+    try {
+      const admin = await Request("superAdmins/admin").create({ ...newAdmin });
+      setAdmins((prev) => [...prev, admin.data]);
+      setNewAdmin({
+        username: "",
+        fullName: "",
+        email: "",
+        role: "admin",
+        password: "",
+      });
+      setAddModal(false);
+    } catch (err) {
+      console.log("Error to create an admin please try again.", err);
+    }
   };
 
   const handleSaveEdit = () => {
