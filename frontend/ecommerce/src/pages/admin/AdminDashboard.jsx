@@ -43,9 +43,6 @@ export default function AdminDashboard() {
         if (resUser.data) setUsers(resUser.data);
         if (resProduct.data) setProducts(resProduct.data);
         if (resOrder.data) setOrders(resOrder.data);
-        console.log("users are ", resUser.data);
-        console.log("Products are", resProduct.data);
-        console.log("Orders are", resOrder.data);
       } catch (err) {
         console.log("Error to fetch data", err);
       }
