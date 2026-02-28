@@ -35,12 +35,3 @@ export const verifyOwnership =
       res.status(500).json({ message: `Server error.` });
     }
   };
-export function authSuperAdmin(req, res, next) {
-  const { username, password } = req.body;
-  const superAdmin = JSON.parse(process.env.SUPER_ADMIN);
-  if (username === superAdmin.username && password === superAdmin.password) {
-    next();
-  } else {
-    res.status(403).json("Unauthorized.");
-  }
-}

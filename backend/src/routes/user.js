@@ -4,7 +4,7 @@ import { prisma } from "../startup/db.js";
 import bcrypt from "bcrypt";
 import { userSchema } from "../validations/userValidator.js";
 import validate from "../middleware/validate.js";
-import { auth, verifyOwnership, authSuperAdmin } from "../middleware/auth.js";
+import { auth, verifyOwnership } from "../middleware/auth.js";
 import generateAuthToken from "../utils/authGenerate.js";
 const route = express.Router();
 
@@ -110,18 +110,4 @@ route.get("/:id", [auth, verifyOwnership("users")], async (req, res) => {
   }
 });
 
-//create admin
-route.put("/", authSuperAdmin, async (req, res) => {
-  const { id } = req.body;
-  try {
-    const user = await prisma.users.update({
-      where: { id },
-      data: { role: "admin" },
-    });
-    const token = generateAuthToken(user);
-    res.header("auth-token", token).json(user);
-  } catch (err) {
-    res.status(403).json("Error to create an admin.", err);
-  }
-});
 export default route;

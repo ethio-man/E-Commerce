@@ -2,19 +2,33 @@ import express from "express";
 import _ from "lodash";
 import { prisma } from "../startup/db.js";
 import bcrypt from "bcrypt";
-import { userSchema } from "../validations/userValidator.js";
+import dotenv from "dotenv";
+import { superAdminSchema } from "../validations/superAdminValidate.js";
 import validate from "../middleware/validate.js";
-import { auth, verifyOwnership, authSuperAdmin } from "../middleware/auth.js";
+import { auth, verifyOwnership } from "../middleware/auth.js";
 import generateAuthToken from "../utils/authGenerate.js";
-
+dotenv.config();
 //super admin login
 const route = express.Router();
-route.post("/", authSuperAdmin, async (req, res) => {
-  res.json({ isSuperAdmin: true });
+route.post("/", validate(superAdminSchema), async (req, res) => {
+  const { username, password } = req.body;
+  const superAdmin = JSON.parse(process.env.SUPER_ADMIN);
+  if (username === superAdmin.username && password === superAdmin.password) {
+    const token = generateAuthToken({
+      username: superAdmin.username,
+      password: superAdmin.password,
+      isSuperAdmin: true,
+    });
+    res.header("auth-token", token).json({ isSuperAdmin: true });
+  } else {
+    res.status(403).json("Unauthorized.");
+  }
 });
 
 //create admin
-route.post("/admin", authSuperAdmin, async (req, res) => {
+route.post("/admin", auth, async (req, res) => {
+  if (req.user.isSuperAdmin === false)
+    return res.status(403).json("Unauthorized access");
   const { full_name, email, password, role } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   try {
