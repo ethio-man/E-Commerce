@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Shield,
   Plus,
@@ -10,7 +10,7 @@ import {
   Lock,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext.jsx";
-import { mockAdmins } from "../../data/adminMockData.js";
+//import { mockAdmins } from "../../data/adminMockData.js";
 import Request from "../../api/Request.js";
 const roleColors = {
   super_admin: "bg-purple-100 text-purple-700",
@@ -103,7 +103,7 @@ function LoginGate({ onLogin, error }) {
 
 export default function AdminAdministration() {
   const { isSuperAdmin, adminLogin, adminLogout, error } = useAdminAuth();
-  const [admins, setAdmins] = useState(mockAdmins);
+  const [admins, setAdmins] = useState([]);
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -113,7 +113,20 @@ export default function AdminAdministration() {
     role: "admin",
     password: "",
   });
-
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const admin = await Request("users").getAll();
+        const filtered = admin?.data.filter(
+          (a) => a.role === "admin" || a.role === "super_admin",
+        );
+        setAdmins(filtered);
+      } catch (err) {
+        console.log("Error to find admins.", err);
+      }
+    }
+    fetchUsers();
+  }, []);
   if (!isSuperAdmin) {
     return <LoginGate onLogin={adminLogin} error={error} />;
   }
@@ -219,7 +232,7 @@ export default function AdminAdministration() {
                   <td className="px-6 py-3.5">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                        {admin.fullName
+                        {admin.full_name
                           .split(" ")
                           .map((n) => n[0])
                           .join("")}
