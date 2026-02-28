@@ -69,4 +69,21 @@ route.post("/admin", [validate(userSchema), auth], async (req, res) => {
   }
 });
 
+//Edit admin
+route.put("/admin/:id", [validate(userSchema), auth], async (req, res) => {
+  if (req.user.isSuperAdmin === false)
+    return res.status(403).json("Unauthorized access");
+  const { full_name, email, role, status } = req.body;
+  const { id } = req.params;
+  try {
+    const admin = await prisma.users.update({
+      where: { id: parseInt(id) },
+      data: { full_name, email, role, status },
+    });
+    res.status(200).json(admin);
+  } catch (err) {
+    console.log("Errot to update admin.", err);
+    res.status(500).json({ Message: "Error to update admin." });
+  }
+});
 export default route;

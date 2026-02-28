@@ -107,8 +107,10 @@ export default function AdminAdministration() {
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [refresh, setRefresh] = useState(0);
   const [newAdmin, setNewAdmin] = useState({
     full_name: "",
+    username: "",
     email: "",
     role: "admin",
     password: "",
@@ -126,18 +128,19 @@ export default function AdminAdministration() {
       }
     }
     fetchUsers();
-  }, []);
+  }, [refresh]);
+
   if (!isSuperAdmin) {
     return <LoginGate onLogin={adminLogin} error={error} />;
   }
 
   const handleAddAdmin = async () => {
     try {
-      const admin = await Request("superAdmins/admin").create({ ...newAdmin });
+      const admin = await Request("superAdmins/admin").create(newAdmin);
       setAdmins((prev) => [...prev, admin.data]);
       setNewAdmin({
         username: "",
-        fullName: "",
+        full_name: "",
         email: "",
         role: "admin",
         password: "",
@@ -148,11 +151,18 @@ export default function AdminAdministration() {
     }
   };
 
-  const handleSaveEdit = () => {
-    setAdmins((prev) =>
-      prev.map((a) => (a.id === editModal.id ? editModal : a)),
-    );
-    setEditModal(null);
+  const handleSaveEdit = async () => {
+    const { full_name, email, role, status, id } = editModal;
+    try {
+      const admin = await Request("superAdmins/admin").update(
+        { full_name, email, role, status },
+        id,
+      );
+      setRefresh(refresh + 1);
+      setEditModal(null);
+    } catch (err) {
+      console.log("Error to edit admin", err);
+    }
   };
 
   const handleDelete = (id) => {
@@ -258,7 +268,7 @@ export default function AdminAdministration() {
                     </span>
                   </td>
                   <td className="px-6 py-3.5 text-sm text-slate-500">
-                    {admin.lastLogin}
+                    {admin.last_login}
                   </td>
                   <td className="px-6 py-3.5">
                     <span
@@ -316,9 +326,9 @@ export default function AdminAdministration() {
                 </label>
                 <input
                   type="text"
-                  value={newAdmin.fullName}
+                  value={newAdmin.full_name}
                   onChange={(e) =>
-                    setNewAdmin({ ...newAdmin, fullName: e.target.value })
+                    setNewAdmin({ ...newAdmin, full_name: e.target.value })
                   }
                   className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                   placeholder="Enter full name"
@@ -420,9 +430,9 @@ export default function AdminAdministration() {
                 </label>
                 <input
                   type="text"
-                  value={editModal.fullName}
+                  value={editModal.full_name}
                   onChange={(e) =>
-                    setEditModal({ ...editModal, fullName: e.target.value })
+                    setEditModal({ ...editModal, full_name: e.target.value })
                   }
                   className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                 />
