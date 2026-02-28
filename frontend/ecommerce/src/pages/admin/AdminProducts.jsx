@@ -34,7 +34,7 @@ export default function AdminProducts() {
     async function fetchProducts() {
       try {
         const Products = await Request("products").getAll();
-        if (Products) setProducts(Products.data);
+        setProducts(Products.data);
       } catch (err) {
         console.log("Error to get products", err);
       }
@@ -44,8 +44,61 @@ export default function AdminProducts() {
   console.log("products:", products);
   const filtered = products?.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    let Category = "All";
+    switch (p.category) {
+      case "Apparel":
+      case "Footwears":
+      case "women's":
+      case "men's":
+        Category = "FASHION";
+        break;
+      case "headsets":
+      case "phones":
+      case "smartTv":
+      case "Laptops":
+        Category = "ELECTRONICS";
+        break;
+      case "wallets":
+      case "jewelry":
+      case "jeHats":
+        Category = "ACCESSORIES";
+        break;
+      case "sofas":
+      case "beds":
+      case "gardening":
+      case "utensils":
+        Category = "HOME_GARDEN";
+        break;
+      case "skincare":
+      case "makeup":
+      case "haircare":
+      case "fragrance":
+        Category = "BEAUTY";
+        break;
+      case "gym":
+      case "bands":
+      case "soccer":
+      case "sportwear":
+      case "tableTennis":
+      case "skatting":
+      case "swimming":
+        Category = "SPORTS";
+        break;
+      case "educationToys":
+      case "musicalToys":
+      case "bikes":
+      case "pretendPlay":
+      case "dolls":
+      case "buildingSets":
+        Category = "TOYS";
+        break;
+      default:
+        Category = "All"; // optional fallback
+        break;
+    }
+
     const matchesCategory =
-      categoryFilter === "All" || p.category === categoryFilter;
+      categoryFilter === "All" || Category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
