@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 import {
   Home,
   ShoppingBag,
@@ -9,6 +10,10 @@ import {
 } from "lucide-react";
 
 const Sidebar = () => {
+  const { logOut } = useAuth();
+  function SignOut() {
+    logOut();
+  }
   const navItems = [
     { icon: Home, label: "", path: "/", active: false },
     { icon: ShoppingCart, label: "", path: "/cart" },
@@ -44,9 +49,12 @@ const Sidebar = () => {
           >
             <UserPlus size={20} className="mr-3" />
           </Link>
-          <div className="flex items-center text-gray-600 hover:text-indigo-600 cursor-pointer p-1 transition duration-150">
+          <button
+            onClick={() => SignOut()}
+            className="flex items-center text-gray-600 hover:text-indigo-600 cursor-pointer p-1 transition duration-150"
+          >
             <LogOut size={20} className="mr-3" />
-          </div>
+          </button>
         </div>
       </div>
     </div>

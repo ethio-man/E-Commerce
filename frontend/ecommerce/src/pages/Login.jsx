@@ -19,7 +19,7 @@ const SingUp = () => {
             headers: {
               Authorization: `Bearer ${tokenResponse.access_token}`,
             },
-          }
+          },
         );
 
         const userData = await googleRes.json();
@@ -32,6 +32,8 @@ const SingUp = () => {
         const user = res.data;
         const token = res.headers["auth-token"];
         await login(user, token);
+        if (user.role === "admin" || user.role === "super_admin")
+          navigate("/admin");
         navigate("/");
       } catch (err) {
         console.error("Error:", err);
