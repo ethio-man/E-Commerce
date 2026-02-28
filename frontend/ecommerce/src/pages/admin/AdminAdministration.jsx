@@ -165,7 +165,12 @@ export default function AdminAdministration() {
     }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
+    try {
+      await Request("users").delete(id);
+    } catch (err) {
+      console.log("Error to remove an admin please try again.", err);
+    }
     setAdmins((prev) => prev.filter((a) => a.id !== id));
     setDeleteConfirm(null);
   };
