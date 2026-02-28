@@ -1,5 +1,4 @@
 import { useState, createContext, useContext } from "react";
-import { SUPER_ADMIN_CREDENTIALS } from "../data/adminMockData.js";
 import Request from "../api/Request.js";
 const AdminAuthContext = createContext();
 
@@ -8,16 +7,21 @@ export const AdminAuthProvider = ({ children }) => {
   const [error, setError] = useState("");
 
   const adminLogin = async (username, password) => {
-    if (
-      username === SUPER_ADMIN_CREDENTIALS.username &&
-      password === SUPER_ADMIN_CREDENTIALS.password
-    ) {
-      setIsSuperAdmin(true);
-      setError("");
-      return true;
+    try {
+      const res = await Request("superAdmins").create({ username, password });
+      if (res.data.isSuperAdmin === true) {
+        setIsSuperAdmin(true);
+        setError("");
+        return true;
+      } else {
+        setError(
+          "Invalid credentials. Only the super admin can access this page.",
+        );
+      }
+      return false;
+    } catch (err) {
+      console.log("Error to login please try again");
     }
-    setError("Invalid credentials. Only the super admin can access this page.");
-    return false;
   };
 
   const adminLogout = () => {

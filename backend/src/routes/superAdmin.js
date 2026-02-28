@@ -21,7 +21,9 @@ route.post("/", validate(superAdminSchema), async (req, res) => {
     });
     res.header("auth-token", token).json({ isSuperAdmin: true });
   } else {
-    res.status(403).json("Unauthorized.");
+    res.json(
+      "Invalid credentials. Only the super admin can access this page..",
+    );
   }
 });
 

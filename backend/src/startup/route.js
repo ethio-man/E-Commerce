@@ -11,6 +11,7 @@ import Login from "../routes/login.js";
 import Collections from "../routes/collections.js";
 import Category from "../routes/category.js";
 import GeminiService from "../routes/geminiService.js";
+import SuperAdmins from "../routes/superAdmin.js";
 export default function (app) {
   app.use(express.json());
   app.use(cors());
@@ -25,4 +26,5 @@ export default function (app) {
   app.use("/collections", Collections);
   app.use("/categories", Category);
   app.use("/gemini", GeminiService);
+  app.use("/superAdmins", SuperAdmins);
 }
