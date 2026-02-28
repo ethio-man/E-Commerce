@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "users" ADD COLUMN     "last_login" TEXT DEFAULT 'Never',
+ADD COLUMN     "username" VARCHAR(53);
