@@ -17,7 +17,7 @@ const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
             headers: {
               Authorization: `Bearer ${tokenResponse.access_token}`,
             },
-          }
+          },
         );
 
         const userData = await googleRes.json();
@@ -27,7 +27,14 @@ const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
           google_id: sub,
         });
         await login(res.data.user, res.data.token);
-        navigate("/");
+        if (
+          res.data.user.role === "admin" ||
+          res.data.user.role === "super_admin"
+        ) {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } catch (err) {
         console.error("Error:", err);
       }
@@ -49,7 +56,14 @@ const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
 
       login(res.data.user, res.data.token);
       onClose();
-      navigate("/");
+      if (
+        res.data.user.role === "admin" ||
+        res.data.user.role === "super_admin"
+      ) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.error(err);
       alert("Email sign-in failed");

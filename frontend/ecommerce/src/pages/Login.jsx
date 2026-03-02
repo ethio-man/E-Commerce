@@ -32,9 +32,11 @@ const SingUp = () => {
         const user = res.data;
         const token = res.headers["auth-token"];
         await login(user, token);
-        if (user.role === "admin" || user.role === "super_admin")
+        if (user.role === "admin" || user.role === "super_admin") {
           navigate("/admin");
-        navigate("/");
+        } else {
+          navigate("/");
+        }
       } catch (err) {
         console.error("Error:", err);
       }
@@ -59,9 +61,15 @@ const SingUp = () => {
         password,
       });
       const user = res.data;
+      console.log("the users role is", user.role);
       const token = res.headers["auth-token"];
       await login(user, token);
-      navigate("/");
+      console.log("the users role is", user.role);
+      if (user.role === "admin" || user.role === "super_admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.error("Error:", err);
     }

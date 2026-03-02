@@ -86,7 +86,8 @@ route.delete("/:id", [auth, verifyOwnership("users")], async (req, res) => {
     res.status(400).json({ error: "Error to delete user" });
   }
 });
-route.get("/", auth, async (req, res) => {
+//auth
+route.get("/", async (req, res) => {
   // if (req.user.role != "admin")
   //  return res.status(403).json("Unauthorized access");
   try {
