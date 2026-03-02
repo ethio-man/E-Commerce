@@ -27,10 +27,10 @@ route.get("/:id", async (req, res) => {
     res.status(404).json({ error: "Error to find product" });
   }
 });
-//auth
-route.post("/", [validate(productSchema)], async (req, res) => {
-  //if (req.user.role != "admin")
-  // return res.status(403).json("Unauthorized access!");
+
+route.post("/", [auth, validate(productSchema)], async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access!");
   const {
     name,
     status,
@@ -73,13 +73,11 @@ route.post("/", [validate(productSchema)], async (req, res) => {
     res.status(500).json({ error: "Error to create product" });
   }
 });
-//auth
-route.put("/:id", [validate(productSchema)], async (req, res) => {
-  //if (req.user.role != "admin")
-  // return res.status(403).json("Unauthorized access");
-  const { id } = req.params;
 
-  console.log("Update product id is ", id, typeof id);
+route.put("/:id", [auth, validate(productSchema)], async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
+  const { id } = req.params;
 
   try {
     const product = await prisma.products.update({
@@ -94,10 +92,10 @@ route.put("/:id", [validate(productSchema)], async (req, res) => {
     res.status(500).json({ error: "Error to update a product" });
   }
 });
-//auth
-route.delete("/:id", async (req, res) => {
-  //if (req.user.role != "admin")
-  //return res.status(403).json("Unauthorized access");
+
+route.delete("/:id", auth, async (req, res) => {
+  if (req.user.role != "admin")
+    return res.status(403).json("Unauthorized access");
   const { id } = req.params;
   try {
     const product = await prisma.products.delete({

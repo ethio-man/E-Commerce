@@ -64,7 +64,7 @@ route.post("/", auth, async (req, res) => {
     res.status(404).json({ error: "Error to make order" });
   }
 });
-//
+
 route.put("/:id", [auth, verifyOwnership("orders")], async (req, res) => {
   const { id } = req.params;
   const {

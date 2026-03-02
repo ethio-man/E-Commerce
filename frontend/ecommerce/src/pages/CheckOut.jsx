@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import Request from "../api/Request.js";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function Checkout() {
+  const navigate = useNavigate();
   const { user, carts } = useAuth();
   const [sameAsShipping, setSameAsShipping] = useState(true);
 
@@ -53,7 +54,7 @@ export default function Checkout() {
         user_id,
         address_id,
       });
-      if (res) console.log("Order submitted!");
+      if (res) navigate("/orderSummary");
     } catch (err) {
       console.error("Order is not submittd please try again.", err);
     }

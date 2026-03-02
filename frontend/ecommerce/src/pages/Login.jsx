@@ -29,7 +29,7 @@ const SingUp = () => {
           email,
           google_id: sub,
         });
-        const user = res.data;
+        const user = res.data.user;
         const token = res.headers["auth-token"];
         await login(user, token);
         if (user.role === "admin" || user.role === "super_admin") {
@@ -60,11 +60,9 @@ const SingUp = () => {
         email,
         password,
       });
-      const user = res.data;
-      console.log("the users role is", user.role);
+      const user = res.data.user;
       const token = res.headers["auth-token"];
       await login(user, token);
-      console.log("the users role is", user.role);
       if (user.role === "admin" || user.role === "super_admin") {
         navigate("/admin");
       } else {
