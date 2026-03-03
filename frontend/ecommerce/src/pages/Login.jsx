@@ -83,6 +83,7 @@ const SingUp = () => {
             type="button"
             onClick={() => setOpen(true)}
             className="text-blue-600 font-semibold hover:text-blue-700 transition duration-150"
+            title="Demo admin login: email natymiskir@gmail.com, password 123456"
           >
             Log In
           </button>
@@ -194,7 +195,10 @@ const SingUp = () => {
               </div>
             </div>
 
-            <button className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 mt-6">
+            <button
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 mt-6"
+              title="Demo admin login: email natymiskir@gmail.com, password 123456"
+            >
               Sign Up
             </button>
           </form>

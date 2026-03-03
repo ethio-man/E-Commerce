@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, Edit2, Trash2, X } from "lucide-react";
-import { mockProducts } from "../../data/adminMockData.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 import Request from "../../api/Request.js";
 

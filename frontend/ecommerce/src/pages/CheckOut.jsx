@@ -54,7 +54,30 @@ export default function Checkout() {
         user_id,
         address_id,
       });
-      if (res) navigate("/orderSummary");
+      if (res)
+        navigate("/orderSummary", {
+          state: {
+            order: res.data,
+            totals: {
+              subtotal,
+              shipping,
+              tax,
+              total,
+            },
+            shippingAddress: {
+              country,
+              appartment,
+              city,
+              state,
+              postal_code,
+            },
+            payment: {
+              payment_method,
+              name_on_bank,
+              accountNo,
+            },
+          },
+        });
     } catch (err) {
       console.error("Order is not submittd please try again.", err);
     }

@@ -39,6 +39,7 @@ export default function NavBar() {
               <Link
                 to="/login"
                 className="text-gray-600 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md hover:bg-blue-400 hover:text-white  "
+                title="Demo admin login: email natymiskir@gmail.com, password 123456"
               >
                 <CircleUserRound /> Login
               </Link>

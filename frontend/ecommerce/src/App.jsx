@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/Landing.jsx";
 import ProductList from "./pages/ProductList.jsx";
 import ProductOverview from "./pages/ProductOverview.jsx";
@@ -7,6 +7,7 @@ import CheckOut from "./pages/CheckOut.jsx";
 import Login from "./pages/Login.jsx";
 import AddProduct from "./pages/admin/AddProduct.jsx";
 import OrderSummary from "./pages/OrderSummary.jsx";
+import Settings from "./pages/Settings.jsx";
 import { AdminAuthProvider } from "./context/AdminAuthContext.jsx";
 import AdminLayout from "./components/admin/AdminLayout.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
@@ -17,6 +18,27 @@ import AdminReviews from "./pages/admin/AdminReviews.jsx";
 import AdminPayments from "./pages/admin/AdminPayments.jsx";
 import AdminAdministration from "./pages/admin/AdminAdministration.jsx";
 import "./App.css";
+import { useAuth } from "./context/AuthContext.jsx";
+
+function ProtectedAdminRoute({ children }) {
+  const { user } = useAuth();
+
+  if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
+function ProtectedSettingsRoute({ children }) {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
 
 export default function App() {
   return (
@@ -30,6 +52,14 @@ export default function App() {
         <Route path="/orders" element={<CheckOut />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin/addProducts" element={<AddProduct />} />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedSettingsRoute>
+              <Settings />
+            </ProtectedSettingsRoute>
+          }
+        />
         <Route path="/orderSummary" element={<OrderSummary />} />
 
         {/* Admin panel routes */}
@@ -37,7 +67,9 @@ export default function App() {
           path="/admin"
           element={
             <AdminAuthProvider>
-              <AdminLayout />
+              <ProtectedAdminRoute>
+                <AdminLayout />
+              </ProtectedAdminRoute>
             </AdminAuthProvider>
           }
         >

@@ -18,7 +18,7 @@ const Sidebar = () => {
     { icon: Home, label: "", path: "/", active: false },
     { icon: ShoppingCart, label: "", path: "/cart" },
     { icon: ShoppingBag, label: "", path: "/orders", active: false },
-    { icon: Settings, label: "", path: "/adminDashboard", active: false },
+    { icon: Settings, label: "", path: "/settings", active: false },
   ];
 
   return (
@@ -46,6 +46,7 @@ const Sidebar = () => {
           <Link
             to="/login"
             className="flex items-center text-gray-600 hover:text-indigo-600 cursor-pointer p-1 transition duration-150"
+            title="Demo admin login: email natymiskir@gmail.com, password 123456"
           >
             <UserPlus size={20} className="mr-3" />
           </Link>
