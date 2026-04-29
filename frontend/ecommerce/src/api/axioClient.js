@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://ecommerce-backend-1095535746900.us-central1.run.app";
+  "https://ecommerce-backend-1095535746900.us-central1.run.app"; //http://localhost:8080/
 
 const axioClient = axios.create({ baseURL });
 
