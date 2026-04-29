@@ -14,7 +14,6 @@ RUN npx prisma generate
 
 ENV NODE_ENV=production
 
-# Cloud Run provides PORT env variable
 EXPOSE 8080
 
 # Run migrations then start app
