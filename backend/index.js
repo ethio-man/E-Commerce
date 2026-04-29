@@ -4,7 +4,7 @@ import setUpRoutes from "./src/startup/route.js";
 dotenv.config();
 const app = express();
 setUpRoutes(app);
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8080;
 const server = app.listen(port, () => {
   console.log(`Server listening to the port ${port}...`);
 });

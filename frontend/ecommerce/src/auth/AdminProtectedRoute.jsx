@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAdminAuth } from "../context/AdminAuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const AdminProtectedRoute = () => {
-  const { user, token } = useAdminAuth();
+  const { user, token } = useAuth();
 
   // Not logged in
   if (!token) {
@@ -10,7 +10,7 @@ const AdminProtectedRoute = () => {
   }
 
   // Logged in but not admin
-  if (user.role !== "admin" && user.role !== "super_admin") {
+  if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
     return <Navigate to="/" replace />;
   }
 

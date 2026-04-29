@@ -18,6 +18,8 @@ export default function AdminLayout() {
   const { user } = useAuth();
   const location = useLocation();
   const pageTitle = pageTitles[location.pathname] || "Admin";
+  const userName = user?.full_name || "Admin";
+  const avatarInitials = userName.slice(0, 2).toUpperCase();
 
   return (
     <div className="flex min-h-screen bg-slate-100">
@@ -40,10 +42,10 @@ export default function AdminLayout() {
             {/* Admin Avatar */}
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                {user?.full_name.slice(0, 2).toUpperCase()}
+                {avatarInitials}
               </div>
               <span className="text-sm font-medium text-slate-700 hidden sm:inline">
-                {user?.full_name}
+                {userName}
               </span>
             </div>
           </div>

@@ -53,11 +53,12 @@ export default function AdminDashboard() {
     (orderAcc, order) => orderAcc + parseFloat(order.total_price || 0),
     0,
   );
+  const formattedTotalRevenue = totalRevenue.toFixed(2);
 
   const statCards = [
     {
       title: "Total Revenue",
-      value: `$${totalRevenue}`,
+      value: `$${formattedTotalRevenue}`,
       growth: 12.5,
       icon: DollarSign,
       color: "from-indigo-500 to-indigo-600",

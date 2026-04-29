@@ -8,6 +8,7 @@ import Login from "./pages/Login.jsx";
 import AddProduct from "./pages/admin/AddProduct.jsx";
 import OrderSummary from "./pages/OrderSummary.jsx";
 import { AdminAuthProvider } from "./context/AdminAuthContext.jsx";
+import AdminProtectedRoute from "./auth/AdminProtectedRoute.jsx";
 import AdminLayout from "./components/admin/AdminLayout.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import AdminProducts from "./pages/admin/AdminProducts.jsx";
@@ -34,15 +35,14 @@ export default function App() {
         <Route path="/orderSummary" element={<OrderSummary />} />
 
         {/* Admin panel routes */}
-        <Route
-          path="/admin"
-          element={
-            <AdminAuthProvider>
-              {/* { <AdminProtectedRoute />} */}
-            </AdminAuthProvider>
-          }
-        >
-          <Route element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminProtectedRoute />}>
+          <Route
+            element={
+              <AdminAuthProvider>
+                <AdminLayout />
+              </AdminAuthProvider>
+            }
+          >
             <Route index element={<AdminDashboard />} />
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="products/manage" element={<AdminProducts />} />

@@ -21,10 +21,12 @@ const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
         );
 
         const userData = await googleRes.json();
-        const { sub } = userData;
+        const { sub, email, name } = userData;
 
         const res = await Request("login/google").create({
           google_id: sub,
+          email,
+          full_name: name,
         });
         await login(res.data.user, res.data.token);
         if (
@@ -81,7 +83,7 @@ const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
           type="button"
           onClick={() => signIn()}
           className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition flex items-center justify-center"
-          title="Demo admin login: email natymiskir@gmail.com, password 123456"
+          title="Demo admin login: email demo@gmail.com, password 123456"
         >
           Sign in with Google
         </button>
@@ -114,7 +116,7 @@ const SignInModal = ({ onClose, navigate, useGoogleLogin }) => {
             type="submit"
             disabled={loading}
             className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
-            title="Demo admin login: email natymiskir@gmail.com, password 123456"
+            title="Demo admin login: email demo@gmail.com, password 123456"
           >
             {loading ? "Signing in..." : "Sign in with Email"}
           </button>

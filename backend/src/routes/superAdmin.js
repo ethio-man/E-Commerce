@@ -2,18 +2,20 @@ import express from "express";
 import _ from "lodash";
 import { prisma } from "../startup/db.js";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import { superAdminSchema } from "../validations/superAdminValidate.js";
 import { userSchema } from "../validations/userValidator.js";
 import validate from "../middleware/validate.js";
 import { auth, verifyOwnership } from "../middleware/auth.js";
 import generateAuthToken from "../utils/authGenerate.js";
-dotenv.config();
+
+const superAdmin = {
+  username: "dagmawi",
+  password: "1245",
+};
 //super admin login
 const route = express.Router();
 route.post("/", validate(superAdminSchema), async (req, res) => {
   const { username, password } = req.body;
-  const superAdmin = JSON.parse(process.env.SUPER_ADMIN);
   if (username === superAdmin.username && password === superAdmin.password) {
     const token = generateAuthToken({
       username: superAdmin.username,
