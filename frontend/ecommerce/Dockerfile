@@ -3,11 +3,11 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 # Install frontend dependencies
-COPY frontend/ecommerce/package*.json ./
-RUN npm install
+COPY package*.json ./
+RUN npm ci
 
 # Copy frontend source
-COPY frontend/ecommerce ./
+COPY . .
 
 # Build-time API base URL (can be overridden with --build-arg)
 ARG VITE_API_BASE_URL=http://localhost:4000/
@@ -19,6 +19,7 @@ FROM nginx:alpine
 
 # Copy built assets to Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
