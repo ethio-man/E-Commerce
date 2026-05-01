@@ -33,7 +33,7 @@ export default function ProductOverview() {
       if (res) alert("Added Successfully!");
     } catch (err) {
       console.log("Error to creare cart", err);
-      alert("Item not added to cart!please try again.");
+      alert("Item not added to cart! please login and try again.");
     }
   }
   return (
