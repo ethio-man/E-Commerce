@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  X,
 } from "lucide-react";
 import Logo from "../../assets/logo.png";
 
@@ -24,34 +25,44 @@ const navItems = [
   { icon: Shield, label: "Administration", path: "/admin/administration" },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ onClose }) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
   return (
     <aside
       className={`${
-        collapsed ? "w-[72px]" : "w-64"
-      } bg-slate-900 text-white flex flex-col min-h-screen transition-all duration-300 ease-in-out relative`}
+        collapsed ? "w-[72px]" : "w-64 lg:w-64 max-w-[80vw]"
+      } bg-slate-900 text-white flex flex-col h-full min-h-screen transition-all duration-300 ease-in-out relative`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-slate-700/50">
-        <img
-          src={Logo}
-          alt="Warka"
-          className="h-22 w-22 object-contain flex-shrink-0 mix-blend-color-burn"
-        />
-        {!collapsed && (
-          <span className="text-lg font-bold tracking-wide bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-            Warka Admin
-          </span>
+      <div className="flex items-center justify-between gap-3 px-4 h-16 border-b border-slate-700/50 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <img
+            src={Logo}
+            alt="Warka"
+            className="h-22 w-22 object-contain flex-shrink-0 mix-blend-color-burn"
+          />
+          {!collapsed && (
+            <span className="text-lg font-bold tracking-wide bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              Warka Admin
+            </span>
+          )}
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg transition-colors"
+          >
+            <X size={20} />
+          </button>
         )}
       </div>
 
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-20 bg-slate-700 hover:bg-indigo-600 text-white rounded-full p-1 shadow-lg transition-colors z-10"
+        className="hidden lg:flex absolute -right-3 top-20 bg-slate-700 hover:bg-indigo-600 text-white rounded-full p-1 shadow-lg transition-colors z-10"
       >
         {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
       </button>

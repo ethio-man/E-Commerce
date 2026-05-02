@@ -84,10 +84,10 @@ export default function Checkout() {
   }
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 px-4 sm:px-6 py-8 lg:py-12">
         {/* LEFT: FORM */}
         <div>
-          <h1 className="text-2xl font-bold mb-8">Checkout</h1>
+          <h1 className="text-2xl font-bold mb-6 lg:mb-8">Checkout</h1>
 
           {/* Contact */}
           <div className="mb-10">
@@ -155,7 +155,7 @@ export default function Checkout() {
                 required
               />
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <input
                   type="text"
                   placeholder="City"

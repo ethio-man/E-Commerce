@@ -49,16 +49,16 @@ export default function ShoppingCart() {
   const total = subtotal + shipping + tax;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-10">
-      <div className="max-w-6xl mx-auto bg-white shadow rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-10">
+      <div className="max-w-6xl mx-auto bg-white shadow rounded-lg p-4 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Shopping Cart</h1>
 
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-10">
           <div className="lg:col-span-2 divide-y divide-gray-200">
             {carts.map((item) => (
               <div
                 key={item.id}
-                className="flex gap-6 items-start border-b pb-6"
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start border-b pb-6"
               >
                 <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                   <img

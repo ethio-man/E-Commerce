@@ -22,7 +22,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-16 bg-gray-200 border-r border-gray-100 p-2 flex flex-col justify-between h-auto">
+    <div className="w-16 bg-gray-200 border-r border-gray-100 p-2 flex flex-col justify-between h-full min-h-[calc(100vh-64px)] overflow-y-auto">
       <div>
         <nav className="space-y-1">
           {navItems.map((item) => (

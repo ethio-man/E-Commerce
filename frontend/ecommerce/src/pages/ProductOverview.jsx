@@ -48,12 +48,12 @@ export default function ProductOverview() {
             />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
               {product?.name}
             </h1>
 
-            <p className="mt-4 text-3xl tracking-tight text-gray-900">
-              {product?.price}
+            <p className="mt-4 text-2xl sm:text-3xl tracking-tight text-gray-900">
+              ${product?.price}
             </p>
             <div className="mt-4 flex items-center">
               <div className="flex items-center">
@@ -103,7 +103,7 @@ export default function ProductOverview() {
 
               <div className="mt-6">
                 <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                <div className="mt-4 grid grid-cols-4 gap-3">
+                <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-3">
                   {product.sizes.map((size, index) => (
                     <label
                       key={index}
